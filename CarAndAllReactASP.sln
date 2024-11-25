@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAndAllReactASP.Server", "CarAndAllReactASP.Server\CarAndAllReactASP.Server.csproj", "{0B2D8FB9-5076-43E5-A52B-002ABA6F57DC}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "carandallreactasp.client", "carandallreactasp.client\carandallreactasp.client.esproj", "{23396D13-D5E2-4173-A022-BDB0CE783ABD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B2D8FB9-5076-43E5-A52B-002ABA6F57DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2D8FB9-5076-43E5-A52B-002ABA6F57DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B2D8FB9-5076-43E5-A52B-002ABA6F57DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B2D8FB9-5076-43E5-A52B-002ABA6F57DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23396D13-D5E2-4173-A022-BDB0CE783ABD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0B387F3-A72B-4DF9-BBD4-573ECFE0EECE}
+	EndGlobalSection
+EndGlobal
