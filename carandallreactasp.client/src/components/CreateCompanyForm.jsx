@@ -1,6 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import axios from '../services/api';
 
+// eslint-disable-next-line react/prop-types
 const CreateCompanyForm = ({ onCompanyCreated }) => {
     const [company, setCompany] = useState({
         name: '',
