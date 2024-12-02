@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "type": "dotnet",
+        "command": "build",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "type": "dotnet",
+        "task": "build",
+        "group": "build",
+        "problemMatcher": [],
+        "label": "dotnet: build"
+      }
+    ]
+  }
+  

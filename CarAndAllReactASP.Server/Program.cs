@@ -1,3 +1,6 @@
+using CarAndAllReactASP.Data;
+using CarAndAllReactASP.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarAndAllReactASP.Server
 {
@@ -8,11 +11,23 @@ namespace CarAndAllReactASP.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Database context toevoegen
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // EmailService registreren in de DI-container
+            builder.Services.AddTransient<EmailService>(provider =>
+                new EmailService(
+                    smtpHost: "smtp.gmail.com",
+                    smtpPort: 587,
+                    smtpUser: "carandalle@gmail.com",
+                    smtpPass: "!c@randAll1"
+                )
+            );
 
             var app = builder.Build();
 
@@ -29,7 +44,6 @@ namespace CarAndAllReactASP.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
