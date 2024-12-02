@@ -10,7 +10,7 @@ public class User
     public string Email { get; set; }
     //set the length to the usual length of a phone number
     [MinLength(8)]
-    [MaxLength(15)]
+    [MaxLength(12)]
     public string Telefoonnr { get; set; }
 
 
