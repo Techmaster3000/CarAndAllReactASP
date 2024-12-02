@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using CarAndAllReactASP.Models;
 
 namespace CarAndAllReactASP.Server.Controllers
 {
@@ -16,7 +17,7 @@ namespace CarAndAllReactASP.Server.Controllers
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-        };o0
+        }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
