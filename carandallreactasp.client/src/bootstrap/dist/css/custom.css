@@ -1,0 +1,7 @@
+.no-outline {
+    outline: none;
+    box-shadow: none;
+}
+::placeholder {
+    color: #40e0d0;
+}
