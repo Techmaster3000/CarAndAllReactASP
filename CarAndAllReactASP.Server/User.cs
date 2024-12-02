@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;    
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+
+
 namespace CarAndAllReactASP.Server;
 
-public class User
+public class User : IdentityUser
 {
     [Key]
     public int KlantId { get; set; }
