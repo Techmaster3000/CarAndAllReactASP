@@ -1,0 +1,11 @@
+.no-outline {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+::placeholder {
+    color: #ffffff;
+}
+.bg-gray {
+    background-color: #777777;
+}
