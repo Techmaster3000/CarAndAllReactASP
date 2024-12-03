@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarAndAllReactASP.Server;
 using CarAndAllReactASP.Server.Data;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
+using System.Runtime.Intrinsics.X86;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -16,10 +19,13 @@ namespace CarAndAllReactASP.Server.Data
     public class UsersController : ControllerBase
     {
         private readonly CarAndAllReactASPDbContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
+
 
         public UsersController(CarAndAllReactASPDbContext context)
         {
             _context = context;
+           
         }
 
         // GET: api/Users
@@ -46,9 +52,9 @@ namespace CarAndAllReactASP.Server.Data
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(string id, User user)
         {
-            if (id != user.KlantId)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -76,13 +82,15 @@ namespace CarAndAllReactASP.Server.Data
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("signup")]
+        [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.KlantId }, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
@@ -101,9 +109,9 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.KlantId == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

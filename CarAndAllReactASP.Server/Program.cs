@@ -11,12 +11,13 @@ namespace CarAndAllReactASP.Server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("CarAndAllReactASPDbContextConnection");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Add services to the container.
-            builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options =>
+                options.UseSqlServer(connectionString)); // Configure the database provider here
 
-            builder.Services.AddAuthorization();
+
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
 
             builder.Services.AddControllers();

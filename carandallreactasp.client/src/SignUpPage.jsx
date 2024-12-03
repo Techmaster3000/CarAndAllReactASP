@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
+import bcrypt from 'bcryptjs';
 
 const SignUpPage = () => {
     const [fullName, setFullName] = useState('');
@@ -10,12 +11,12 @@ const SignUpPage = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [address, setAddress] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // validate email and passwords
         if (!fullName || !email || !phoneNumber || !password || !confirmPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -23,23 +24,26 @@ const SignUpPage = () => {
         } else if (password !== confirmPassword) {
             setError("Passwords do not match.");
         } else {
-            // clear error message
             setError("");
-            // post data to the /api/users/signup api
             try {
-                const response = await fetch("/api/users/signup", {
+                const salt = await bcrypt.genSalt(10);
+
+                const response = await fetch("/api/Users", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        fullName: fullName,
+                        userName: email,
                         email: email,
+                        adres: address,
+                        naam: fullName,
                         phoneNumber: phoneNumber,
-                        password: password,
+                        passwordHash: password,
+                        normalizedEmail: email.toUpperCase(),
+                        normalizedUserName: email.toUpperCase()
                     }),
                 });
-
                 if (response.ok) {
                     navigate('/login');
                 } else {
@@ -54,7 +58,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <div className="container w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+        <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
                 <div className="text display-4 pt-2">Sign Up</div>
             </div>
@@ -87,6 +91,15 @@ const SignUpPage = () => {
                             className="mx-2 my-1 bg-transparent no-outline text-white"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    </div>
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                        <input
+                            type="text"
+                            placeholder="Address"
+                            className="mx-2 my-1 bg-transparent no-outline text-white"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                         />
                     </div>
                     <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
