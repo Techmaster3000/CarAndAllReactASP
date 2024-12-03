@@ -1,4 +1,9 @@
 
+using CarAndAllReactASP.Server.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 namespace CarAndAllReactASP.Server
 {
     public class Program
@@ -6,8 +11,14 @@ namespace CarAndAllReactASP.Server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Add services to the container.
+            builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options =>
+                options.UseSqlServer(connectionString)); // Configure the database provider here
+
+
+            builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,6 +29,7 @@ namespace CarAndAllReactASP.Server
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.MapIdentityApi<User>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -29,7 +41,6 @@ namespace CarAndAllReactASP.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

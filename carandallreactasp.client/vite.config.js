@@ -43,10 +43,16 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
-                target,
+            '^/api/Users': {
+                target: 'https://localhost:7048',
+                secure: false
+            },
+            '^/login': {
+                target: 'https://localhost:7048',
                 secure: false
             }
+
+
         },
         port: 5173,
         https: {
