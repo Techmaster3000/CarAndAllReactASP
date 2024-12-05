@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { IoMail } from "react-icons/io5";
 import { FaLock } from "react-icons/fa6";
 import Button from 'react-bootstrap/Button';
@@ -9,6 +10,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,6 +42,14 @@ const LoginPage = () => {
                 setError("Network Error Logging in.");
             }
         }
+    };
+
+    const handleEmployeeFormClick = () => {
+        navigate("/employee-form"); 
+    };
+
+    const handleEmployeeListClick = () => {
+        navigate("/employee-list");  
     };
 
     return (
@@ -74,7 +84,10 @@ const LoginPage = () => {
                         <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Login</Button>
                         <Button href="/signup" variant="outline-secondary" size="lg" className="btn mt-3 w-100">Sign Up</Button>
                     </div>
-                </form>
+                    </form>
+                    <Button onClick={handleEmployeeFormClick} variant="outline-info" className="mt-3">Add Employee</Button>
+                    <Button onClick={handleEmployeeListClick} variant="outline-info" className="mt-3 ms-2">Employee List</Button> 
+
             </div>
         </div>
     );
