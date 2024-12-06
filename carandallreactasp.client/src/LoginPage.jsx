@@ -17,7 +17,7 @@ const LoginPage = () => {
         } else {
             setError("");
             try {
-                const response = await fetch("/login", {
+                const loginResponse = await fetch("/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -28,9 +28,24 @@ const LoginPage = () => {
                     }),
                 });
 
-                if (response.ok) {
-                    setError("Successful Login.");
-                } else if (response.status === 401) {
+                if (loginResponse.ok) {
+                    // Fetch the user ID after successful login
+                    const userIdResponse = await fetch(`/api/Users/GetUserID?email=${email}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (userIdResponse.ok) {
+                        const data = await userIdResponse.text();
+                        document.cookie = `userId=${data}; path=/`;
+                        setError("Successful Login.");
+                        window.location.href = "/editaccount";
+                    } else {
+                        setError("Error fetching user ID.");
+                    }
+                } else if (loginResponse.status === 401) {
                     setError("Unauthorized: Invalid email or password.");
                 } else {
                     setError("Error Logging In.");
@@ -53,7 +68,7 @@ const LoginPage = () => {
                         <IoMail size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
                         <input
                             type="email"
-                            value={email}
+                            value={email || ''}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="E-mail"
                             className="mx-2 my-1 bg-transparent no-outline text-white"
@@ -63,7 +78,7 @@ const LoginPage = () => {
                         <FaLock size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
                         <input
                             type="password"
-                            value={password}
+                            value={password || ''}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             className="mx-2 w-100 my-1 bg-transparent no-outline text-white"
