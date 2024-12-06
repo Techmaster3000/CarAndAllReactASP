@@ -28,6 +28,17 @@ namespace CarAndAllReactASP.Server.Data
            
         }
 
+        [HttpGet("GetUserID")]
+        public async Task<ActionResult<string>> GetUserID(string email) {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper());
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return user.Id;
+
+
+        }
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
@@ -37,7 +48,7 @@ namespace CarAndAllReactASP.Server.Data
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(string id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -47,6 +58,27 @@ namespace CarAndAllReactASP.Server.Data
             }
 
             return user;
+        }
+        [HttpPost("ChangeUserInfo")]
+        public async Task<IActionResult> ChangeUserInfo(string id, User user)
+        {
+            
+            //edit the user info
+            var userToEdit = await _context.Users.FindAsync(id);
+            if (userToEdit == null)
+            {
+                return NotFound();
+            }
+            userToEdit.Naam = user.Naam;
+            userToEdit.NormalizedEmail = user.NormalizedEmail;
+            userToEdit.PhoneNumber = user.PhoneNumber;
+            userToEdit.Email = user.Email;
+            userToEdit.NormalizedUserName = user.NormalizedUserName;
+            userToEdit.Adres = user.Adres;
+            userToEdit.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
+
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         // PUT: api/Users/5
@@ -89,8 +121,6 @@ namespace CarAndAllReactASP.Server.Data
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            //send email
-            //generate confirmation token
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 

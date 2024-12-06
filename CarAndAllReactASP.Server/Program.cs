@@ -18,6 +18,8 @@ namespace CarAndAllReactASP.Server
             builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options =>
                 options.UseSqlServer(connectionString)); // Configure the database provider here
 
+            //builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
+
 
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
 
