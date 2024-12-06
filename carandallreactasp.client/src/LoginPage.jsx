@@ -45,10 +45,12 @@ const LoginPage = () => {
     };
 
     const handleEmployeeFormClick = () => {
-        navigate("/employee-form"); 
+        console.log("Navigating to Add Employee");
+        navigate("/add-employee"); 
     };
 
     const handleEmployeeListClick = () => {
+        console.log("Navigating to Employee List");
         navigate("/employee-list");  
     };
 

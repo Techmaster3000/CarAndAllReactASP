@@ -1,7 +1,11 @@
 import React from "react";
 
 const EmployeeList = () => {
-    const employees = []; // Later ophalen via API
+    const employees = [
+        { name: "John", lastName: "Doe", email: "john.doe@example.com" },
+        { name: "Jane", lastName: "Smith", email: "jane.smith@example.com" }
+    ];
+     // Later ophalen via API
 
     return (
         <div className="container mt-5">
