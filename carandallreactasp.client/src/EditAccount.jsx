@@ -51,6 +51,7 @@ const EditAccount = () => {
             setError("Error fetching account.");
         }
     };
+
     const saveChanges = async (e) => {
         e.preventDefault();
         if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
@@ -96,7 +97,38 @@ const EditAccount = () => {
                 setError("Error updating account.");
             }
         }
+    };
 
+    const deleteAccount = async () => {
+        if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+            try {
+                const userId = getCookie('userId');
+                if (!userId) {
+                    setError("User ID not found in cookies.");
+                    return;
+                }
+
+                const response = await fetch(`/api/Users/${userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+
+                if (response.ok) {
+                    // Delete the userId cookie
+                    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    // Redirect to the login page
+                    window.location.href = "/";
+                } else {
+                    const data = await response.json();
+                    setError(data.message || "Error deleting account.");
+                }
+            } catch (error) {
+                console.error(error);
+                setError("Error deleting account.");
+            }
+        }
     };
 
     return (
@@ -133,10 +165,28 @@ const EditAccount = () => {
                     </div>
                     <div className="d-flex justify-content-center m-2">
                         <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Save Information</Button>
-                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50">Delete Account</Button>
+                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50" data-bs-toggle="modal" data-bs-toggle="deleteWarning" onClick={deleteAccount}>Delete Account</Button>
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>
+                <div class="modal fade" id="deleteWarning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteWarningLabel">Delete your Account?</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete your account? This action cannot be undone.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={deleteAccount}>Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
