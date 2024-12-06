@@ -1,5 +1,6 @@
 
 using CarAndAllReactASP.Server.Data;
+using Habanero.Util;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace CarAndAllReactASP.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddTransient<ISenderEmail, MailSender>();
+
 
             var app = builder.Build();
 

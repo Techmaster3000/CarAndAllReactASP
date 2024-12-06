@@ -11,6 +11,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.Intrinsics.X86;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -20,7 +21,6 @@ namespace CarAndAllReactASP.Server.Data
     {
         private readonly CarAndAllReactASPDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
-
 
         public UsersController(CarAndAllReactASPDbContext context)
         {
@@ -89,7 +89,8 @@ namespace CarAndAllReactASP.Server.Data
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
+            //send email
+            //generate confirmation token
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
-import bcrypt from 'bcryptjs';
 
 const SignUpPage = () => {
     const [fullName, setFullName] = useState('');
@@ -26,7 +25,6 @@ const SignUpPage = () => {
         } else {
             setError("");
             try {
-                const salt = await bcrypt.genSalt(10);
 
                 const response = await fetch("/api/Users", {
                     method: "POST",
@@ -60,7 +58,7 @@ const SignUpPage = () => {
     return (
         <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
-                <div className="text display-4 pt-2">Sign Up</div>
+                ail<div className="text display-4 pt-2">Sign Up</div>
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
