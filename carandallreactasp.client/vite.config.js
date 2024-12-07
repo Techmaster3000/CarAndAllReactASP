@@ -56,6 +56,10 @@ export default defineConfig({
             '^/login': {
                 target: target,
                 secure: false
+            },
+            '^/confirmEmail': {
+                target: target,
+                secure: false
             }
         },
         port: 5173,
