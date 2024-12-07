@@ -63,6 +63,7 @@ const SignUpPage = () => {
                 if (response.ok) {
                     const newUser = await response.json();
                     await sendConfirmationEmail(newUser);
+                    window.alert("User registered successfully. Please check your email for confirmation.");
                     navigate('/login');
                 } else {
                     const data = await response.json();
