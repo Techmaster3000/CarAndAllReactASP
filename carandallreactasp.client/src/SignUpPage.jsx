@@ -14,14 +14,13 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const sendConfirmationEmail = async (user) => {
+    const sendConfirmationEmail = async () => {
         try {
-            const response = await fetch("/api/Users/SendConfirmationEmail", {
+            const response = await fetch(`/api/Users/SendConfirmationEmail?emailToFind=${email}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(user),
             });
 
             if (!response.ok) {

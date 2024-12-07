@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -147,21 +149,64 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
         [HttpPost("SendConfirmationEmail")]
-        public async Task<IActionResult> SendConfirmEmail(User user)
+        public async Task<IActionResult> SendConfirmEmail(string emailToFind)
         {
-            var UserFromDB = GetUser(GetUserID(user.Email).ToString()).Result.Value;
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(UserFromDB);
-            var confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = UserFromDB.Email }, Request.Scheme);
-
-            if (string.IsNullOrEmpty(confirmationLink))
+            // Get the user by email
+            var user = await _userManager.FindByEmailAsync(emailToFind);
+            if (user == null)
             {
-                return BadRequest("Failed to generate confirmation link.");
+                return NotFound("User not found.");
             }
 
-            await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>");
+            // Generate the email confirmation token
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (string.IsNullOrEmpty(token))
+            {
+                return StatusCode(StatusCodes.Status204NoContent,"Failed to generate confirmation token.");
+            }
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            // Generate the confirmation link
+
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var confirmationLink = $"{baseUrl}/emailConfirm?userId={user.Id}&code={token}";
+
+            // Send the confirmation email
+            try
+            {
+                await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not shown here)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error sending confirmation email.");
+            }
+
             return Ok();
         }
+        [HttpGet("emailConfirm")]
+        public async Task<IActionResult> emailConfirm(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return BadRequest("User ID and code are required.");
+            }
 
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                return Ok("Email confirmed successfully!");
+            }
+            else
+            {
+                return BadRequest("Error confirming email.");
+            }
+        }
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
