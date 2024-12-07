@@ -54,7 +54,7 @@ const EditAccount = () => {
 
     const saveChanges = async (e) => {
         e.preventDefault();
-        if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
+        if (!fullName || !email || !phoneNumber || !address) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");

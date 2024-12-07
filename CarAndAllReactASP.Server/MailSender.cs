@@ -1,35 +1,46 @@
-﻿using System.Net.Mail;
-using System.Net;
+﻿using CarAndAllReactASP.Server;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
-namespace CarAndAllReactASP.Server
+public class EmailSender : IEmailSender
 {
-    public interface ISenderEmail
+    private readonly ILogger _logger;
+
+    public EmailSender(IOptions<AuthMessageSenderOpt> optionsAccessor,
+        ILogger<EmailSender> logger)
     {
-        Task SendEmailAsync(string ToEmail, string Subject, string Body, bool IsHtml = false);
+        Options = optionsAccessor.Value;
+        _logger = logger;
     }
-    public class MailSender : ISenderEmail
+
+    public AuthMessageSenderOpt Options { get; }
+
+    public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
-        private readonly IConfiguration _configuration;
-        public MailSender(IConfiguration configuration)
+        if (string.IsNullOrEmpty(Options.SENDGRIDKEY))
         {
-            _configuration = configuration;
+            throw new Exception("Null SendGridKey");
         }
-        public Task SendEmailAsync(string ToEmail, string Subject, string Body, bool IsHtml = false)
+        await Execute(Options.SENDGRIDKEY, subject, message, toEmail);
+    }
+
+    public async Task Execute(string apiKey, string subject, string message, string toEmail)
+    {
+        var client = new SendGridClient(apiKey);
+        var msg = new SendGridMessage()
         {
-            string MailServer = _configuration["EmailSettings:MailServer"];
-            string FromEmail = _configuration["EmailSettings:FromEmail"];
-            string Password = _configuration["EmailSettings:Password"];
-            int Port = int.Parse(_configuration["EmailSettings:MailPort"]);
-            var client = new SmtpClient(MailServer, Port)
-            {
-                Credentials = new NetworkCredential(FromEmail, Password),
-                EnableSsl = true,
-            };
-            MailMessage mailMessage = new MailMessage(FromEmail, ToEmail, Subject, Body)
-            {
-                IsBodyHtml = IsHtml
-            };
-            return client.SendMailAsync(mailMessage);
-        }
+            From = new EmailAddress("23052279@student.hhs.nl", "Account Confirmation"),
+            Subject = subject,
+            PlainTextContent = message,
+            HtmlContent = message
+        };
+        msg.AddTo(new EmailAddress(toEmail));
+        msg.SetClickTracking(false, false);
+        var response = await client.SendEmailAsync(msg);
+        _logger.LogInformation(response.IsSuccessStatusCode
+            ? $"Email to {toEmail} queued successfully!"
+            : $"Failure Email to {toEmail}");
     }
 }

@@ -12,6 +12,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
+using System.Text.Encodings.Web;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -21,11 +24,15 @@ namespace CarAndAllReactASP.Server.Data
     {
         private readonly CarAndAllReactASPDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
+        private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public UsersController(CarAndAllReactASPDbContext context)
+        public UsersController(CarAndAllReactASPDbContext context, UserManager<User> userManager, IEmailSender emailSender)
         {
             _context = context;
-           
+            _userManager = userManager;
+            _emailSender = emailSender;
+
         }
 
         [HttpGet("GetUserID")]
@@ -138,6 +145,21 @@ namespace CarAndAllReactASP.Server.Data
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        [HttpPost("SendConfirmationEmail")]
+        public async Task<IActionResult> SendConfirmEmail(User user)
+        {
+            var UserFromDB = GetUser(GetUserID(user.Email).ToString()).Result.Value;
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(UserFromDB);
+            var confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = UserFromDB.Email }, Request.Scheme);
+
+            if (string.IsNullOrEmpty(confirmationLink))
+            {
+                return BadRequest("Failed to generate confirmation link.");
+            }
+
+            await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>");
+            return Ok();
         }
 
         private bool UserExists(string id)

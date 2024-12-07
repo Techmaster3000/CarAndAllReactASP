@@ -14,6 +14,25 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const sendConfirmationEmail = async (user) => {
+        try {
+            const response = await fetch("/api/Users/SendConfirmationEmail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error sending confirmation email. After Response.");
+            }
+        } catch (error) {
+            console.error(error);
+            setError("Error sending confirmation email.");
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!fullName || !email || !phoneNumber || !password || !confirmPassword) {
@@ -22,11 +41,9 @@ const SignUpPage = () => {
             setError("Please enter a valid email address.");
         } else if (password !== confirmPassword) {
             setError("Passwords do not match.");
-        }
-         else {
+        } else {
             setError("");
             try {
-
                 const response = await fetch("/api/Users", {
                     method: "POST",
                     headers: {
@@ -43,7 +60,10 @@ const SignUpPage = () => {
                         normalizedUserName: email.toUpperCase()
                     }),
                 });
+
                 if (response.ok) {
+                    const newUser = await response.json();
+                    await sendConfirmationEmail(newUser);
                     navigate('/login');
                 } else {
                     const data = await response.json();
@@ -53,14 +73,13 @@ const SignUpPage = () => {
                 console.error(error);
                 setError("Error registering.");
             }
-
         }
     };
 
     return (
         <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
-            <div className="text display-4 pt-2">Sign Up</div>
+                <div className="text display-4 pt-2">Sign Up</div>
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
