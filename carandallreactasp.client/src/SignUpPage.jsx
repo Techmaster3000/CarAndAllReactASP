@@ -14,6 +14,7 @@ const SignUpPage = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    
     const sendConfirmationEmail = async () => {
         try {
             const response = await fetch(`/api/Users/SendConfirmationEmail?emailToFind=${email}`, {
@@ -74,6 +75,8 @@ const SignUpPage = () => {
                 setError("Error registering.");
             }
         }
+        <Button onClick={() => navigate('/business-signup')} variant="outline-secondary" size="lg" className="btn mt-3 w-100">Registreren als zakelijke klant</Button>
+
     };
 
     return (
@@ -145,6 +148,10 @@ const SignUpPage = () => {
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>
+                <div className="d-flex justify-content-center w-25">
+                <Button href="/business-signup" variant="outline-secondary" size="lg" className="btn mt-3 w-100"> Business Sign Up</Button>
+                </div>
+                
             </div>
         </div>
     );
