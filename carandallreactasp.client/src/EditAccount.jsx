@@ -54,11 +54,16 @@ const EditAccount = () => {
 
     const saveChanges = async (e) => {
         e.preventDefault();
-        if (!fullName || !email || !phoneNumber || !address) {
+
+        else if (newPassword !== confirmNewPassword) {
+            setError("New passwords do not match.");
+        }
+        if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
-        } else if (newPassword !== confirmNewPassword) {
+        }
+        else if (newPassword !== confirmNewPassword) {
             setError("New passwords do not match.");
         } else {
             setError("");
@@ -83,6 +88,7 @@ const EditAccount = () => {
                         passwordHash: newPassword,
                         normalizedEmail: email.toUpperCase(),
                         normalizedUserName: email.toUpperCase(),
+                        oldPassword: oldPassword,
                     }),
                 });
 
@@ -101,7 +107,6 @@ const EditAccount = () => {
     const signOut = async () => {
         document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.href = "/";
-
     }
 
     const deleteAccount = async () => {
