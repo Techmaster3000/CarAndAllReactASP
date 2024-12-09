@@ -47,6 +47,9 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
+    optimizeDeps: {
+        exclude: ['react-datepicker']
+    },
     server: {
         proxy: {
             '^/api/Users': {
@@ -58,6 +61,10 @@ export default defineConfig({
                 secure: false
             },
             '^/confirmEmail': {
+                target: target,
+                secure: false
+            },
+            '^/api/ParticuliereVerhuur': {
                 target: target,
                 secure: false
             },

@@ -8,6 +8,7 @@ const EditCar = ({ car, onClose, onSave }) => {
     const [merk, setMerk] = useState(car.merk);
     const [type, setType] = useState(car.type);
     const [kleur, setKleur] = useState(car.kleur);
+    const [PrijsPerDag, setPrijsPerDag] = useState(car.prijsPerDag);
     const [kenteken, setKenteken] = useState(car.kenteken);
     const [aanschafjaar, setAanschafjaar] = useState(car.aanschafjaar);
     const [opmerkingen, setOpmerkingen] = useState(car.opmerkingen);
@@ -24,12 +25,14 @@ const EditCar = ({ car, onClose, onSave }) => {
                 body: JSON.stringify({
                     id: car.id,
                     soort: soort,
+
                     merk: merk,
                     type: type,
                     kleur: kleur,
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
                     opmerkingen: opmerkingen,
+                    PrijsPerDag: PrijsPerDag
                 }),
             });
             if (response.ok) {
@@ -46,7 +49,7 @@ const EditCar = ({ car, onClose, onSave }) => {
 
     return (
         <div className="modal fade show d-flex align-items-center" style={{ display: 'block' }} tabIndex="-1" role="dialog">
-            <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Edit Car</h5>
@@ -120,6 +123,18 @@ const EditCar = ({ car, onClose, onSave }) => {
                                     max="2025"
                                     value={aanschafjaar}
                                     onChange={(e) => setAanschafjaar(e.target.value)}
+                                />
+                            </div>
+                            <div className="m-1 d-flex align-items-center w-100">
+                                <label htmlFor="carPrijsPerDag" className="form-label m-3">Prijs Per Dag</label>
+                                <input
+                                    type=""
+                                    id="carPrijsPerDag"
+                                    className="form-control bg-dark text-light rounded"
+                                    pattern="^\`€\d{1,3}(,\d{3})*(\.\d+)?$"
+                                    min="0"
+                                    value={PrijsPerDag}
+                                    onChange={(e) => setPrijsPerDag(e.target.value)}
                                 />
                             </div>
                             <div className="m-1 d-flex align-items-center w-100">
