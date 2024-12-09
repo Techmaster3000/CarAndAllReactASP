@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CarAndAllReactASP.Server.Models;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -9,6 +10,8 @@ namespace CarAndAllReactASP.Server.Data
             : base(options)
         {
         }
+
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

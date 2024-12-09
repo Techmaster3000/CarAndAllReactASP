@@ -60,6 +60,10 @@ export default defineConfig({
             '^/confirmEmail': {
                 target: target,
                 secure: false
+            },
+            '^/api/Employees': {
+                target: target,
+                secure: false
             }
         },
         port: 5173,

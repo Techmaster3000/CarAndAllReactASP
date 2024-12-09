@@ -4,6 +4,7 @@ import { FaLock } from "react-icons/fa6";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
+import {Link} from "react-router-dom";
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -88,6 +89,7 @@ const LoginPage = () => {
                     <div className="d-flex justify-content-center w-25">
                         <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Login</Button>
                         <Button href="/signup" variant="outline-secondary" size="lg" className="btn mt-3 w-100">Sign Up</Button>
+                        <Button as={Link} to="/manage-employees" variant="outline-secondary" size="lg" className="btn mt-3 w-100">Beheer Medewerkers</Button>
                     </div>
                 </form>
             </div>
