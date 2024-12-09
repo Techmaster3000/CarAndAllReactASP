@@ -13,6 +13,7 @@ const CreateCar = () => {
     const [kenteken2, setKenteken2] = useState('');
     const [kenteken3, setKenteken3] = useState('');
     const [aanschafjaar, setAanschafjaar] = useState('');
+    const [opmerking, setOpmerking] = useState('');
     const [error, setError] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
     const navigate = useNavigate();
@@ -54,11 +55,12 @@ const CreateCar = () => {
                     kleur: kleur,
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
+                    opmerkingen: opmerking,
                 }),
             });
             if (response.ok) {
                 setError('Car created successfully.');
-            } else if (response.status === 409) { // Assuming 409 Conflict status code for existing car
+            } else if (response.status === 409) {
                 setError('Kenteken al aanwezig in database.');
             } else {
                 const data = await response.json();
@@ -166,6 +168,16 @@ const CreateCar = () => {
                         max="2025"
                         value={aanschafjaar}
                         onChange={(e) => setAanschafjaar(e.target.value)}
+                    />
+                </div>
+                <div className="m-1 d-flex align-items-center w-100">
+                    <label htmlFor="carOpmerking" className="form-label m-3">Opmerking</label>
+                    <textarea
+                        id="carOpmerking"
+                        className="form-control bg-dark text-light rounded"
+                        rows="3"
+                        value={opmerking}
+                        onChange={(e) => setOpmerking(e.target.value)}
                     />
                 </div>
                 <div className="m-3">

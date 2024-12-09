@@ -16,6 +16,7 @@ namespace CarAndAllReactASP.Server
         public string Kenteken { get; set; }
         [Range(1900, 2025)]
         public int Aanschafjaar { get; set; }
+        public string Opmerkingen { get; set; }
 
 
     }
