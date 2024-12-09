@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CarAndAllReactASP.Server.Models; 
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -13,11 +14,15 @@ namespace CarAndAllReactASP.Server.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+
+            
+            builder.Entity<Vehicle>().HasData(
+                new Vehicle { Id = 1, Brand = "Toyota", Model = "Corolla", LicensePlate = "AB-123-CD", Color = "Red", Year = 2018, IsAvailable = true },
+                new Vehicle { Id = 2, Brand = "Ford", Model = "Focus", LicensePlate = "EF-456-GH", Color = "Blue", Year = 2019, IsAvailable = true }
+            );
         }
 
-        public DbSet<User> Users { get; set; }
+        
+        public DbSet<Vehicle> Vehicles { get; set; }
     }
 }
