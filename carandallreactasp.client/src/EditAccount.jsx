@@ -55,9 +55,6 @@ const EditAccount = () => {
     const saveChanges = async (e) => {
         e.preventDefault();
 
-        else if (newPassword !== confirmNewPassword) {
-            setError("New passwords do not match.");
-        }
         if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
