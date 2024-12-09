@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
@@ -14,6 +15,7 @@ const CreateCar = () => {
     const [aanschafjaar, setAanschafjaar] = useState('');
     const [error, setError] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkFormValidity = () => {
@@ -53,8 +55,7 @@ const CreateCar = () => {
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
                 }),
-                //check if response is ok
-            })
+            });
             if (response.ok) {
                 setError('Car created successfully.');
             } else if (response.status === 409) { // Assuming 409 Conflict status code for existing car
@@ -63,17 +64,22 @@ const CreateCar = () => {
                 const data = await response.json();
                 setError(data.message || 'Error creating car.');
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error);
-            setError('caught error creating car')
+            setError('caught error creating car');
         }
-        
+    };
+
+    const handleClose = () => {
+        navigate('/');
     };
 
     return (
         <div className="container-fluid w-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2 p-4">
-            <h1 className="text-center">Create Car</h1>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h1 className="text-center">Create Car</h1>
+                <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
+            </div>
             <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
                 <div className="m-1 d-flex align-items-center w-100">
                     <label htmlFor="carSoort" className="form-label m-3">Soort</label>

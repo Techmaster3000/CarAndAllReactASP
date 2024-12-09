@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
+import EditCar from './EditCar';
 
 const CarManage = () => {
     const [vehicles, setVehicles] = useState([]);
     const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [selectedCar, setSelectedCar] = useState(null);
 
     useEffect(() => {
         fetchVehicles();
@@ -33,33 +36,44 @@ const CarManage = () => {
     };
 
     const handleEdit = (vehicle) => {
-        // Implement edit functionality here
-        console.log('Edit vehicle:', vehicle);
+        setSelectedCar(vehicle);
+        setShowModal(true);
     };
 
     const handleDelete = async (vehicleId) => {
-        if (window.)
-    
-        try {
-            const response = await fetch(`/api/Vehicles/${vehicleId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+        if (window.confirm("Are you sure you want to delete this car? This cannot be undone.")) {
+            try {
+                const response = await fetch(`/api/Vehicles/${vehicleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-            if (response.ok) {
-                setVehicles(vehicles.filter(vehicle => vehicle.id !== vehicleId));
-            } else {
+                if (response.ok) {
+                    setVehicles(vehicles.filter(vehicle => vehicle.id !== vehicleId));
+                } else {
+                    setError('Error deleting vehicle.');
+                }
+            } catch (error) {
+                console.error(error);
                 setError('Error deleting vehicle.');
             }
-        } catch (error) {
-            console.error(error);
-            setError('Error deleting vehicle.');
         }
     };
 
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedCar(null);
+    };
+
+    const handleSaveChanges = () => {
+        fetchVehicles();
+        handleCloseModal();
+    };
+
     return (
+        <div>
         <div className="container-fluid w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
                 <h1>Manage Cars</h1>
@@ -93,7 +107,7 @@ const CarManage = () => {
                                 <td>{vehicle.kenteken}</td>
                                 <td>{vehicle.aanschafjaar}</td>
                                 <td>
-                                    <Button variant="warning" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
+                                    <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
                                     <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>
                                 </td>
                             </tr>
@@ -101,6 +115,12 @@ const CarManage = () => {
                     </tbody>
                 </table>
             </div>
+
+            
+            </div>
+            {showModal && selectedCar && (
+                <EditCar car={selectedCar} onClose={handleCloseModal} onSave={handleSaveChanges} />
+            )}
         </div>
     );
 };
