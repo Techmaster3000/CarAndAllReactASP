@@ -60,7 +60,12 @@ export default defineConfig({
             '^/confirmEmail': {
                 target: target,
                 secure: false
+            },
+            '^/api/Vehicles': {
+                target: target,
+                secure: false
             }
+
         },
         port: 5173,
         https: {
