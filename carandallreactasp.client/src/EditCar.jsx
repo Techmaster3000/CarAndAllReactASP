@@ -10,6 +10,7 @@ const EditCar = ({ car, onClose, onSave }) => {
     const [kleur, setKleur] = useState(car.kleur);
     const [kenteken, setKenteken] = useState(car.kenteken);
     const [aanschafjaar, setAanschafjaar] = useState(car.aanschafjaar);
+    const [opmerkingen, setOpmerkingen] = useState(car.opmerkingen);
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -28,6 +29,7 @@ const EditCar = ({ car, onClose, onSave }) => {
                     kleur: kleur,
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
+                    opmerkingen: opmerkingen,
                 }),
             });
             if (response.ok) {
@@ -118,6 +120,16 @@ const EditCar = ({ car, onClose, onSave }) => {
                                     max="2025"
                                     value={aanschafjaar}
                                     onChange={(e) => setAanschafjaar(e.target.value)}
+                                />
+                            </div>
+                            <div className="m-1 d-flex align-items-center w-100">
+                                <label htmlFor="carOpmerking" className="form-label m-3">Opmerking</label>
+                                <textarea
+                                    id="carOpmerking"
+                                    className="form-control bg-dark text-light rounded"
+                                    rows="3"
+                                    value={opmerkingen}
+                                    onChange={(e) => setOpmerkingen(e.target.value)}
                                 />
                             </div>
                             <div className="m-3">
