@@ -69,7 +69,7 @@ namespace CarAndAllReactASP.Server.Data
             return user;
         }
         [HttpPost("ChangeUserInfo")]
-        public async Task<IActionResult> ChangeUserInfo(string id, User user)
+        public async Task<IActionResult> ChangeUserInfo(string id, User user, string? oldPassword)
         {
             
             //edit the user info
@@ -78,6 +78,15 @@ namespace CarAndAllReactASP.Server.Data
             {
                 return NotFound();
             }
+
+            if (oldPassword != null)
+            {
+                if (userToEdit.PasswordHash != _passwordHasher.HashPassword(user, oldPassword))
+                {
+                    return BadRequest("Old password is incorrect.");
+                }
+            }
+
             userToEdit.Naam = user.Naam;
             userToEdit.NormalizedEmail = user.NormalizedEmail;
             userToEdit.PhoneNumber = user.PhoneNumber;
