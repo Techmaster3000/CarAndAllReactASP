@@ -98,6 +98,11 @@ const EditAccount = () => {
             }
         }
     };
+    const signOut = async () => {
+        document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/";
+
+    }
 
     const deleteAccount = async () => {
         if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
@@ -133,6 +138,9 @@ const EditAccount = () => {
 
     return (
         <div className="container-fluid w-100 h-75 d-flex flex-column translate-middle position-absolute top-50 start-50">
+            <div className="position-fixed top-0 end-0 p-3">
+                <Button variant="outline-danger" onClick={signOut}>Sign Out</Button>
+            </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form onSubmit={saveChanges}>
                     <div className="d-flex align-items-center justify-content-end">
@@ -169,23 +177,6 @@ const EditAccount = () => {
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>
-                <div class="modal fade" id="deleteWarning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deleteWarningLabel">Delete your Account?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete your account? This action cannot be undone.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={deleteAccount}>Yes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
