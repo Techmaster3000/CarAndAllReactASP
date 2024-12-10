@@ -12,6 +12,8 @@ namespace CarAndAllReactASP.Server
         [ForeignKey("Vehicle")]
         public int VoertuigID { get; set; }
 
+        public string VoertuigNaam { get; set; }
+
         [Required]
         [ForeignKey("User")]
         public string UserID { get; set; }
@@ -21,5 +23,6 @@ namespace CarAndAllReactASP.Server
 
         [Column(TypeName = "date")]
         public DateTime EindDatum { get; set; }
+        public double TotaalPrijs { get; set; }
     }
 }
