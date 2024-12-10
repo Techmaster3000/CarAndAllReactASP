@@ -93,6 +93,7 @@ const CarManage = () => {
                             <th>Kleur</th>
                             <th>Kenteken</th>
                             <th>Aanschafjaar</th>
+                            <th>Prijs Per Dag</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -106,6 +107,7 @@ const CarManage = () => {
                                 <td>{vehicle.kleur}</td>
                                 <td>{vehicle.kenteken}</td>
                                 <td>{vehicle.aanschafjaar}</td>
+                                <td>{vehicle.prijsPerDag}</td>
                                 <td>
                                     <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
                                     <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>

@@ -17,6 +17,9 @@ namespace CarAndAllReactASP.Server
         [Range(1900, 2025)]
         public int Aanschafjaar { get; set; }
         public string Opmerkingen { get; set; }
+        //make sure the price is in the right format
+        [Range(0, 1000000)]
+        public double PrijsPerDag { get; set; }
 
 
     }

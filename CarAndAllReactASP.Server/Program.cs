@@ -19,7 +19,6 @@ namespace CarAndAllReactASP.Server
             builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options =>
                 options.UseSqlServer(connectionString)); // Configure the database provider here
 
-            
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
@@ -37,7 +36,6 @@ namespace CarAndAllReactASP.Server
                             .AllowAnyHeader();
                     });
             });
-
 
             var app = builder.Build();
 
@@ -61,6 +59,12 @@ namespace CarAndAllReactASP.Server
             app.MapFallbackToFile("/index.html");
 
             app.Run();
+        }
+
+        public static void EnableIdentityInsert(DbContext context, string tableName, bool enable)
+        {
+            var command = enable ? $"SET IDENTITY_INSERT {tableName} ON;" : $"SET IDENTITY_INSERT {tableName} OFF;";
+            context.Database.ExecuteSqlRaw(command);
         }
     }
 }
