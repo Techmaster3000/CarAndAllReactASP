@@ -13,6 +13,7 @@ const CreateCar = () => {
     const [kenteken2, setKenteken2] = useState('');
     const [kenteken3, setKenteken3] = useState('');
     const [aanschafjaar, setAanschafjaar] = useState('');
+    const [prijsPerDag, setPrijsPerDag] = useState('');
     const [opmerking, setOpmerking] = useState('');
     const [error, setError] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
@@ -28,7 +29,8 @@ const CreateCar = () => {
                 kenteken1 &&
                 kenteken2 &&
                 kenteken3 &&
-                aanschafjaar
+                aanschafjaar &&
+                prijsPerDag
             ) {
                 setIsFormValid(true);
             } else {
@@ -37,7 +39,7 @@ const CreateCar = () => {
         };
 
         checkFormValidity();
-    }, [soort, merk, type, kleur, kenteken1, kenteken2, kenteken3, aanschafjaar]);
+    }, [soort, merk, type, kleur, kenteken1, kenteken2, kenteken3, aanschafjaar, prijsPerDag]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,6 +57,7 @@ const CreateCar = () => {
                     kleur: kleur,
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
+                    prijsPerDag: prijsPerDag,
                     opmerkingen: opmerking,
                 }),
             });
@@ -168,6 +171,17 @@ const CreateCar = () => {
                         max="2025"
                         value={aanschafjaar}
                         onChange={(e) => setAanschafjaar(e.target.value)}
+                    />
+                </div>
+                <div className="m-1 d-flex align-items-center w-100">
+                    <label htmlFor="carPrijsPerDag" className="form-label m-3">Prijs per dag</label>
+                    <input
+                        type="number"
+                        id="carPrijsPerDag"
+                        className="form-control bg-dark text-light rounded"
+                        min="1"
+                        value={prijsPerDag}
+                        onChange={(e) => setPrijsPerDag(e.target.value)}
                     />
                 </div>
                 <div className="m-1 d-flex align-items-center w-100">

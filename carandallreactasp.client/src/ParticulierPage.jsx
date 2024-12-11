@@ -13,6 +13,8 @@ const ParticulierPage = () => {
     const [selectedRental, setSelectedRental] = useState(null);
     const [selectedCar, setSelectedCar] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [filterCarType, setFilterCarType] = useState('');
+    const [filterDate, setFilterDate] = useState('');
 
     useEffect(() => {
         const fetchVerhuur = async () => {
@@ -77,11 +79,51 @@ const ParticulierPage = () => {
         }
     };
 
+    const filterRentals = (rentals) => {
+        return rentals.filter(rental => {
+            const carType = rental.voertuigSoort;
+            const startDate = new Date(rental.startDatum);
+            const endDate = new Date(rental.eindDatum);
+            const filterDateObj = filterDate ? new Date(filterDate) : null;
+
+            const matchesCarType = !filterCarType || carType.toLowerCase().includes(filterCarType.toLowerCase());
+            const matchesDate = !filterDate || (filterDateObj >= startDate && filterDateObj <= endDate);
+
+            return matchesCarType && matchesDate;
+        });
+    };
+
     return (
         <div>
             <NavBar />
             <div className="container-fluid mt-4 text-light">
                 {error && <div className="text-danger">{error}</div>}
+                <div className="row mb-4">
+                    <div className="col-md-6 text-light">
+                        <label htmlFor="filterSoort" className="form-label">Filter op Soort</label>
+                        <select
+                            id="filterSoort"
+                            className="form-select"
+                            value={filterCarType}
+                            onChange={(e) => setFilterCarType(e.target.value)}
+                        >
+                            <option value="">Alle Soorten</option>
+                            <option value="Auto">Auto</option>
+                            <option value="Camper">Camper</option>
+                            <option value="Caravan">Caravan</option>
+                        </select>
+                    </div>
+                    <div className="col-md-6 text-light">
+                        <label htmlFor="filterDate" className="form-label">Filter op Datum</label>
+                        <input
+                            type="date"
+                            id="filterDate"
+                            className="form-control"
+                            value={filterDate}
+                            onChange={(e) => setFilterDate(e.target.value)}
+                        />
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-4">
                         <h2>Lopende Verhuur</h2>
@@ -96,8 +138,8 @@ const ParticulierPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentVerhuur.length > 0 ? (
-                                    currentVerhuur.map(rental => (
+                                {filterRentals(currentVerhuur).length > 0 ? (
+                                    filterRentals(currentVerhuur).map(rental => (
                                         <tr key={rental.verhuurID}>
                                             <td>{rental.voertuigNaam}</td>
                                             <td>{new Date(rental.startDatum).toLocaleDateString()}</td>
@@ -127,8 +169,8 @@ const ParticulierPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {pastVerhuur.length > 0 ? (
-                                    pastVerhuur.map(rental => (
+                                {filterRentals(pastVerhuur).length > 0 ? (
+                                    filterRentals(pastVerhuur).map(rental => (
                                         <tr key={rental.verhuurID}>
                                             <td>{rental.voertuigNaam}</td>
                                             <td>{new Date(rental.startDatum).toLocaleDateString()}</td>
@@ -158,8 +200,8 @@ const ParticulierPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {futureVerhuur.length > 0 ? (
-                                    futureVerhuur.map(rental => (
+                                {filterRentals(futureVerhuur).length > 0 ? (
+                                    filterRentals(futureVerhuur).map(rental => (
                                         <tr key={rental.verhuurID}>
                                             <td>{rental.voertuigNaam}</td>
                                             <td>{new Date(rental.startDatum).toLocaleDateString()}</td>
