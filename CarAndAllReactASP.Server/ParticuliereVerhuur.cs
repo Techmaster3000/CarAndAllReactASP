@@ -13,6 +13,7 @@ namespace CarAndAllReactASP.Server
         public int VoertuigID { get; set; }
 
         public string VoertuigNaam { get; set; }
+        public string VoertuigSoort { get; set; }
 
         [Required]
         [ForeignKey("User")]

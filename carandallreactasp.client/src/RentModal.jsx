@@ -38,6 +38,7 @@ const RentModal = ({ car, onHide }) => {
                     voertuigID: car.id,
                     userID: getCookie('userId'),
                     VoertuigNaam: car.merk + " " + car.type,
+                    VoertuigSoort: car.soort,
                     startDatum: startDate,
                     eindDatum: endDate,
                     totaalPrijs: totalPrice
