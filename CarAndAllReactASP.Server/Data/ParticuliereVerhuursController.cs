@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarAndAllReactASP.Server;
+using CarAndAllReactASP.Server.Dto_s;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -19,7 +20,39 @@ namespace CarAndAllReactASP.Server.Data
         {
             _context = context;
         }
+        // GET: api/ParticuliereVerhuurs
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<VerhuurDTO>>> GetParticuliereVerhuurdto()
+        {
+            var huurverzoeken = await _context.ParticuliereVerhuur
+                .Include(h => h.Vehicle)
+                .Include(h => h.User)
+                .Select(h => new VerhuurDTO
+                {
+                    VerhuurID = h.VerhuurID,
+                    Status = h.Status,
+                    Voertuig = new VoertuigDTO
+                    {
+                        Merk = h.Vehicle.Merk,
+                        Type = h.Vehicle.Type,
+                        Kenteken = h.Vehicle.Kenteken
+                    },
+                    User = new UserDTO
+                    {
+                        Naam = h.User.Naam,
+                        Email = h.User.Email,
+                        PhoneNumber = h.User.PhoneNumber
+                    }
+                })
+                .ToListAsync();
 
+            if (!huurverzoeken.Any())
+            {
+                return NotFound("Geen huurverzoeken gevonden.");
+            }
+
+            return Ok(huurverzoeken);
+        }
         // GET: api/ParticuliereVerhuurs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ParticuliereVerhuur>>> GetParticuliereVerhuur()
@@ -27,9 +60,9 @@ namespace CarAndAllReactASP.Server.Data
             return await _context.ParticuliereVerhuur.ToListAsync();
         }
 
-        // GET: api/ParticuliereVerhuurs/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ParticuliereVerhuur>> GetParticuliereVerhuur(int id)
+            // GET: api/ParticuliereVerhuurs/5
+            [HttpGet("{id}")]
+            public async Task<ActionResult<ParticuliereVerhuur>> GetParticuliereVerhuur(int id)
         {
             var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
 
@@ -40,6 +73,36 @@ namespace CarAndAllReactASP.Server.Data
 
             return particuliereVerhuur;
         }
+
+        [HttpPut("uitgifte/{id}")]
+        public async Task<IActionResult> RegistreerUitgifte(int id, [FromBody] UitgifteDto uitgifteDto)
+        {
+            var verhuur = await _context.ParticuliereVerhuur
+                .Include(v => v.Vehicle) 
+                .Include(v => v.User)    
+                .FirstOrDefaultAsync(v => v.VerhuurID == id);
+
+            if (verhuur == null)
+            {
+                return NotFound("Verhuur niet gevonden.");
+            }
+
+            if (verhuur.Status != "Goedgekeurd")
+            {
+                return BadRequest("Verhuur is niet goedgekeurd en kan niet worden uitgegeven.");
+            }
+
+            verhuur.Status = "Uitgegeven";
+            verhuur.UitgifteDatum = DateTime.UtcNow;
+            verhuur.Opmerkingen = uitgifteDto.Opmerkingen;
+
+            _context.ParticuliereVerhuur.Update(verhuur);
+            await _context.SaveChangesAsync();
+
+            return Ok(verhuur);
+        }
+
+
 
         // PUT: api/ParticuliereVerhuurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

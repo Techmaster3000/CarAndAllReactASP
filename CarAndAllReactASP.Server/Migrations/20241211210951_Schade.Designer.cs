@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241211210951_Schade")]
+    partial class Schade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,6 +77,7 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FotoUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Opmerkingen")
@@ -352,7 +356,7 @@ namespace CarAndAllReactASP.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("CarAndAllReactASP.Server.Vehicle", "Vehicle")
-                        .WithMany("ParticuliereVerhuren")
+                        .WithMany()
                         .HasForeignKey("VoertuigID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -422,11 +426,6 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CarAndAllReactASP.Server.Vehicle", b =>
-                {
-                    b.Navigation("ParticuliereVerhuren");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,6 +13,24 @@ namespace CarAndAllReactASP.Server.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<ParticuliereVerhuur>()
+            .HasOne(p => p.Vehicle)
+            .WithMany(v => v.ParticuliereVerhuren) 
+            .HasForeignKey(p => p.VoertuigID);
+
+
+            // Relatie tussen ParticuliereVerhuur en User
+            builder.Entity<ParticuliereVerhuur>()
+            .HasOne(p => p.User)
+            .WithMany() 
+            .HasForeignKey(p => p.UserID);
+
+            builder.Entity<Schade>()
+            .HasOne(d => d.Vehicle)
+            .WithMany() 
+            .HasForeignKey(d => d.VehicleId);
+
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
@@ -21,5 +39,8 @@ namespace CarAndAllReactASP.Server.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParticuliereVerhuur> ParticuliereVerhuur { get; set; }
+        public DbSet<Schade> Schades { get; set; }
+
+
     }
 }

@@ -20,6 +20,7 @@ namespace CarAndAllReactASP.Server.Data
             _context = context;
         }
 
+
         // GET: api/Vehicles
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
@@ -40,6 +41,24 @@ namespace CarAndAllReactASP.Server.Data
 
             return vehicle;
         }
+
+        [HttpGet("VoorInname")]
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesForInname()
+        {
+            var voertuigenVoorInname = await _context.Vehicles
+                .Include(v => v.ParticuliereVerhuren)
+                .Where(v => v.Status == "Verhuurd")
+                .ToListAsync();
+
+            if (!voertuigenVoorInname.Any())
+            {
+                return NotFound(new { message = "Geen voertuigen beschikbaar voor inname." });
+            }
+
+            return Ok(voertuigenVoorInname);
+        }
+
+
 
         // PUT: api/Vehicles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -70,6 +89,34 @@ namespace CarAndAllReactASP.Server.Data
             }
 
             return NoContent();
+        }
+
+        [HttpPost("Inname/{vehicleId}")]
+        public async Task<IActionResult> RegisterInname(int vehicleId, [FromBody] InnameDTO innameData)
+        {
+            var vehicle = await _context.Vehicles.FindAsync(vehicleId);
+            if (vehicle == null)
+            {
+                return NotFound("Voertuig niet gevonden.");
+            }
+
+            vehicle.Status = innameData.Status;
+            _context.Entry(vehicle).State = EntityState.Modified;
+
+            if (innameData.HasDamage)
+            {
+                var damage = new Schade
+                {
+                    VehicleId = vehicleId,
+                    Opmerkingen = innameData.Opmerkingen,
+                    FotoUrl = innameData.FotoUrl // 
+                };
+                _context.Schades.Add(damage);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Inname succesvol geregistreerd.");
         }
 
         // POST: api/Vehicles
