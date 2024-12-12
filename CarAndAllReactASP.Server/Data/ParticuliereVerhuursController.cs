@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarAndAllReactASP.Server;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CarAndAllReactASP.Server.Data
 {
@@ -14,6 +16,7 @@ namespace CarAndAllReactASP.Server.Data
     public class ParticuliereVerhuursController : ControllerBase
     {
         private readonly CarAndAllReactASPDbContext _context;
+        private readonly IEmailSender _emailSender;
 
         public ParticuliereVerhuursController(CarAndAllReactASPDbContext context)
         {
@@ -119,5 +122,52 @@ namespace CarAndAllReactASP.Server.Data
         {
             return _context.ParticuliereVerhuur.Any(e => e.VerhuurID == id);
         }
+    [HttpPut("Approve/{id}")]
+    public async Task<IActionResult> ApproveRequest(int id)
+    {
+        var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
+        if (particuliereVerhuur == null)
+        {
+            return NotFound();
+        }
+
+        // Wijzig de status naar 'Approved'
+        particuliereVerhuur.Status = "Approved";
+        particuliereVerhuur.RedenAfwijzing = null; // Geen reden nodig voor goedkeuring
+
+        _context.Entry(particuliereVerhuur).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        // Stuur notificatie naar de gebruiker
+        await _emailSender.SendEmailAsync(particuliereVerhuur.UserID, 
+            "Huur aanvraag goedgekeurd", 
+            "Je huur aanvraag is goedgekeurd.");
+
+        return NoContent();
+    }
+
+    [HttpPut("Reject/{id}")]
+    public async Task<IActionResult> RejectRequest(int id, [FromBody] string redenAfwijzing)
+    {
+        var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
+        if (particuliereVerhuur == null)
+        {
+            return NotFound();
+        }
+
+        // Wijzig de status naar 'Rejected' en sla de reden op
+        particuliereVerhuur.Status = "Rejected";
+        particuliereVerhuur.RedenAfwijzing = redenAfwijzing;
+
+        _context.Entry(particuliereVerhuur).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        // Stuur notificatie naar de gebruiker
+        await _emailSender.SendEmailAsync(particuliereVerhuur.UserID, 
+            "Huur aanvraag afgewezen", 
+            $"Je huur aanvraag is afgewezen. Reden: {redenAfwijzing}");
+
+        return NoContent();
+    }
     }
 }
