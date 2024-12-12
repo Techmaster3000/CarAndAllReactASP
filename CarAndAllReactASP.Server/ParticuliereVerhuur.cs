@@ -25,5 +25,8 @@ namespace CarAndAllReactASP.Server
         [Column(TypeName = "date")]
         public DateTime EindDatum { get; set; }
         public double TotaalPrijs { get; set; }
+
+        public string Status { get; set; }  // "Pending", "Approved", "Rejected"
+        public string RedenAfwijzing { get; set; }
     }
 }
