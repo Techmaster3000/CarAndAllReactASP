@@ -11,70 +11,93 @@
 
 /* Titel */
 h3 {
-    color: #333;
     text-align: center;
-    margin-bottom: 20px;
+    color: #333;
 }
 
 /* Voertuigenlijst */
 .vehicle-list {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
     .vehicle-list li {
-        padding: 10px;
-        margin: 10px 0;
         border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
         border-radius: 5px;
         background-color: #fff;
-        cursor: pointer;
-        transition: background-color 0.2s;
     }
 
-        .vehicle-list li:hover {
-            background-color: #f1f1f1;
-        }
 
-/* Actiebuttons */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+textarea,
+input[type="text"] {
+    margin-top: 5px;
+}
+
+
+textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: none; 
+}
+
+    textarea[rows="3"] {
+        height: auto; 
+    }
+
+/* Inputvelden */
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    gap: 10px;
+    cursor: pointer; 
+    padding: 10px 0;
+}
+
+
 button {
-    padding: 10px 15px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
     button:hover {
         background-color: #0056b3;
     }
 
-/* Checkbox en tekstarea */
-input[type="checkbox"] {
-    margin-right: 8px;
-}
 
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 16px;
-}
 
-/* Meldingen */
-.success-message {
-    color: green;
+.global-message {
     font-weight: bold;
     margin-top: 10px;
-}
-
-.error-message {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
+    text-align: center;
+    color: green; 
 }

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { fetchVehiclesForInname, registerInname } from "./api";
-import "./InnamePage.css"; 
+import "./InnamePage.css";
 
 const InnamePage = () => {
     const [vehicles, setVehicles] = useState([]);
-    const [error, setError] = useState("");
-    const [messages, setMessages] = useState({});
-    const [fotoUrls, setFotoUrls] = useState({});
+    const [formData, setFormData] = useState({});
+    const [showMessage, setshowMessage] = useState(""); 
 
     useEffect(() => {
         const loadVehicles = async () => {
@@ -14,98 +13,93 @@ const InnamePage = () => {
                 const data = await fetchVehiclesForInname();
                 setVehicles(data);
             } catch (err) {
-                setError(err.message);
+                setshowMessage(err.message);
             }
         };
-
         loadVehicles();
     }, []);
 
-    const handleInname = async (vehicleId, status, damage) => {
-        try {
-            const innameData = {
-                Status: status,
-                HasDamage: damage,
-                Opmerkingen: damage ? "Schade aanwezig bij inname" : "",
-                FotoUrl: fotoUrls[vehicleId] || ""
-            };
-            console.log("Registering Inname for Vehicle ID:", vehicleId);
-            console.log("Data to be sent:", innameData);
-            
-            await registerInname(vehicleId, innameData);
-            setMessages((prev) => ({
-                ...prev,
-                [vehicleId]: "Inname succesvol geregistreerd.",
-            }));
-            setVehicles((prev) => prev.filter((v) => v.id !== vehicleId)); // Verwijder het voertuig uit de lijst
-        } catch (err) {
-            setMessages((prev) => ({
-                ...prev,
-                [vehicleId]: "Fout bij het registreren van de inname.",
-            }));
-            console.error("Error during inname registration:", err);
-        }
+    const handleInputChange = (vehicleId, field, value) => {
+        setFormData((prev) => ({
+            ...prev,
+            [vehicleId]: {
+                ...prev[vehicleId],
+                [field]: value,
+            },
+        }));
     };
 
-    const handleFotoUrlChange = (vehicleId, url) => {
-        setFotoUrls((prev) => ({
-            ...prev,
-            [vehicleId]: url
-        }));
+    const handleInname = async (vehicleId) => {
+        const data = formData[vehicleId] || {};
+        const innameData = {
+            Status: data.hasDamage ? "Met schade" : "Teruggebracht",
+            HasDamage: data.hasDamage || false,
+            Opmerkingen: data.opmerkingen || "",
+            FotoUrl: data.fotoUrl || "",
+        };
+
+        try {
+            const response = await registerInname(vehicleId, innameData);
+            setshowMessage(response.message || "Inname succesvol geregistreerd.");
+            setVehicles((prev) => prev.filter((v) => v.id !== vehicleId)); // Verwijder voertuig uit lijst
+        } catch (err) {
+            console.error("Fout tijdens registratie:", err);
+            setshowMessage("Fout bij het registreren van de inname.");
+        }
     };
 
     return (
         <div className="container">
             <h3>Voertuigen voor inname</h3>
-            {error && <p className="error-message">{error}</p>}
+
+            {/* Toon globale berichten */}
+            {showMessage && <p className="global-message">{showMessage}</p>}
+
             <ul className="vehicle-list">
                 {vehicles.map((vehicle) => (
                     <li key={vehicle.id}>
                         <strong>{vehicle.merk} {vehicle.type}</strong> ({vehicle.kenteken})
-                        <br />
-                        <label>
-                            <input
-                                type="checkbox"
-                                onChange={(e) =>
-                                    handleInname(
-                                        vehicle.id,
-                                        e.target.checked ? "Met schade" : "Teruggebracht",
-                                        e.target.checked
-                                    )
-                                }
-                            />
-                            Schade aanwezig
-                        </label>
-                        <br />
-                        <label>
-                            Foto URL:
-                            <input
-                                type="text"
-                                value={fotoUrls[vehicle.id] || ""}
-                                onChange={(e) =>
-                                    handleFotoUrlChange(vehicle.id, e.target.value)
-                                }
-                            />
-                        </label>
-                        <br />
-                        <button
-                            onClick={() =>
-                                handleInname(vehicle.id, "Teruggebracht", false)
-                            }
-                        >
-                            Registreer als teruggebracht
+                        <div className="form-group">
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) =>
+                                        handleInputChange(vehicle.id, "hasDamage", e.target.checked)
+                                    }
+                                />
+                                Schade aanwezig
+                            </label>
+
+                            {formData[vehicle.id]?.hasDamage && (
+                                <>
+                                    <label>
+                                        Opmerkingen:
+                                        <textarea
+                                            placeholder="Opmerkingen over schade"
+                                            rows="2"
+                                            value={formData[vehicle.id]?.opmerkingen || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(vehicle.id, "opmerkingen", e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                    <label>
+                                        Foto URL:
+                                        <input
+                                            type="text"
+                                            placeholder="URL van schadefoto"
+                                            value={formData[vehicle.id]?.fotoUrl || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(vehicle.id, "fotoUrl", e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                </>
+                            )}
+                        </div>
+                        <button onClick={() => handleInname(vehicle.id)}>
+                            Registreer inname
                         </button>
-                        {messages[vehicle.id] && (
-                            <p
-                                className={
-                                    messages[vehicle.id].startsWith("Fout")
-                                        ? "error-message"
-                                        : "success-message"
-                                }
-                            >
-                                {messages[vehicle.id]}
-                            </p>
-                        )}
                     </li>
                 ))}
             </ul>

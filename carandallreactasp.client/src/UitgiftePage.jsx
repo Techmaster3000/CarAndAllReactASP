@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchHuurverzoeken, registreerUitgifte } from './api';
-import "./UitgiftePage.css"; 
+import "./UitgiftePage.css";
 
 const UitgiftePage = () => {
     const [huurverzoeken, setHuurverzoeken] = useState([]);
@@ -13,7 +13,12 @@ const UitgiftePage = () => {
             try {
                 const data = await fetchHuurverzoeken();
                 console.log('Gegevens van API:', data);
-                setHuurverzoeken(data.filter((h) => h.status === 'Goedgekeurd'));
+                const goedgekeurdeVerzoeken = data.filter((h) => h.status === 'Goedgekeurd');
+                setHuurverzoeken(goedgekeurdeVerzoeken);
+
+                if (goedgekeurdeVerzoeken.length === 0) {
+                    setError('Geen goedgekeurde huurverzoeken gevonden.');
+                }
             } catch (err) {
                 setError('Fout bij het ophalen van huurverzoeken: ' + err.message);
             }
@@ -39,9 +44,12 @@ const UitgiftePage = () => {
         <div className="uitgifte-container">
             <h3>Uitgifte van Voertuigen</h3>
 
-            {/* Meldingen */}
             {success && <div className="message success-message">{success}</div>}
             {error && <div className="message error-message">{error}</div>}
+
+            {huurverzoeken.length === 0 && !success && !error && (
+                <p className="no-data-message">Geen goedgekeurde huurverzoeken beschikbaar.</p>
+            )}
 
             {/* Lijst van huurverzoeken */}
             <ul className="huurverzoek-list">

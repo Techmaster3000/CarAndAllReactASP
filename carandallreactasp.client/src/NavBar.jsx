@@ -15,8 +15,8 @@ const Navbar = () => {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                         <NavLink className="nav-link" to="/particulierhuur">Autohuur Aanvragen</NavLink>
-                        <NavLink className="nav-link" to="/uitgifte">Uitgifte Huurverzoek</NavLink>
-                        <NavLink className="nav-link" to="/inname">Inname Voertuig</NavLink>
+                        <NavLink className="nav-link" to="/uitgifte">Uitgifte Huur Aanvraag</NavLink> {/* tijdelijk hier geplaatst */}
+                        <NavLink className="nav-link" to="/inname">Inname Voertuig</NavLink> {/* tijdelijk hier geplaatst */}
 
                         </li>
                     </ul>

@@ -116,7 +116,7 @@ namespace CarAndAllReactASP.Server.Data
 
             await _context.SaveChangesAsync();
 
-            return Ok("Inname succesvol geregistreerd.");
+            return Ok(new { message = "Inname succesvol geregistreerd." });
         }
 
         // POST: api/Vehicles

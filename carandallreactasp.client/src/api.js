@@ -49,11 +49,23 @@ export const registerInname = async (vehicleId, innameData) => {
     });
 
     if (!response.ok) {
-        const error = await response.json();
-        console.error("Validation Errors:", error.errors);
-        throw new Error(error.message);
+        try {
+            const error = await response.json();
+            console.error("Validation Errors:", error.errors);
+            throw new Error(error.message);
+        } catch (err) {
+            throw new Error("Er is een fout opgetreden bij het registreren van de inname.");
+        }
     }
 
-    return await response.json();
+    // Verwerk de platte tekst respons
+    const text = await response.text();
+    try {
+        return JSON.parse(text);
+    } catch {
+        return { message: text };
+    }
 };
+
+
 
