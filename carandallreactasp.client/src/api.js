@@ -24,7 +24,7 @@ export const registreerUitgifte = async (verhuurID, gegevens) => {
         throw new Error(error.message || 'Fout bij het registreren van de uitgifte.');
     }
 
-    return await response.json(); // Retourneer het bijgewerkte huurverzoek na uitgifte
+    return await response.json(); 
 };
 
 
@@ -57,8 +57,6 @@ export const registerInname = async (vehicleId, innameData) => {
             throw new Error("Er is een fout opgetreden bij het registreren van de inname.");
         }
     }
-
-    // Verwerk de platte tekst respons
     const text = await response.text();
     try {
         return JSON.parse(text);

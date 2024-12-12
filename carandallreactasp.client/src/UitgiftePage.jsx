@@ -59,7 +59,6 @@ const UitgiftePage = () => {
                         <p><strong>Kenteken:</strong> {huurverzoek.voertuig?.kenteken}</p>
                         <p><strong>Huurder:</strong> {huurverzoek.user?.naam}</p>
 
-                        {/* Textarea voor opmerkingen */}
                         <textarea
                             value={opmerkingen[huurverzoek.verhuurID] || ''}
                             onChange={(e) => setOpmerkingen({ ...opmerkingen, [huurverzoek.verhuurID]: e.target.value })}

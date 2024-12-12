@@ -52,8 +52,7 @@ const InnamePage = () => {
         <div className="container">
             <h3>Voertuigen voor inname</h3>
 
-            {/* Toon globale berichten */}
-            {showMessage && <p className="global-message">{showMessage}</p>}
+            {showMessage && <p className="s-message">{showMessage}</p>}
 
             <ul className="vehicle-list">
                 {vehicles.map((vehicle) => (

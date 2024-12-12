@@ -1,4 +1,4 @@
-/* Algemene container */
+
 .container {
     max-width: 800px;
     margin: 20px auto;
@@ -9,7 +9,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Titel */
 h3 {
     text-align: center;
     color: #333;
@@ -21,12 +20,12 @@ h3 {
     padding: 0;
 }
 
-    .vehicle-list li {
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        background-color: #fff;
+.vehicle-list li {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
     }
 
 
@@ -57,11 +56,10 @@ textarea {
     resize: none; 
 }
 
-    textarea[rows="3"] {
-        height: auto; 
+textarea[rows="3"] {
+    height: auto; 
     }
 
-/* Inputvelden */
 input[type="text"] {
     padding: 8px;
     border: 1px solid #ccc;
@@ -88,14 +86,11 @@ button {
     margin-top: 10px;
     cursor: pointer;
 }
-
-    button:hover {
-        background-color: #0056b3;
+button:hover {
+    background-color: #0056b3;
     }
 
-
-
-.global-message {
+.s-message {
     font-weight: bold;
     margin-top: 10px;
     text-align: center;

@@ -1,4 +1,4 @@
-/* Algemene container */
+
 .uitgifte-container {
     max-width: 800px;
     margin: 20px auto;
@@ -9,14 +9,13 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-    /* Titel */
-    .uitgifte-container h3 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
+/* Titel */
+.uitgifte-container h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
     }
 
-/* Meldingen */
 .message {
     padding: 10px;
     margin: 10px 0;
@@ -35,7 +34,6 @@
     border: 1px solid #f5c6cb;
 }
 
-/* Lijst van huurverzoeken */
 .huurverzoek-list {
     list-style-type: none;
     padding: 0;
@@ -62,14 +60,13 @@
         font-size: 18px;
     }
 
-    /* Beschrijvende tekst */
+    /* tekst */
     .huurverzoek-item p {
         margin: 5px 0;
         color: #555;
         font-size: 16px;
     }
 
-/* Textarea */
 textarea {
     width: 100%;
     min-height: 80px;
