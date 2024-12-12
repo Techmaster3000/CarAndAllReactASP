@@ -41,7 +41,7 @@ const LoginPage = () => {
                         const data = await userIdResponse.text();
                         document.cookie = `userId=${data}; path=/`;
                         setError("Successful Login.");
-                        window.location.href = "/editaccount";
+                        window.location.href = "/index";
                     } else {
                         setError("Error fetching user ID.");
                     }

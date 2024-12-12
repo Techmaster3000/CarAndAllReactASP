@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import getCookie from './helpers/getCookie';
 
 const EditAccount = () => {
     const [fullName, setFullName] = useState('');
@@ -15,12 +15,6 @@ const EditAccount = () => {
     useEffect(() => {
         fetchAccount();
     }, []);
-
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    };
 
     const fetchAccount = async () => {
         const userId = getCookie('userId');
@@ -54,11 +48,13 @@ const EditAccount = () => {
 
     const saveChanges = async (e) => {
         e.preventDefault();
-        if (!fullName || !email || !phoneNumber || !address) {
+
+        if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
-        } else if (newPassword !== confirmNewPassword) {
+        }
+        else if (newPassword !== confirmNewPassword) {
             setError("New passwords do not match.");
         } else {
             setError("");
@@ -83,6 +79,7 @@ const EditAccount = () => {
                         passwordHash: newPassword,
                         normalizedEmail: email.toUpperCase(),
                         normalizedUserName: email.toUpperCase(),
+                        oldPassword: oldPassword,
                     }),
                 });
 
@@ -98,6 +95,10 @@ const EditAccount = () => {
             }
         }
     };
+    const signOut = async () => {
+        document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/";
+    }
 
     const deleteAccount = async () => {
         if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
@@ -133,6 +134,9 @@ const EditAccount = () => {
 
     return (
         <div className="container-fluid w-100 h-75 d-flex flex-column translate-middle position-absolute top-50 start-50">
+            <div className="position-fixed top-0 end-0 p-3">
+                <Button variant="outline-danger" onClick={signOut}>Sign Out</Button>
+            </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form onSubmit={saveChanges}>
                     <div className="d-flex align-items-center justify-content-end">
@@ -165,27 +169,10 @@ const EditAccount = () => {
                     </div>
                     <div className="d-flex justify-content-center m-2">
                         <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Save Information</Button>
-                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50" data-bs-toggle="modal" data-bs-toggle="deleteWarning" onClick={deleteAccount}>Delete Account</Button>
+                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50" onClick={deleteAccount}>Delete Account</Button>
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>
-                <div class="modal fade" id="deleteWarning" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deleteWarningLabel">Delete your Account?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete your account? This action cannot be undone.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={deleteAccount}>Yes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>

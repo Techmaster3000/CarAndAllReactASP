@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241209161434_caropmerking")]
+    partial class caropmerking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,43 +24,6 @@ namespace CarAndAllReactASP.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CarAndAllReactASP.Server.ParticuliereVerhuur", b =>
-                {
-                    b.Property<int>("VerhuurID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VerhuurID"));
-
-                    b.Property<DateTime>("EindDatum")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("StartDatum")
-                        .HasColumnType("date");
-
-                    b.Property<double>("TotaalPrijs")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VoertuigID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VoertuigNaam")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VoertuigSoort")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VerhuurID");
-
-                    b.ToTable("ParticuliereVerhuur");
-                });
 
             modelBuilder.Entity("CarAndAllReactASP.Server.User", b =>
                 {
@@ -158,9 +124,6 @@ namespace CarAndAllReactASP.Server.Migrations
                     b.Property<string>("Opmerkingen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("PrijsPerDag")
-                        .HasColumnType("float");
 
                     b.Property<string>("Soort")
                         .IsRequired()

@@ -82,7 +82,7 @@ const SignUpPage = () => {
     return (
         <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
-                <div className="text display-4 pt-2">Sign Up</div>
+                <div className="text display-4 pt-2">Sign Up</div>                
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>

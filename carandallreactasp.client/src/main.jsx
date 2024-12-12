@@ -7,19 +7,28 @@ import EditAccount from './EditAccount.jsx';
 import ConfirmEmail from './ConfirmEmail.jsx';
 import BusinessSignUpPage from './BusinessSignUpPage.jsx';
 import AddEmployeesPage from './AddEmployeesPage.jsx';
+import CarManage from './CarManage.jsx';
+import CreateCar from './CreateCar.jsx';
+import ParticulierPage from './ParticulierPage.jsx'
+import ParticulierHuur from './ParticulierHuur.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/editaccount" element={<EditAccount />} />
-        <Route path="/emailConfirm" element={<ConfirmEmail />} />
-        <Route path="/business-signup" element={<BusinessSignUpPage />} />
-        <Route path="/add-employees" element={<AddEmployeesPage />} />
-      </Routes>
-    </Router>
-  </StrictMode>,
+    <StrictMode>
+        <Router>
+            <Routes>
+                {/*set to managecars for testing*/}
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/index" element={<ParticulierPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/editaccount" element={<EditAccount />} />
+                <Route path="/emailConfirm" element={<ConfirmEmail />} />
+                <Route path="/managecars" element={<CarManage />} />
+                <Route path="/createcar" element={<CreateCar />} />
+                <Route path="/particulierhuur" element={<ParticulierHuur />} />
+                <Route path="/business-signup" element={<BusinessSignUpPage />} />
+                <Route path="/add-employees" element={<AddEmployeesPage />} />
+            </Routes>
+        </Router>
+    </StrictMode>,
 );
