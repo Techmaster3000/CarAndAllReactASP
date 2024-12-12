@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+namespace CarAndAllReactASP.Server.Data
+{
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
@@ -41,4 +43,5 @@ public class EmployeeController : ControllerBase
         Console.WriteLine($"Medewerker verwijderd: {employee.Email}");
         return NoContent();
     }
+}
 }
