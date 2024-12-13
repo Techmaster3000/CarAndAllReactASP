@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241210085613_extraCarparameters")]
+    partial class extraCarparameters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,25 +36,15 @@ namespace CarAndAllReactASP.Server.Migrations
                     b.Property<DateTime>("EindDatum")
                         .HasColumnType("date");
 
-                    b.Property<string>("Opmerkingen")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDatum")
                         .HasColumnType("date");
 
-                    b.Property<string>("Status")
                     b.Property<double>("TotaalPrijs")
                         .HasColumnType("float");
 
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UitgifteDatum")
-                        .HasColumnType("date");
-
                     b.Property<string>("UserID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VoertuigID")
                         .HasColumnType("int");
@@ -60,45 +53,9 @@ namespace CarAndAllReactASP.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VoertuigSoort")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("VerhuurID");
 
-                    b.HasIndex("UserID");
-
-                    b.HasIndex("VoertuigID");
-
                     b.ToTable("ParticuliereVerhuur");
-                });
-
-            modelBuilder.Entity("CarAndAllReactASP.Server.Schade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FotoUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Opmerkingen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("Schades");
                 });
 
             modelBuilder.Entity("CarAndAllReactASP.Server.User", b =>
@@ -205,10 +162,6 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Soort")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -354,36 +307,6 @@ namespace CarAndAllReactASP.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CarAndAllReactASP.Server.ParticuliereVerhuur", b =>
-                {
-                    b.HasOne("CarAndAllReactASP.Server.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarAndAllReactASP.Server.Vehicle", "Vehicle")
-                        .WithMany("ParticuliereVerhuren")
-                        .HasForeignKey("VoertuigID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("CarAndAllReactASP.Server.Schade", b =>
-                {
-                    b.HasOne("CarAndAllReactASP.Server.Vehicle", "Vehicle")
-                        .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vehicle");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -433,11 +356,6 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CarAndAllReactASP.Server.Vehicle", b =>
-                {
-                    b.Navigation("ParticuliereVerhuren");
                 });
 #pragma warning restore 612, 618
         }

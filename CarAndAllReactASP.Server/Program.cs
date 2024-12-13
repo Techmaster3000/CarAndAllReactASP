@@ -48,7 +48,6 @@ namespace CarAndAllReactASP.Server
                     });
             });
 
-
             var app = builder.Build();
 
             app.UseDefaultFiles();
@@ -72,6 +71,12 @@ namespace CarAndAllReactASP.Server
             app.MapFallbackToFile("/index.html");
 
             app.Run();
+        }
+
+        public static void EnableIdentityInsert(DbContext context, string tableName, bool enable)
+        {
+            var command = enable ? $"SET IDENTITY_INSERT {tableName} ON;" : $"SET IDENTITY_INSERT {tableName} OFF;";
+            context.Database.ExecuteSqlRaw(command);
         }
     }
 }

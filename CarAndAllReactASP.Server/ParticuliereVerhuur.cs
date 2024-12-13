@@ -13,6 +13,9 @@ namespace CarAndAllReactASP.Server
         public int VoertuigID { get; set; }
         public Vehicle Vehicle { get; set; }
 
+        public string VoertuigNaam { get; set; }
+        public string VoertuigSoort { get; set; }
+
         [Required]
         [ForeignKey("User")]
         public string UserID { get; set; }
@@ -29,5 +32,6 @@ namespace CarAndAllReactASP.Server
         public DateTime? UitgifteDatum { get; set; }
 
         public string? Opmerkingen { get; set; }
+        public double TotaalPrijs { get; set; }
     }
 }

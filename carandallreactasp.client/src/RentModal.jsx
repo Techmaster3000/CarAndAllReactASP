@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import DatePicker from 'react-datepicker';
-import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import getCookie from './helpers/getCookie';
 
-const RentModal = ({ car, onHide, onRent }) => {
+
+const RentModal = ({ car, onHide }) => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [error, setError] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
 
+
     useEffect(() => {
         if (startDate && endDate) {
             const timeDiff = Math.abs(endDate - startDate);
-            const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // Including the end date
+            const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
             setTotalPrice(diffDays * car.prijsPerDag);
         } else {
             setTotalPrice(0);
@@ -32,28 +34,35 @@ const RentModal = ({ car, onHide, onRent }) => {
             setError('End date cannot be before start date.');
         } else {
             try {
-                const response = await fetch('/api/ParticuliereVerhuur', {
+                const payload = {
+                    voertuigID: car.id,
+                    userID: getCookie('userId'),
+                    VoertuigNaam: car.merk + " " + car.type,
+                    VoertuigSoort: car.soort,
+                    startDatum: startDate,
+                    eindDatum: endDate,
+                    totaalPrijs: totalPrice
+                };
+
+                const response = await fetch('/api/ParticuliereVerhuurs', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        carId: car.id,
-                        userId: document.cookie.get('userId'),
-                        startDate: startDate,
-                        endDate: endDate,
-
-                    }),
-                   
+                    body: JSON.stringify(payload),
                 });
+
                 if (response.status === 201) {
-                    onRent(startDate, endDate);
+                    console.log('Rental created successfully');
                     onHide();
                 } else {
+                    const errorData = await response.json();
+                    console.error('Error response:', errorData);
                     setError('Failed to create rental. Please try again.');
                 }
             } catch (error) {
                 setError('Failed to create rental. Please try again.');
+                console.error('Caught error:', error);
             }
         }
     };
@@ -93,7 +102,7 @@ const RentModal = ({ car, onHide, onRent }) => {
                                 />
                             </div>
                             <div className="mt-3">
-                                <h5>Total Price: {totalPrice} euro</h5>
+                                <h5>Total Price: &euro;{totalPrice}</h5>
                             </div>
                             <div className="modal-footer">
                                 <Button variant="secondary" onClick={onHide}>Close</Button>

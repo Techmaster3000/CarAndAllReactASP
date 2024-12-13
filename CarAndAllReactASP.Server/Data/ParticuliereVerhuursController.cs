@@ -101,9 +101,13 @@ namespace CarAndAllReactASP.Server.Data
 
             return Ok(verhuur);
         }
+        
 
-
-
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<ParticuliereVerhuur>>> GetParticuliereVerhuurByUser(string id)
+        {
+            return await _context.ParticuliereVerhuur.Where(p => p.UserID == id).ToListAsync();
+        }
         // PUT: api/ParticuliereVerhuurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -140,8 +144,16 @@ namespace CarAndAllReactASP.Server.Data
         [HttpPost]
         public async Task<ActionResult<ParticuliereVerhuur>> PostParticuliereVerhuur(ParticuliereVerhuur particuliereVerhuur)
         {
-            _context.ParticuliereVerhuur.Add(particuliereVerhuur);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Program.EnableIdentityInsert(_context, "ParticuliereVerhuur", true);
+                _context.ParticuliereVerhuur.Add(particuliereVerhuur);
+                await _context.SaveChangesAsync();
+            }
+            finally
+            {
+                Program.EnableIdentityInsert(_context, "ParticuliereVerhuur", false);
+            }
 
             return CreatedAtAction("GetParticuliereVerhuur", new { id = particuliereVerhuur.VerhuurID }, particuliereVerhuur);
         }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import getCookie from './helpers/getCookie';
 
 const EditAccount = () => {
     const [fullName, setFullName] = useState('');
@@ -15,12 +15,6 @@ const EditAccount = () => {
     useEffect(() => {
         fetchAccount();
     }, []);
-
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    };
 
     const fetchAccount = async () => {
         const userId = getCookie('userId');
@@ -175,7 +169,7 @@ const EditAccount = () => {
                     </div>
                     <div className="d-flex justify-content-center m-2">
                         <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Save Information</Button>
-                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50" data-bs-toggle="modal" data-bs-toggle="deleteWarning" onClick={deleteAccount}>Delete Account</Button>
+                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50" onClick={deleteAccount}>Delete Account</Button>
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>

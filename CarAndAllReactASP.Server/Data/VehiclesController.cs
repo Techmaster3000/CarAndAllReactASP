@@ -41,6 +41,19 @@ namespace CarAndAllReactASP.Server.Data
 
             return vehicle;
         }
+        [HttpGet("GetAvailable")]
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetAvailableCars(DateTime startDatum, DateTime eindDatum)
+        {
+            //get all the cars that are not rented out in the given period
+            var rentedCars = await _context.ParticuliereVerhuur
+                .Where(p => p.StartDatum <= eindDatum && p.EindDatum >= startDatum)
+                .Select(p => p.VoertuigID)
+                .ToListAsync();
+            var availableCars = await _context.Vehicles
+                .Where(v => !rentedCars.Contains(v.Id))
+                .ToListAsync();
+            return availableCars;
+        }
 
         [HttpGet("VoorInname")]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesForInname()
