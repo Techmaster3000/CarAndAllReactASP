@@ -33,5 +33,8 @@ namespace CarAndAllReactASP.Server
 
         public string? Opmerkingen { get; set; }
         public double TotaalPrijs { get; set; }
+
+        public string Status { get; set; }  // "Pending", "Approved", "Rejected"
+        public string RedenAfwijzing { get; set; }
     }
 }

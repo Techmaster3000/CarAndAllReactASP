@@ -5,6 +5,8 @@ import LoginPage from './LoginPage.jsx';
 import SignUpPage from './SignUpPage.jsx';
 import EditAccount from './EditAccount.jsx';
 import ConfirmEmail from './ConfirmEmail.jsx';
+import BusinessSignUpPage from './BusinessSignUpPage.jsx';
+import AddEmployeesPage from './AddEmployeesPage.jsx';
 import CarManage from './CarManage.jsx';
 import CreateCar from './CreateCar.jsx';
 import ParticulierPage from './ParticulierPage.jsx'
@@ -26,6 +28,8 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/managecars" element={<CarManage />} />
                 <Route path="/createcar" element={<CreateCar />} />
                 <Route path="/particulierhuur" element={<ParticulierHuur />} />
+                <Route path="/business-signup" element={<BusinessSignUpPage />} />
+                <Route path="/add-employees" element={<AddEmployeesPage />} />
                 <Route path="/uitgifte" element={<UitgiftePage />} />
                 <Route path="/inname" element={<InnamePage />} />
             </Routes>

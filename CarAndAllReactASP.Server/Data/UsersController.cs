@@ -220,5 +220,22 @@ namespace CarAndAllReactASP.Server.Data
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateBusinessUser (User user)
+{
+    user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
+    user.IsBusiness = true; // Set this if it's a business account
+
+    _context.Users.Add(user);
+    await _context.SaveChangesAsync();
+
+    // Send confirmation email
+    await SendConfirmEmail(user.Email);
+
+    return CreatedAtAction("GetUser ", new { id = user.Id }, user);
+}
+
+
     }
 }
