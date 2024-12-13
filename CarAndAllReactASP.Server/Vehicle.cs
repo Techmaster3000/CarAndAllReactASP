@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
 namespace CarAndAllReactASP.Server
@@ -20,6 +21,11 @@ namespace CarAndAllReactASP.Server
         //make sure the price is in the right format
         [Range(0, 1000000)]
         public double PrijsPerDag { get; set; }
+        public string Status { get; set; } // "Beschikbaar", "Teruggebracht", "Met schade", "Verhuurd"
+
+        [JsonIgnore]
+        public List<ParticuliereVerhuur> ParticuliereVerhuren { get; set; } = new List<ParticuliereVerhuur>();
+
 
 
     }

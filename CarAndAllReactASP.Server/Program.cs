@@ -19,6 +19,17 @@ namespace CarAndAllReactASP.Server
             builder.Services.AddDbContext<CarAndAllReactASPDbContext>(options =>
                 options.UseSqlServer(connectionString)); // Configure the database provider here
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("https://localhost:5173") 
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
+
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
@@ -40,6 +51,7 @@ namespace CarAndAllReactASP.Server
             var app = builder.Build();
 
             app.UseDefaultFiles();
+            app.UseCors();
             app.UseStaticFiles();
             app.UseRouting();
             app.MapIdentityApi<User>();
