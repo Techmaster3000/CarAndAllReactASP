@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { IoMail } from "react-icons/io5";
-import { FaLock } from "react-icons/fa6";
-import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { FaLock } from "react-icons/fa6";
+import { IoMail } from "react-icons/io5";
 import './custom.css';
 
 const LoginPage = () => {
