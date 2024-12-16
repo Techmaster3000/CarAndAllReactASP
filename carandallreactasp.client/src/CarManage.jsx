@@ -74,51 +74,51 @@ const CarManage = () => {
 
     return (
         <div>
-        <div className="container-fluid w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
-            <div className="text-center">
-                <h1>Manage Cars</h1>
-            </div>
-            <div className="text-center mb-3">
-                <Button variant="primary" href="/createcar">Add Car</Button>
-            </div>
-            {error && <div className="text-danger text-center">{error}</div>}
-            <div className="table-responsive">
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Soort</th>
-                            <th>Merk</th>
-                            <th>Type</th>
-                            <th>Kleur</th>
-                            <th>Kenteken</th>
-                            <th>Aanschafjaar</th>
-                            <th>Prijs Per Dag</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {vehicles.map((vehicle) => (
-                            <tr key={vehicle.id}>
-                                <td>{vehicle.id}</td>
-                                <td>{vehicle.soort}</td>
-                                <td>{vehicle.merk}</td>
-                                <td>{vehicle.type}</td>
-                                <td>{vehicle.kleur}</td>
-                                <td>{vehicle.kenteken}</td>
-                                <td>{vehicle.aanschafjaar}</td>
-                                <td>{vehicle.prijsPerDag}</td>
-                                <td>
-                                    <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
-                                    <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>
-                                </td>
+            <div className="container-fluid w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+                <div className="text-center">
+                    <h1>Manage Cars</h1>
+                </div>
+                <div className="text-center mb-3">
+                    <Button variant="primary" href="/createcar">Add Car</Button>
+                </div>
+                {error && <div className="text-danger text-center">{error}</div>}
+                <div className="table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Soort</th>
+                                <th>Merk</th>
+                                <th>Type</th>
+                                <th>Kleur</th>
+                                <th>Kenteken</th>
+                                <th>Aanschafjaar</th>
+                                <th>Prijs Per Dag</th>
+                                <th>Status</th> {/* Add header for status */}
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            
+                        </thead>
+                        <tbody>
+                            {vehicles.map((vehicle) => (
+                                <tr key={vehicle.id}>
+                                    <td>{vehicle.id}</td>
+                                    <td>{vehicle.soort}</td>
+                                    <td>{vehicle.merk}</td>
+                                    <td>{vehicle.type}</td>
+                                    <td>{vehicle.kleur}</td>
+                                    <td>{vehicle.kenteken}</td>
+                                    <td>{vehicle.aanschafjaar}</td>
+                                    <td>{vehicle.prijsPerDag}</td>
+                                    <td>{vehicle.status}</td> {/* Add status column */}
+                                    <td>
+                                        <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
+                                        <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {showModal && selectedCar && (
                 <EditCar car={selectedCar} onClose={handleCloseModal} onSave={handleSaveChanges} />

@@ -221,8 +221,8 @@ namespace CarAndAllReactASP.Server.Data
             return _context.Users.Any(e => e.Id == id);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<User>> CreateBusinessUser (User user)
+        [HttpPost("createbusinessuser")]
+        public async Task<ActionResult<BusinessUser>> CreateBusinessUser (BusinessUser user)
 {
     user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
     user.IsBusiness = true; // Set this if it's a business account

@@ -14,7 +14,7 @@ namespace CarAndAllReactASP.Server.Data
 [ApiController]
 public class RentalRequestsController : ControllerBase
 {
-    CarAndAllReactASPDbContext _context;
+    private readonly CarAndAllReactASPDbContext _context;
 
     public RentalRequestsController(CarAndAllReactASPDbContext context)
     {

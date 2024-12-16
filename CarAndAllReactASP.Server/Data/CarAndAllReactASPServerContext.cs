@@ -19,6 +19,11 @@ namespace CarAndAllReactASP.Server.Data
             .WithMany(v => v.ParticuliereVerhuren) 
             .HasForeignKey(p => p.VoertuigID);
 
+            builder.Entity<User>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<User>("User")
+                .HasValue<BusinessUser>("BusinessUser");
+
 
             // Relatie tussen ParticuliereVerhuur en User
             builder.Entity<ParticuliereVerhuur>()
@@ -37,8 +42,10 @@ namespace CarAndAllReactASP.Server.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<BusinessUser> BusinessUsers { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParticuliereVerhuur> ParticuliereVerhuur { get; set; }
+        public DbSet<RentalRequest> RentalRequests { get; set; }
         public DbSet<Schade> Schades { get; set; }
 
 

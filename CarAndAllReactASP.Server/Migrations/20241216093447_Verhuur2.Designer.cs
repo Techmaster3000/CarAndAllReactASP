@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216093447_Verhuur2")]
+    partial class Verhuur2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +37,7 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("RedenAfwijzing")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDatum")
@@ -210,6 +214,7 @@ namespace CarAndAllReactASP.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Opmerkingen")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("PrijsPerDag")

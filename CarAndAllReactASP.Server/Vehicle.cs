@@ -8,7 +8,7 @@ namespace CarAndAllReactASP.Server
     {
         [Key]
         public int Id { get; set; }
-        //soort must be one of the following: camper, auto or caravan
+
         [Required]
         public string Soort { get; set; }
         public string Merk { get; set; }
@@ -17,8 +17,8 @@ namespace CarAndAllReactASP.Server
         public string Kenteken { get; set; }
         [Range(1900, 2025)]
         public int Aanschafjaar { get; set; }
-        public string Opmerkingen { get; set; }
-        //make sure the price is in the right format
+        public string? Opmerkingen { get; set; }
+
         [Range(0, 1000000)]
         public double PrijsPerDag { get; set; }
         public string Status { get; set; } // "Beschikbaar", "Teruggebracht", "Met schade", "Verhuurd"

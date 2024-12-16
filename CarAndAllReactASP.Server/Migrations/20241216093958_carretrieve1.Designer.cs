@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216093958_carretrieve1")]
+    partial class carretrieve1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

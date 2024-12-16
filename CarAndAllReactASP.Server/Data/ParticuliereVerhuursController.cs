@@ -97,7 +97,7 @@ namespace CarAndAllReactASP.Server.Data
 
             verhuur.Status = "Uitgegeven";
             verhuur.UitgifteDatum = DateTime.UtcNow;
-            verhuur.Opmerkingen = uitgifteDto.Opmerkingen;
+            verhuur.VerhuurOpmerkingen = uitgifteDto.Opmerkingen;
 
             _context.ParticuliereVerhuur.Update(verhuur);
             await _context.SaveChangesAsync();

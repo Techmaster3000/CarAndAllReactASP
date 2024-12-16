@@ -8,10 +8,11 @@ const EditCar = ({ car, onClose, onSave }) => {
     const [merk, setMerk] = useState(car.merk);
     const [type, setType] = useState(car.type);
     const [kleur, setKleur] = useState(car.kleur);
-    const [PrijsPerDag, setPrijsPerDag] = useState(car.prijsPerDag);
+    const [prijsPerDag, setPrijsPerDag] = useState(car.prijsPerDag);
     const [kenteken, setKenteken] = useState(car.kenteken);
     const [aanschafjaar, setAanschafjaar] = useState(car.aanschafjaar);
     const [opmerkingen, setOpmerkingen] = useState(car.opmerkingen);
+    const [status, setStatus] = useState(car.status); // New state for status
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -25,14 +26,14 @@ const EditCar = ({ car, onClose, onSave }) => {
                 body: JSON.stringify({
                     id: car.id,
                     soort: soort,
-
                     merk: merk,
                     type: type,
                     kleur: kleur,
                     kenteken: kenteken,
                     aanschafjaar: aanschafjaar,
                     opmerkingen: opmerkingen,
-                    PrijsPerDag: PrijsPerDag
+                    prijsPerDag: prijsPerDag,
+                    status: status // Include status in the request body
                 }),
             });
             if (response.ok) {
@@ -128,12 +129,11 @@ const EditCar = ({ car, onClose, onSave }) => {
                             <div className="m-1 d-flex align-items-center w-100">
                                 <label htmlFor="carPrijsPerDag" className="form-label m-3">Prijs Per Dag</label>
                                 <input
-                                    type=""
+                                    type="number"
                                     id="carPrijsPerDag"
                                     className="form-control bg-dark text-light rounded"
-                                    pattern="^\`€\d{1,3}(,\d{3})*(\.\d+)?$"
                                     min="0"
-                                    value={PrijsPerDag}
+                                    value={prijsPerDag}
                                     onChange={(e) => setPrijsPerDag(e.target.value)}
                                 />
                             </div>
@@ -146,6 +146,20 @@ const EditCar = ({ car, onClose, onSave }) => {
                                     value={opmerkingen}
                                     onChange={(e) => setOpmerkingen(e.target.value)}
                                 />
+                            </div>
+                            <div className="m-1 d-flex align-items-center w-100">
+                                <label htmlFor="carStatus" className="form-label m-3">Status</label>
+                                <select
+                                    id="carStatus"
+                                    className="form-select bg-dark text-light rounded"
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                >
+                                    <option value="">Select Status</option>
+                                    <option value="Beschikbaar">Beschikbaar</option>
+                                    <option value="Met schade">Met schade</option>
+                                    <option value="Verhuurd">Verhuurd</option>
+                                </select>
                             </div>
                             <div className="m-3">
                                 <Button variant="primary" type="submit">Save Changes</Button>
