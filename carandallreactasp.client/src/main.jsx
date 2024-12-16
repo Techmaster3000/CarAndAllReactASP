@@ -9,16 +9,18 @@ import BusinessSignUpPage from './BusinessSignUpPage.jsx';
 import AddEmployeesPage from './AddEmployeesPage.jsx';
 import CarManage from './CarManage.jsx';
 import CreateCar from './CreateCar.jsx';
-import ParticulierPage from './ParticulierPage.jsx'
+import ParticulierPage from './ParticulierPage.jsx';
 import ParticulierHuur from './ParticulierHuur.jsx';
 import UitgiftePage from './UitgiftePage.jsx';
 import InnamePage from './InnamePage.jsx';
+import NotFoundPage from './NotFoundPage.jsx'; // Create this component
+
+const basename = '/CarAndAllReactASP'; // Set the basename to your repository name
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <Router>
+        <Router basename={basename}>
             <Routes>
-                {/*set to managecars for testing*/}
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/index" element={<ParticulierPage />} />
@@ -32,6 +34,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/add-employees" element={<AddEmployeesPage />} />
                 <Route path="/uitgifte" element={<UitgiftePage />} />
                 <Route path="/inname" element={<InnamePage />} />
+                <Route path="*" element={<NotFoundPage />} /> {/* Handle 404 errors */}
             </Routes>
         </Router>
     </StrictMode>,
