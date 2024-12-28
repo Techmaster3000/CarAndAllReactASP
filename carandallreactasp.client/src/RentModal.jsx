@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import getCookie from './helpers/getCookie';
 
-
-const RentModal = ({ car, onHide }) => {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+const RentModal = ({ car, onHide, startDate, endDate }) => {
     const [error, setError] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
 
-
     useEffect(() => {
         if (startDate && endDate) {
-            const timeDiff = Math.abs(endDate - startDate);
+            const timeDiff = Math.abs(new Date(endDate) - new Date(startDate));
             const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
             setTotalPrice(diffDays * car.prijsPerDag);
         } else {
@@ -28,9 +22,9 @@ const RentModal = ({ car, onHide }) => {
         const today = new Date();
         if (!startDate || !endDate) {
             setError('Please select both start and end dates.');
-        } else if (startDate < today) {
+        } else if (new Date(startDate) < today) {
             setError('Start date cannot be before today.');
-        } else if (endDate < startDate) {
+        } else if (new Date(endDate) < new Date(startDate)) {
             setError('End date cannot be before start date.');
         } else {
             try {
@@ -81,25 +75,15 @@ const RentModal = ({ car, onHide }) => {
                         <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleRent}>
                             <div className="m-1 d-flex align-items-center w-100">
                                 <label htmlFor="Startdatum" className="form-label m-3">Startdatum</label>
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    className="form-control bg-dark text-light rounded"
-                                    dateFormat="dd-MM-yyyy"
-                                    placeholderText="Select a start date"
-                                    minDate={new Date()}
-                                />
+                                <div className="form-control bg-dark text-light rounded">
+                                    {new Date(startDate).toLocaleDateString()}
+                                </div>
                             </div>
                             <div className="m-1 d-flex align-items-center w-100">
                                 <label htmlFor="Einddatum" className="form-label m-3">Einddatum</label>
-                                <DatePicker
-                                    selected={endDate}
-                                    onChange={(date) => setEndDate(date)}
-                                    className="form-control bg-dark text-light rounded"
-                                    dateFormat="dd-MM-yyyy"
-                                    placeholderText="Select an end date"
-                                    minDate={startDate || new Date()}
-                                />
+                                <div className="form-control bg-dark text-light rounded">
+                                    {new Date(endDate).toLocaleDateString()}
+                                </div>
                             </div>
                             <div className="mt-3">
                                 <h5>Total Price: &euro;{totalPrice}</h5>

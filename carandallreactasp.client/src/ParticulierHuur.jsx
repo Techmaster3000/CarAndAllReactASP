@@ -218,7 +218,7 @@ const ParticulierHuur = () => {
                 </table>
             </div>
             {selectedCar && (
-                <RentModal car={selectedCar} onHide={closeModal} />
+                <RentModal car={selectedCar} onHide={closeModal} startDate={startDate} endDate={endDate} />
             )}
         </div>
     );
