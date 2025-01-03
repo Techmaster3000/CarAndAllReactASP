@@ -1,0 +1,76 @@
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+}
+
+.s-message {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    color: green;
+}
+
+.vehicle-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .vehicle-list li {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: none;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    button:last-child {
+        margin-right: 0;
+    }
+
+/
+textarea[placeholder="Reden voor blokkeren"] {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.no-vehicles-message {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchVehiclesForInname, registerInname } from "./api";
 import "./InnamePage.css";
 
 const InnamePage = () => {
     const [vehicles, setVehicles] = useState([]);
     const [formData, setFormData] = useState({});
-    const [showMessage, setshowMessage] = useState(""); 
+    const [showMessage, setshowMessage] = useState("");
 
     useEffect(() => {
         const loadVehicles = async () => {
@@ -14,6 +14,7 @@ const InnamePage = () => {
                 setVehicles(data);
             } catch (err) {
                 setshowMessage(err.message);
+                setTimeout(() => setshowMessage(""), 5000); 
             }
         };
         loadVehicles();
@@ -31,20 +32,29 @@ const InnamePage = () => {
 
     const handleInname = async (vehicleId) => {
         const data = formData[vehicleId] || {};
+        const isDamage = data.hasDamage || false;
         const innameData = {
-            Status: data.hasDamage ? "Met schade" : "Teruggebracht",
-            HasDamage: data.hasDamage || false,
+            Status: isDamage ? "Met schade" : "Beschikbaar",
+            HasDamage: isDamage,
             Opmerkingen: data.opmerkingen || "",
             FotoUrl: data.fotoUrl || "",
         };
 
         try {
-            const response = await registerInname(vehicleId, innameData);
-            setshowMessage(response.message || "Inname succesvol geregistreerd.");
+            await registerInname(vehicleId, innameData);
+            const successMessage = !isDamage
+                ? `Voertuig (${vehicleId}) is succesvol teruggebracht en direct beschikbaar gesteld voor verhuur.`
+                : `Voertuig (${vehicleId}) is geregistreerd met schade. Controleer de schademeldingen.`;
+
+            setshowMessage(successMessage);
             setVehicles((prev) => prev.filter((v) => v.id !== vehicleId)); // Verwijder voertuig uit lijst
+
+            // Verberg melding na 5 seconden
+            setTimeout(() => setshowMessage(""), 5000);
         } catch (err) {
             console.error("Fout tijdens registratie:", err);
             setshowMessage("Fout bij het registreren van de inname.");
+            setTimeout(() => setshowMessage(""), 5000); 
         }
     };
 

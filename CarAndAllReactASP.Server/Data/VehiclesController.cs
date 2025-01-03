@@ -27,6 +27,15 @@ namespace CarAndAllReactASP.Server.Data
         {
             return await _context.Vehicles.ToListAsync();
         }
+        // GET: api/Vehicles/Beschikbaar
+        [HttpGet("Beschikbaar")]
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetBeschikbareVehicles()
+        {
+            return await _context.Vehicles
+                .Where(v => v.Status == "Beschikbaar")
+                .ToListAsync();
+        }
+
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
@@ -50,7 +59,7 @@ namespace CarAndAllReactASP.Server.Data
                 .Select(p => p.VoertuigID)
                 .ToListAsync();
             var availableCars = await _context.Vehicles
-                .Where(v => !rentedCars.Contains(v.Id))
+                .Where(v => !rentedCars.Contains(v.Id) && v.Status == "Beschikbaar")
                 .ToListAsync();
             return availableCars;
         }
@@ -113,7 +122,7 @@ namespace CarAndAllReactASP.Server.Data
                 return NotFound("Voertuig niet gevonden.");
             }
 
-            vehicle.Status = innameData.Status;
+            vehicle.Status = innameData.HasDamage ? "Met schade" : "Beschikbaar";
             _context.Entry(vehicle).State = EntityState.Modified;
 
             if (innameData.HasDamage)
@@ -122,7 +131,7 @@ namespace CarAndAllReactASP.Server.Data
                 {
                     VehicleId = vehicleId,
                     Opmerkingen = innameData.Opmerkingen,
-                    FotoUrl = innameData.FotoUrl // 
+                    FotoUrl = innameData.FotoUrl
                 };
                 _context.Schades.Add(damage);
             }
@@ -130,6 +139,41 @@ namespace CarAndAllReactASP.Server.Data
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Inname succesvol geregistreerd." });
+        }
+
+
+        [HttpPut("{id}/Blokkeer")]
+        public async Task<IActionResult> BlokkeerVoertuig(int id, [FromBody] string reden)
+        {
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle == null)
+            {
+                return NotFound("Voertuig niet gevonden.");
+            }
+
+            vehicle.Status = "Geblokkeerd";
+            vehicle.Opmerkingen = reden;
+            _context.Entry(vehicle).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Voertuig succesvol geblokkeerd." });
+        }
+
+        [HttpPut("{id}/Deblokkeer")]
+        public async Task<IActionResult> DeblokkeerVoertuig(int id)
+        {
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle == null)
+            {
+                return NotFound("Voertuig niet gevonden.");
+            }
+
+            vehicle.Status = "Beschikbaar";
+            vehicle.Opmerkingen = null; 
+            _context.Entry(vehicle).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Voertuig succesvol gedeblokkeerd." });
         }
 
         // POST: api/Vehicles

@@ -1,0 +1,162 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+}
+
+.claim-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .claim-list li {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+.claim-photo {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.new-claim-form {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+    .new-claim-form input {
+        display: block;
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+textarea {
+    display: block;
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none;
+}
+    textarea::placeholder {
+        color: #888; 
+        font-style: italic;
+    }
+
+
+.schade-photo {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.schade-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .schade-list li {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.s-message {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    color: green;
+}
+
+.no-schades-message {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 10px; /* Zorgt voor ruimte tussen knoppen */
+    cursor: pointer;
+}
+
+    button:last-child {
+        margin-right: 0; /* Geen extra marge voor de laatste knop */
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.new-claim-form {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: max-height 0.3s ease-out;
+}
+
+    .new-claim-form.open {
+        display: block; 
+    }
+
+.toggle-form-btn {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+    .toggle-form-btn:hover {
+        background-color: #0056b3;
+    }

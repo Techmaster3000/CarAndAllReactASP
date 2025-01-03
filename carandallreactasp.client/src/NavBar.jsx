@@ -16,11 +16,22 @@ const Navbar = () => {
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/particulierhuur">Autohuur Aanvragen</NavLink>
                     </li>
+
+                    {/* Tijdelijk Frontoffice & Backoffice  */} 
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/uitgifte">Uitgifte Huur Aanvraag</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/inname">Inname Voertuig</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/schades">Schade meldingen Beheren</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/schadeclaims">Schade claims Beheren</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/vehiclebeheer">Voertuigen Blokkeren & Deblokkeren</NavLink>
                     </li>
                 </ul>
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

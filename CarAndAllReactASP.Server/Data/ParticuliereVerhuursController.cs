@@ -90,7 +90,7 @@ namespace CarAndAllReactASP.Server.Data
                 return NotFound("Verhuur niet gevonden.");
             }
 
-            if (verhuur.Status != "Goedgekeurd")
+            if (verhuur.Status != "Approved")
             {
                 return BadRequest("Verhuur is niet goedgekeurd en kan niet worden uitgegeven.");
             }
@@ -98,6 +98,12 @@ namespace CarAndAllReactASP.Server.Data
             verhuur.Status = "Uitgegeven";
             verhuur.UitgifteDatum = DateTime.UtcNow;
             verhuur.VerhuurOpmerkingen = uitgifteDto.Opmerkingen;
+
+            if (verhuur.Vehicle != null)
+            {
+                verhuur.Vehicle.Status = "Verhuurd";
+                _context.Vehicles.Update(verhuur.Vehicle);
+            }
 
             _context.ParticuliereVerhuur.Update(verhuur);
             await _context.SaveChangesAsync();

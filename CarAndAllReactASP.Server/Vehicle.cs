@@ -21,11 +21,14 @@ namespace CarAndAllReactASP.Server
 
         [Range(0, 1000000)]
         public double PrijsPerDag { get; set; }
-        public string Status { get; set; } // "Beschikbaar", "Teruggebracht", "Met schade", "Verhuurd"
+        public string Status { get; set; } // "Beschikbaar", "Teruggebracht", "Met schade", "Verhuurd", "Geblokkeerd"
 
         [JsonIgnore]
         public List<ParticuliereVerhuur> ParticuliereVerhuren { get; set; } = new List<ParticuliereVerhuur>();
 
+        // Verwijzing naar Schades
+        [JsonIgnore]
+        public List<Schade> Schades { get; set; } = new List<Schade>();
 
 
     }

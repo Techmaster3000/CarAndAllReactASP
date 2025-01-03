@@ -13,7 +13,7 @@ const UitgiftePage = () => {
             try {
                 const data = await fetchHuurverzoeken();
                 console.log('Gegevens van API:', data);
-                const goedgekeurdeVerzoeken = data.filter((h) => h.status === 'Goedgekeurd');
+                const goedgekeurdeVerzoeken = data.filter((h) => h.status === 'Approved');
                 setHuurverzoeken(goedgekeurdeVerzoeken);
 
                 if (goedgekeurdeVerzoeken.length === 0) {
