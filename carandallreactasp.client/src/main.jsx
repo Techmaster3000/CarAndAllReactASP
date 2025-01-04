@@ -13,6 +13,9 @@ import ParticulierPage from './ParticulierPage.jsx'
 import ParticulierHuur from './ParticulierHuur.jsx';
 import UitgiftePage from './UitgiftePage.jsx';
 import InnamePage from './InnamePage.jsx';
+import SchadePage from './SchadePage.jsx';
+import SchadeclaimsPage from './SchadeclaimsPage.jsx';
+import VehicleBeheerPage from './VehicleBeheerPage.jsx';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -32,6 +35,9 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/add-employees" element={<AddEmployeesPage />} />
                 <Route path="/uitgifte" element={<UitgiftePage />} />
                 <Route path="/inname" element={<InnamePage />} />
+                <Route path="/schades" element={<SchadePage />} />
+                <Route path="/schadeclaims" element={<SchadeclaimsPage />} />
+                <Route path="/vehiclebeheer" element={<VehicleBeheerPage />} />
             </Routes>
         </Router>
     </StrictMode>,

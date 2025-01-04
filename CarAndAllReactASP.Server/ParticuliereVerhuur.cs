@@ -26,7 +26,7 @@ namespace CarAndAllReactASP.Server
 
         [Column(TypeName = "date")]
         public DateTime EindDatum { get; set; }
-        public string Status { get; set; } // "In afwachting", "Goedgekeurd", "Afgewezen"
+        public string Status { get; set; } // "In afwachting", "Approved", "Rejected"
 
         [Column(TypeName = "date")]
         public DateTime? UitgifteDatum { get; set; }

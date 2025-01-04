@@ -33,13 +33,17 @@ namespace CarAndAllReactASP.Server.Data
 
             builder.Entity<Schade>()
             .HasOne(d => d.Vehicle)
-            .WithMany() 
-            .HasForeignKey(d => d.VehicleId);
+            .WithMany(v => v.Schades)
+            .HasForeignKey(d => d.VehicleId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        }
+
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-        }
+        
 
         public DbSet<User> Users { get; set; }
         public DbSet<BusinessUser> BusinessUsers { get; set; }
@@ -47,7 +51,6 @@ namespace CarAndAllReactASP.Server.Data
         public DbSet<ParticuliereVerhuur> ParticuliereVerhuur { get; set; }
         public DbSet<RentalRequest> RentalRequests { get; set; }
         public DbSet<Schade> Schades { get; set; }
-
 
     }
 }

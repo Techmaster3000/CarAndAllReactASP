@@ -4,6 +4,7 @@ using CarAndAllReactASP.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAndAllReactASP.Server.Migrations
 {
     [DbContext(typeof(CarAndAllReactASPDbContext))]
-    partial class CarAndAllReactASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250101132120_Schadeclaim")]
+    partial class Schadeclaim
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,8 +97,36 @@ namespace CarAndAllReactASP.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReparatieOpmerkingen")
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Schades");
+                });
+
+            modelBuilder.Entity("CarAndAllReactASP.Server.Schadeclaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Beschrijving")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Datum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SchadeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -106,9 +137,11 @@ namespace CarAndAllReactASP.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SchadeId");
+
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Schades");
+                    b.ToTable("Schadeclaims");
                 });
 
             modelBuilder.Entity("CarAndAllReactASP.Server.User", b =>
@@ -452,6 +485,25 @@ namespace CarAndAllReactASP.Server.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("CarAndAllReactASP.Server.Schadeclaim", b =>
+                {
+                    b.HasOne("CarAndAllReactASP.Server.Schade", "Schade")
+                        .WithMany()
+                        .HasForeignKey("SchadeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CarAndAllReactASP.Server.Vehicle", "Vehicle")
+                        .WithMany("Schadeclaims")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Schade");
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -506,6 +558,8 @@ namespace CarAndAllReactASP.Server.Migrations
             modelBuilder.Entity("CarAndAllReactASP.Server.Vehicle", b =>
                 {
                     b.Navigation("ParticuliereVerhuren");
+
+                    b.Navigation("Schadeclaims");
 
                     b.Navigation("Schades");
                 });

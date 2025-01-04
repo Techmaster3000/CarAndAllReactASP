@@ -20,7 +20,7 @@ const ParticulierHuur = () => {
 
     const fetchCars = async () => {
         try {
-            const response = await fetch('/api/Vehicles', {
+            const response = await fetch('/api/Vehicles/Beschikbaar', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

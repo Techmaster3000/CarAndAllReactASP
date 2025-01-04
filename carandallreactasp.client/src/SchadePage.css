@@ -1,0 +1,79 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+}
+
+h6 {
+    text-align: center;
+    color: #333;
+}
+.vehicle-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .vehicle-list li {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+.damage-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+    .damage-list li {
+        border: 1px solid #eee;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        background-color: #f6f6f6;
+    }
+
+.damage-photo {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.s-message {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    color: green;
+}
+.no-schades-message {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
