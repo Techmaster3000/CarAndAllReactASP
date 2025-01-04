@@ -49,17 +49,20 @@ namespace CarAndAllReactASP.Server.Data
             }
 
             schade.Status = status;
+            string message = "Status succesvol bijgewerkt.";
+
             if (status == "Afgehandeld" && schade.Vehicle != null)
             {
                 // Voertuigstatus aanpassen naar Beschikbaar
                 schade.Vehicle.Status = "Beschikbaar";
                 _context.Entry(schade.Vehicle).State = EntityState.Modified;
+                message += " En voertuig beschikbaar gesteld.";
             }
 
             _context.Entry(schade).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Status succesvol bijgewerkt en voertuig beschikbaar gesteld." });
+            return Ok(new { message });
         }
 
         [HttpPost("{id}/Opmerkingen")]
@@ -196,19 +199,19 @@ namespace CarAndAllReactASP.Server.Data
 
             return Ok(reparaties);
         }
-
         [HttpPost("AddClaim")]
         public async Task<IActionResult> AddSchadeClaim([FromBody] SchadeclaimDTO schadeclaimDTO)
         {
-            var vehicle = await _context.Vehicles.FindAsync(schadeclaimDTO.VehicleId);
+            // Zoek het voertuig op basis van het kenteken
+            var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Kenteken == schadeclaimDTO.Kenteken);
             if (vehicle == null)
             {
-                return NotFound("Voertuig niet gevonden.");
+                return NotFound("Voertuig met opgegeven kenteken niet gevonden.");
             }
 
             var schadeclaim = new Schade
             {
-                VehicleId = schadeclaimDTO.VehicleId,
+                VehicleId = vehicle.Id,
                 Opmerkingen = schadeclaimDTO.Beschrijving,
                 FotoUrl = schadeclaimDTO.FotoUrl,
                 Datum = DateTime.UtcNow,
@@ -216,17 +219,19 @@ namespace CarAndAllReactASP.Server.Data
             };
 
             _context.Schades.Add(schadeclaim);
+            vehicle.Status = "In reparatie";
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Schadeclaim succesvol toegevoegd." });
+            return Ok(new { message = "Schadeclaim succesvol toegevoegd en Voertuigstatus op in reparatie gezet" });
         }
 
         public class SchadeclaimDTO
         {
-            public int VehicleId { get; set; }
+            public string Kenteken { get; set; } // Vervangt VehicleId
             public string Beschrijving { get; set; }
             public string FotoUrl { get; set; }
         }
+
 
     }
 }

@@ -13,7 +13,7 @@ const SchadeclaimsPage = () => {
     const [selectedStatus, setSelectedStatus] = useState("Nieuwe claims");
     const [reparatieDetails, setReparatieDetails] = useState({});
     const [newClaim, setNewClaim] = useState({
-        VehicleId: "",
+        Kenteken: "",
         Beschrijving: "",
         FotoUrl: "",
     });
@@ -36,17 +36,17 @@ const SchadeclaimsPage = () => {
     }, []);
 
     const handleAddClaim = async () => {
-        if (!newClaim.VehicleId || !newClaim.Beschrijving) {
-            setStatusMessage("Voertuig en beschrijving zijn verplicht.");
+        if (!newClaim.Kenteken || !newClaim.Beschrijving) {
+            setStatusMessage("Kenteken en beschrijving zijn verplicht.");
             return;
         }
 
         try {
             const response = await addSchadeClaim(newClaim);
-            setStatusMessage(response.message || "Schadeclaim succesvol toegevoegd.");
-            setNewClaim({ VehicleId: "", Beschrijving: "", FotoUrl: "" });
+            setStatusMessage(response.message || "Schadeclaim succesvol toegevoegd en Voertuigstatus op in reparatie gezet");
+            setNewClaim({ Kenteken: "", Beschrijving: "", FotoUrl: "" });
             setIsFormOpen(false);
-            loadSchades(); 
+            loadSchades();
         } catch (err) {
             setStatusMessage("Fout bij het toevoegen van de schadeclaim.");
         }
@@ -99,11 +99,11 @@ const SchadeclaimsPage = () => {
             {isFormOpen && (
                 <div className="new-claim-form">
                     <h4>Nieuwe schadeclaim toevoegen</h4>
-                    <label>Voertuig ID:</label>
+                    <label>Kenteken:</label>
                     <input
                         type="text"
-                        value={newClaim.VehicleId}
-                        onChange={(e) => setNewClaim({ ...newClaim, VehicleId: e.target.value })}
+                        value={newClaim.Kenteken}
+                        onChange={(e) => setNewClaim({ ...newClaim, Kenteken: e.target.value })}
                     />
                     <label>Beschrijving:</label>
                     <textarea

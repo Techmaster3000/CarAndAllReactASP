@@ -56,6 +56,7 @@ const SchadePage = () => {
     return (
         <div className="container">
             <h3>Schademeldingen</h3>
+            <h6>uit innames</h6>
             {statusMessage && <p className="s-message">{statusMessage}</p>}
 
             {loading ? (
