@@ -17,11 +17,14 @@ import SchadePage from './SchadePage.jsx';
 import SchadeclaimsPage from './SchadeclaimsPage.jsx';
 import VehicleBeheerPage from './VehicleBeheerPage.jsx';
 
+
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Router>
             <Routes>
-                {/*set to managecars for testing*/}
+                {/*
+                Hier worden alle routes gegeven voor alle pagina's die gebruikers en backoffice/frontffice gebruiken    
+                */}
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/index" element={<ParticulierPage />} />
@@ -38,6 +41,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/schades" element={<SchadePage />} />
                 <Route path="/schadeclaims" element={<SchadeclaimsPage />} />
                 <Route path="/vehiclebeheer" element={<VehicleBeheerPage />} />
+                } />
             </Routes>
         </Router>
     </StrictMode>,
