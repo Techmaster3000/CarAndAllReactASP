@@ -1,4 +1,6 @@
-﻿namespace CarAndAllReactASP.Server
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace CarAndAllReactASP.Server
 {
     public class BusinessUser : User
     {

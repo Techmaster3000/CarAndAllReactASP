@@ -61,6 +61,10 @@ namespace CarAndAllReactASP.Server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("BusinessUserOnly", policy => policy.RequireRole("BusinessUser"));
+            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

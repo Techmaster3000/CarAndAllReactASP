@@ -25,7 +25,7 @@ const BusinessSignUpPage = () => {
         }
 
         try {
-            const response = await fetch('/api/business-subscription', {
+            const response = await fetch('/api/Users/createbusinessuser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,8 +41,8 @@ const BusinessSignUpPage = () => {
                     normalizedUserName: email.toUpperCase(),
                     IsBusiness: true,
                     CompanyName: companyName,
-                    KvkNumber: kvkNumber,
-                }),
+                    KvkNumber: kvkNumber
+                })
             });
 
             if (response.ok) {
@@ -50,11 +50,11 @@ const BusinessSignUpPage = () => {
                 navigate('/login');
             } else {
                 const data = await response.json();
-                setError(data.message || "Error registering business.");
+                setError(data.message || "Error registering business. ELse catch");
             }
         } catch (error) {
             console.error(error);
-            setError("Error registering business.");
+            setError("Error registering business. Caught");
         }
     };
 

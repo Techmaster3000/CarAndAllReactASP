@@ -25,7 +25,7 @@ namespace CarAndAllReactASP.Server.Data
     public class UsersController : ControllerBase
     {
         private readonly CarAndAllReactASPDbContext _context;
-        private readonly IPasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
+        private readonly IPasswordHasher<Microsoft.AspNetCore.Identity.IdentityUser> _passwordHasher = new PasswordHasher<Microsoft.AspNetCore.Identity.IdentityUser>();
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
 
@@ -38,7 +38,8 @@ namespace CarAndAllReactASP.Server.Data
         }
 
         [HttpGet("GetUserID")]
-        public async Task<ActionResult<string>> GetUserID(string email) {
+        public async Task<ActionResult<string>> GetUserID(string email)
+        {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper());
             if (user == null)
             {
@@ -71,7 +72,7 @@ namespace CarAndAllReactASP.Server.Data
         [HttpPost("ChangeUserInfo")]
         public async Task<IActionResult> ChangeUserInfo(string id, User user, string? oldPassword)
         {
-            
+
             //edit the user info
             var userToEdit = await _context.Users.FindAsync(id);
             if (userToEdit == null)
@@ -171,7 +172,7 @@ namespace CarAndAllReactASP.Server.Data
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             if (string.IsNullOrEmpty(token))
             {
-                return StatusCode(StatusCodes.Status204NoContent,"Failed to generate confirmation token.");
+                return StatusCode(StatusCodes.Status204NoContent, "Failed to generate confirmation token.");
             }
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             // Generate the confirmation link
@@ -222,20 +223,18 @@ namespace CarAndAllReactASP.Server.Data
         }
 
         [HttpPost("createbusinessuser")]
-        public async Task<ActionResult<BusinessUser>> CreateBusinessUser (BusinessUser user)
-{
-    user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
-    user.IsBusiness = true; // Set this if it's a business account
+        public async Task<ActionResult<BusinessUser>> CreateBusinessUser(BusinessUser user)
+        {
+            user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
+            user.IsBusiness = true; // Set this if it's a business account
 
-    _context.Users.Add(user);
-    await _context.SaveChangesAsync();
+            _context.BusinessUsers.Add(user);
+            await _context.SaveChangesAsync();
 
-    // Send confirmation email
-    await SendConfirmEmail(user.Email);
+            // Send confirmation email
+            await SendConfirmEmail(user.Email);
 
-    return CreatedAtAction("GetUser ", new { id = user.Id }, user);
-}
-
-
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
     }
 }

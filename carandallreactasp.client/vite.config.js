@@ -64,11 +64,23 @@ export default defineConfig({
                 target: target,
                 secure: false
             },
+            '^/api/createbusinessuser': {
+                target: target,
+                secure: false
+            },
+            '^/api/business-subscription' : {
+                target: target,
+                secure: false
+            },
             '^/api/ParticuliereVerhuur': {
                 target: target,
                 secure: false
             },
             '^/api/Vehicles': {
+                target: target,
+                secure: false
+            },
+            '^/api/Schades': {
                 target: target,
                 secure: false
             }
