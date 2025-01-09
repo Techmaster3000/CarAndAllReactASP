@@ -7,6 +7,10 @@ import {
 } from "./api";
 import "./SchadeclaimsPage.css";
 
+/**
+ * SchadeclaimsPage component handles the management of schadeclaims.
+ * It allows users to view, filter, add, and update schadeclaims.
+ */
 const SchadeclaimsPage = () => {
     const [schades, setSchades] = useState([]);
     const [statusMessage, setStatusMessage] = useState("");
@@ -17,8 +21,11 @@ const SchadeclaimsPage = () => {
         Beschrijving: "",
         FotoUrl: "",
     });
-    const [isFormOpen, setIsFormOpen] = useState(false); 
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
+    /**
+     * Loads all schadeclaims from the server.
+     */
     const loadSchades = async () => {
         try {
             const data = await fetchAllSchades();
@@ -35,6 +42,9 @@ const SchadeclaimsPage = () => {
         loadSchades();
     }, []);
 
+    /**
+     * Handles adding a new schadeclaim.
+     */
     const handleAddClaim = async () => {
         if (!newClaim.Kenteken || !newClaim.Beschrijving) {
             setStatusMessage("Kenteken en beschrijving zijn verplicht.");
@@ -52,6 +62,10 @@ const SchadeclaimsPage = () => {
         }
     };
 
+    /**
+     * Handles linking a reparatie to a specific schade.
+     * @param {number} schadeId - The ID of the schade to link the reparatie to.
+     */
     const handleKoppelReparatie = async (schadeId) => {
         if (!reparatieDetails[schadeId]) {
             setStatusMessage("Reparatie details mogen niet leeg zijn.");
@@ -67,11 +81,16 @@ const SchadeclaimsPage = () => {
         }
     };
 
+    /**
+     * Handles updating the status of a specific schade.
+     * @param {number} schadeId - The ID of the schade to update.
+     * @param {string} newStatus - The new status to set.
+     */
     const handleStatusUpdate = async (schadeId, newStatus) => {
         try {
             const response = await updateSchadeStatus(schadeId, newStatus);
             setStatusMessage(response.message || "Status succesvol bijgewerkt.");
-            loadSchades(); 
+            loadSchades();
         } catch (err) {
             setStatusMessage("Fout bij het bijwerken van de status.");
         }

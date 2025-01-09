@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { fetchVehiclesForInname, registerInname } from "./api";
 import "./InnamePage.css";
 
+/**
+ * InnamePage component handles the registration of vehicle returns.
+ * It allows users to mark vehicles as returned, with or without damage.
+ */
 const InnamePage = () => {
     const [vehicles, setVehicles] = useState([]);
     const [formData, setFormData] = useState({});
@@ -20,6 +24,12 @@ const InnamePage = () => {
         loadVehicles();
     }, []);
 
+    /**
+     * Handles input changes for the form data.
+     * @param {number} vehicleId - The ID of the vehicle.
+     * @param {string} field - The field name to update.
+     * @param {any} value - The new value for the field.
+     */
     const handleInputChange = (vehicleId, field, value) => {
         setFormData((prev) => ({
             ...prev,
@@ -30,6 +40,10 @@ const InnamePage = () => {
         }));
     };
 
+    /**
+     * Handles the registration of a vehicle return.
+     * @param {number} vehicleId - The ID of the vehicle to register.
+     */
     const handleInname = async (vehicleId) => {
         const data = formData[vehicleId] || {};
         const isDamage = data.hasDamage || false;

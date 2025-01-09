@@ -7,20 +7,20 @@ const AddEmployeesPage = () => {
     const [employeeEmail, setEmployeeEmail] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    //const navigate = useNavigate();
 
     const handleAddEmployee = async (e) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
 
-        // Basic validation
+        // check if the fields are filled
         if (!employeeName || !employeeEmail) {
             setError('Please fill in all fields.');
             return;
         }
 
         try {
+            // send a POST request to the server to add the employee to the database
             const response = await fetch('/api/business-subscription/employees', {
                 method: 'POST',
                 headers: {

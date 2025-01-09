@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 import EditCar from './EditCar';
 
+/**
+ * CarManage component handles the management of vehicles.
+ * It allows users to view, edit, and delete vehicles.
+ */
 const CarManage = () => {
     const [vehicles, setVehicles] = useState([]);
     const [error, setError] = useState('');
@@ -14,6 +18,9 @@ const CarManage = () => {
         fetchVehicles();
     }, []);
 
+    /**
+     * Fetches the list of vehicles from the server.
+     */
     const fetchVehicles = async () => {
         try {
             const response = await fetch('/api/Vehicles', {
@@ -35,11 +42,19 @@ const CarManage = () => {
         }
     };
 
+    /**
+     * Handles the edit action for a vehicle.
+     * @param {Object} vehicle - The vehicle to edit.
+     */
     const handleEdit = (vehicle) => {
         setSelectedCar(vehicle);
         setShowModal(true);
     };
 
+    /**
+     * Handles the delete action for a vehicle.
+     * @param {number} vehicleId - The ID of the vehicle to delete.
+     */
     const handleDelete = async (vehicleId) => {
         if (window.confirm("Are you sure you want to delete this car? This cannot be undone.")) {
             try {
@@ -62,11 +77,17 @@ const CarManage = () => {
         }
     };
 
+    /**
+     * Handles closing the edit modal.
+     */
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedCar(null);
     };
 
+    /**
+     * Handles saving changes after editing a vehicle.
+     */
     const handleSaveChanges = () => {
         fetchVehicles();
         handleCloseModal();

@@ -9,6 +9,7 @@ const UitgiftePage = () => {
     const [success, setSuccess] = useState('');
 
     useEffect(() => {
+        //fetch all approved rental requests
         const loadHuurverzoeken = async () => {
             try {
                 const data = await fetchHuurverzoeken();
@@ -26,6 +27,7 @@ const UitgiftePage = () => {
         loadHuurverzoeken();
     }, []);
 
+    // register uitgifte
     const handleUitgifte = async (verhuurID) => {
         console.log('VerhuurID:', verhuurID);
         const opmerkingenText = opmerkingen[verhuurID] || '';

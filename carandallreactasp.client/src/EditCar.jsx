@@ -3,6 +3,16 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 
+/**
+ * EditCar component handles the editing of car details.
+ * It includes form fields for car details and performs validation
+ * before submitting the updated data to the server.
+ * @param {Object} props - The component props.
+ * @param {Object} props.car - The car details to edit.
+ * @param {function} props.onClose - Function to close the modal.
+ * @param {function} props.onSave - Function to save the changes.
+ * @returns {JSX.Element} The rendered component.
+ */
 const EditCar = ({ car, onClose, onSave }) => {
     const [soort, setSoort] = useState(car.soort);
     const [merk, setMerk] = useState(car.merk);
@@ -15,6 +25,10 @@ const EditCar = ({ car, onClose, onSave }) => {
     const [status, setStatus] = useState(car.status); // New state for status
     const [error, setError] = useState('');
 
+    /**
+     * Handles the form submission to update the car details.
+     * @param {Event} e - The form submission event.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

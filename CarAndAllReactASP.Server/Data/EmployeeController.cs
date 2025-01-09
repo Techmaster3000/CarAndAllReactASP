@@ -17,6 +17,7 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public IActionResult AddEmployee([FromBody] Employee employee)
     {
+        //check is employee has a valid email address
         if (!employee.Email.EndsWith("@bedrijf.nl"))
         {
             return BadRequest("Alleen bedrijfse-mailadressen zijn toegestaan.");

@@ -9,9 +9,11 @@ const VehicleBeheerPage = () => {
     const [filter, setFilter] = useState("Alle");
 
     useEffect(() => {
+        //load all vehicles from the database, update when the user changes the filter
         const loadVehicles = async () => {
             try {
                 const data = await fetchAllVehicles();
+                //put all the returned vehicles in the state
                 setVehicles(data);
                 if (data.length === 0) {
                     setStatusMessage("Geen voertuigen beschikbaar.");
@@ -20,10 +22,13 @@ const VehicleBeheerPage = () => {
                 setStatusMessage("Fout bij het ophalen van voertuigen.");
             }
         };
+
         loadVehicles();
     }, [filter]);
 
+    //function to block the vehicle when the block button is clicked
     const handleBlockVehicle = async (vehicleId) => {
+        //check if the user has entered a reason for blocking the vehicle
         if (!blockReason[vehicleId]) {
             setStatusMessage("Reden voor blokkeren is verplicht.");
             return;
@@ -32,6 +37,8 @@ const VehicleBeheerPage = () => {
         try {
             const response = await blokkeerVoertuig(vehicleId, blockReason[vehicleId]);
             setStatusMessage(response.message || "Voertuig succesvol geblokkeerd.");
+
+            //update the status of the vehicle in the state to "Geblokkeerd"
             setVehicles((prev) =>
                 prev.map((vehicle) =>
                     vehicle.id === vehicleId ? { ...vehicle, status: "Geblokkeerd" } : vehicle
@@ -42,6 +49,8 @@ const VehicleBeheerPage = () => {
         }
     };
 
+
+    //function to unblock the vehicle when the unblock button is clicked
     const handleUnblockVehicle = async (vehicleId) => {
         try {
             const response = await deblokkeerVoertuig(vehicleId);
@@ -77,7 +86,7 @@ const VehicleBeheerPage = () => {
                     <option value="Geblokkeerd">Geblokkeerde voertuigen</option>
                 </select>
             </div>
-
+            {/*the filtered vehicles are displayed in a list*/}
             <ul className="vehicle-list">
                 {filteredVehicles.length > 0 ? (
                     filteredVehicles.map((vehicle) => (
@@ -103,6 +112,7 @@ const VehicleBeheerPage = () => {
                                     </button>
                                 </>
                             )}
+                            {/*Button to unblock the vehicle is displayed when the vehicle is blocked*/}
                             {vehicle.status === "Geblokkeerd" && (
                                 <button onClick={() => handleUnblockVehicle(vehicle.id)}>
                                     Deblokkeer Voertuig
@@ -111,6 +121,7 @@ const VehicleBeheerPage = () => {
                         </li>
                     ))
                 ) : (
+                        //Message is displayed when there are no vehicles found for the selected filter
                     <p className="no-vehicles-message">
                         Geen voertuigen beschikbaar voor de geselecteerde filter.
                     </p>

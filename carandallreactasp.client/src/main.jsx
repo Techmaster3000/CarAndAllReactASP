@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Router>
             <Routes>
                 {/*
-                Hier worden alle routes gegeven voor alle pagina's die gebruikers en backoffice/frontffice gebruiken    
+                Set all routes for the web app 
                 */}
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -31,13 +31,14 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/editaccount" element={<EditAccount />} />
                 <Route path="/emailConfirm" element={<ConfirmEmail />} />
-                <Route path="/managecars" element={<CarManage />} />
-                <Route path="/createcar" element={<CreateCar />} />
                 <Route path="/particulierhuur" element={<ParticulierHuur />} />
                 <Route path="/business-signup" element={<BusinessSignUpPage />} />
                 <Route path="/add-employees" element={<AddEmployeesPage />} />
+                {/*routes only for backoffice/frontoffice*/}
+                <Route path="/createcar" element={<CreateCar />} />
                 <Route path="/uitgifte" element={<UitgiftePage />} />
                 <Route path="/inname" element={<InnamePage />} />
+                <Route path="/managecars" element={<CarManage />} />
                 <Route path="/schades" element={<SchadePage />} />
                 <Route path="/schadeclaims" element={<SchadeclaimsPage />} />
                 <Route path="/vehiclebeheer" element={<VehicleBeheerPage />} />

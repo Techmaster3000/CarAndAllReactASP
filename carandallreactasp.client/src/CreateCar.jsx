@@ -4,6 +4,11 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 
+/**
+ * CreateCar component handles the creation of a new car.
+ * It includes form fields for car details and performs validation
+ * before submitting the data to the server.
+ */
 const CreateCar = () => {
     const [soort, setSoort] = useState('');
     const [merk, setMerk] = useState('');
@@ -41,6 +46,10 @@ const CreateCar = () => {
         checkFormValidity();
     }, [soort, merk, type, kleur, kenteken1, kenteken2, kenteken3, aanschafjaar, prijsPerDag]);
 
+    /**
+     * Handles the form submission to create a new car.
+     * @param {Event} e - The form submission event.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         const kenteken = `${kenteken1}-${kenteken2}-${kenteken3}`;
@@ -75,6 +84,9 @@ const CreateCar = () => {
         }
     };
 
+    /**
+     * Handles closing the form and navigating back to the home page.
+     */
     const handleClose = () => {
         navigate('/');
     };

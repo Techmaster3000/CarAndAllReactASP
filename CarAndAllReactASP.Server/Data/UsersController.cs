@@ -37,6 +37,7 @@ namespace CarAndAllReactASP.Server.Data
 
         }
 
+        //this endpoint is used to retrieve a userID from the email, used when logging in
         [HttpGet("GetUserID")]
         public async Task<ActionResult<string>> GetUserID(string email)
         {
@@ -56,6 +57,7 @@ namespace CarAndAllReactASP.Server.Data
             return await _context.Users.ToListAsync();
         }
 
+        //this endpoint reteieves a single user by ID
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(string id)
@@ -69,6 +71,8 @@ namespace CarAndAllReactASP.Server.Data
 
             return user;
         }
+
+        //this endpoint is used to change the user info
         [HttpPost("ChangeUserInfo")]
         public async Task<IActionResult> ChangeUserInfo(string id, User user, string? oldPassword)
         {
@@ -133,6 +137,7 @@ namespace CarAndAllReactASP.Server.Data
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //this endpoint is used to create a new user upon registration
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -144,6 +149,7 @@ namespace CarAndAllReactASP.Server.Data
         }
 
         // DELETE: api/Users/5
+        //this endpoint is used to delete a user upon request
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -158,6 +164,8 @@ namespace CarAndAllReactASP.Server.Data
 
             return NoContent();
         }
+
+        //this endpoint is used to send a confirmation email to the user after registration
         [HttpPost("SendConfirmationEmail")]
         public async Task<IActionResult> SendConfirmEmail(string emailToFind)
         {
@@ -193,6 +201,8 @@ namespace CarAndAllReactASP.Server.Data
 
             return Ok();
         }
+
+        //this endpoint is used when the user clicks on the confirmation link in the email
         [HttpGet("emailConfirm")]
         public async Task<IActionResult> emailConfirm(string userId, string code)
         {
@@ -222,6 +232,7 @@ namespace CarAndAllReactASP.Server.Data
             return _context.Users.Any(e => e.Id == id);
         }
 
+        //this endpoint is used to create a BusinessUser via the specialized business signup page
         [HttpPost("createbusinessuser")]
         public async Task<ActionResult<BusinessUser>> CreateBusinessUser(BusinessUser user)
         {

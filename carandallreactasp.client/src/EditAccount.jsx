@@ -17,6 +17,7 @@ const EditAccount = () => {
     }, []);
 
     const fetchAccount = async () => {
+        //fetch the userId from the cookies
         const userId = getCookie('userId');
         if (!userId) {
             setError("User ID not found in cookies.");
@@ -24,6 +25,7 @@ const EditAccount = () => {
         }
 
         try {
+            //fetch the user information from the API using the userId
             const response = await fetch(`/api/Users/${userId}`, {
                 method: "GET",
                 headers: {
@@ -49,11 +51,15 @@ const EditAccount = () => {
     const saveChanges = async (e) => {
         e.preventDefault();
 
+        //check if all fields are filled in
         if (!fullName || !email || !phoneNumber || !address || !oldPassword || !newPassword || !confirmNewPassword) {
             setError("Please fill in all fields.");
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        }
+        //check if email is in a valid format
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
         }
+        //check if both passwords match
         else if (newPassword !== confirmNewPassword) {
             setError("New passwords do not match.");
         } else {
@@ -96,11 +102,14 @@ const EditAccount = () => {
         }
     };
     const signOut = async () => {
+        // Delete the userId cookie by setting it to expire
         document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // Redirect to the login page
         window.location.href = "/";
     }
 
     const deleteAccount = async () => {
+        // Ask for confirmation before deleting the account
         if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
             try {
                 const userId = getCookie('userId');
@@ -117,10 +126,7 @@ const EditAccount = () => {
                 });
 
                 if (response.ok) {
-                    // Delete the userId cookie
-                    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    // Redirect to the login page
-                    window.location.href = "/";
+                    signOut();
                 } else {
                     const data = await response.json();
                     setError(data.message || "Error deleting account.");

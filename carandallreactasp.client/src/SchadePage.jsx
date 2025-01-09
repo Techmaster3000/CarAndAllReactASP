@@ -8,6 +8,7 @@ const SchadePage = () => {
     const [comment, setComment] = useState({});
     const [loading, setLoading] = useState(true);
 
+    //fetch all schades and filter out the ones with status "Nieuw"
     const loadSchades = async () => {
         setLoading(true);
         try {
@@ -27,9 +28,11 @@ const SchadePage = () => {
     };
 
     useEffect(() => {
+        //update the schades in realtime
         loadSchades();
     }, []);
 
+    //handle updating the status of the vehicle
     const handleStatusUpdate = async (vehicleId, newStatus) => {
         try {
             const response = await updateVehicleStatus(vehicleId, newStatus);
@@ -41,6 +44,7 @@ const SchadePage = () => {
         }
     };
 
+    //handle adding a comment to a schade
     const handleAddComment = async (schadeId) => {
         try {
             const response = await addSchadeComment(schadeId, comment[schadeId] || "");

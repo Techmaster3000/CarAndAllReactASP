@@ -46,18 +46,21 @@ const ParticulierPage = () => {
         fetchVerhuur();
     }, []);
 
+    //called when the user wants to see the details of a rental before confirmation
     const handleShowModal = (rental) => {
         setSelectedRental(rental);
         fetchCarDetails(rental);
         setShowModal(true);
     };
 
+    //used to hide the modal when the user clicks the close button
     const handleHideModal = () => {
         setSelectedRental(null);
         setSelectedCar(null); // Reset selectedCar state
         setShowModal(false);
     };
 
+    //used to fetch the details of the selected car
     const fetchCarDetails = async (rental) => {
         try {
             const response = await fetch(`/api/Vehicles/${rental.voertuigID}`, {
@@ -79,6 +82,7 @@ const ParticulierPage = () => {
         }
     };
 
+    //used to filter the rentals based on the selected car type and date
     const filterRentals = (rentals) => {
         return rentals.filter(rental => {
             const carType = rental.voertuigSoort;
@@ -87,8 +91,9 @@ const ParticulierPage = () => {
             const filterDateObj = filterDate ? new Date(filterDate) : null;
 
             const matchesCarType = !filterCarType || carType.toLowerCase().includes(filterCarType.toLowerCase());
-            const matchesDate = !filterDate || (filterDateObj >= startDate && filterDateObj <= endDate);
 
+            //check if the selected filterdate is between the start and end date of rentals
+            const matchesDate = !filterDate || (filterDateObj >= startDate && filterDateObj <= endDate);
             return matchesCarType && matchesDate;
         });
     };

@@ -18,13 +18,14 @@ const BusinessSignUpPage = () => {
         e.preventDefault();
         setError('');
 
-        // Basic validation
-        if (!companyName || !address || !kvkNumber) {
+        // Check if all fields are filled in
+        if (!companyName || !address || !kvkNumber || !email || !phoneNumber || !password) {
             setError('Please fill in all fields.');
             return;
         }
 
         try {
+            // Call API to register business user
             const response = await fetch('/api/Users/createbusinessuser', {
                 method: 'POST',
                 headers: {
@@ -39,6 +40,7 @@ const BusinessSignUpPage = () => {
                     passwordHash: password,
                     normalizedEmail: email.toUpperCase(),
                     normalizedUserName: email.toUpperCase(),
+                    //businessUser specific fields
                     IsBusiness: true,
                     CompanyName: companyName,
                     KvkNumber: kvkNumber
@@ -46,11 +48,13 @@ const BusinessSignUpPage = () => {
             });
 
             if (response.ok) {
+                //show a popup to inform the user that the registration was successful
                 window.alert("Business account registered successfully. Please check your email for confirmation.");
+                // Redirect to login page
                 navigate('/login');
             } else {
                 const data = await response.json();
-                setError(data.message || "Error registering business. ELse catch");
+                setError(data.message || "Error registering business. Else catch");
             }
         } catch (error) {
             console.error(error);
@@ -65,7 +69,7 @@ const BusinessSignUpPage = () => {
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
-                <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
                         <input
                             type="email"
                             placeholder="E-mail"
@@ -74,7 +78,7 @@ const BusinessSignUpPage = () => {
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
-                   <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
                         <input
                             type="tel"
                             placeholder="Phone Number"
@@ -94,17 +98,17 @@ const BusinessSignUpPage = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    
+
                     <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
-                    <input
-                        type="text"
-                        placeholder="Bedrijfsnaam"
-                        className="mx-2 my-1 bg-transparent no-outline text-dark"
-                        value={companyName}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                    />
-                </div>
-                 <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                        <input
+                            type="text"
+                            placeholder="Bedrijfsnaam"
+                            className="mx-2 my-1 bg-transparent no-outline text-dark"
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+                        />
+                    </div>
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
                         <input
                             type="text"
                             placeholder="Address"
@@ -122,9 +126,11 @@ const BusinessSignUpPage = () => {
                             onChange={(e) => setKvkNumber(e.target.value)}
                         />
                     </div>
+                    {/*Error message that will be displayed if an error occurs during registration*/}
                     {error && <div className="text-danger mt-2">{error}</div>}
                     <div className="d-flex justify-content-center w-25">
-                    <Button variant="primary" type="submit" size="lg" className="btn mt-3 w-100">Registreren</Button>
+                    {/*Submit button for the registration page*/}
+                        <Button variant="primary" type="submit" size="lg" className="btn mt-3 w-100">Registreren</Button>
                     </div>
                 </form>
             </div>

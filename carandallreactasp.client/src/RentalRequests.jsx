@@ -3,17 +3,24 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 
-
+/**
+ * RentalRequests component handles the display and management of rental requests.
+ * It allows users to approve or reject rental requests.
+ */
 const RentalRequests = () => {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    // Haal verhuuraanvragen op van de API
+    // Fetch rental requests from the API
     axios.get('https://localhost:5173/api/rentalrequests')
       .then(response => setRequests(response.data))
       .catch(error => console.error('Error fetching requests:', error));
   }, []);
 
+  /**
+   * Handles the approval of a rental request.
+   * @param {number} id - The ID of the rental request to approve.
+   */
   const handleApprove = (id) => {
     axios.post(`https://localhost:5173/api/rentalrequests/${id}/approve`)
       .then(() => {
@@ -25,6 +32,11 @@ const RentalRequests = () => {
       .catch(error => console.error('Error approving request:', error));
   };
 
+  /**
+   * Handles the rejection of a rental request.
+   * @param {number} id - The ID of the rental request to reject.
+   * @param {string} reason - The reason for rejecting the rental request.
+   */
   const handleReject = (id, reason) => {
     axios.post(`https://localhost:5173/api/rentalrequests/${id}/reject`, { reason })
       .then(() => {
