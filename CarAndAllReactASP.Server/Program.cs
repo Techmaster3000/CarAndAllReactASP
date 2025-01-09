@@ -29,12 +29,14 @@ namespace CarAndAllReactASP.Server
                 });
             });
 
-
+            //add endpoints from Identity, like login
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<CarAndAllReactASPDbContext>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //add email sender. used for sending registration confirmation email
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.Configure<AuthMessageSenderOpt>(builder.Configuration);
             builder.Services.AddCors(options =>
@@ -61,10 +63,7 @@ namespace CarAndAllReactASP.Server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("BusinessUserOnly", policy => policy.RequireRole("BusinessUser"));
-            //});
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
@@ -77,6 +76,7 @@ namespace CarAndAllReactASP.Server
             app.Run();
         }
 
+        //function used to enable or disable identity insert for posting ParticulierVerhuur to the database
         public static void EnableIdentityInsert(DbContext context, string tableName, bool enable)
         {
             var command = enable ? $"SET IDENTITY_INSERT {tableName} ON;" : $"SET IDENTITY_INSERT {tableName} OFF;";

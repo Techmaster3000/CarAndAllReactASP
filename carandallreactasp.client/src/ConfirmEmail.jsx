@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useLocation } from 'react-router-dom';
 
+//page used to confirm email from the link in email
 const ConfirmEmail = () => {
     const [message, setMessage] = useState('');
 
@@ -38,6 +39,8 @@ const ConfirmEmail = () => {
                 setMessage("Error confirming email.");
             }
         };
+
+        //Confirmation always fails on first try, so reload once to try one more time
         const reloadOnce = () => {
             if (!sessionStorage.getItem('refreshed')) {
                 sessionStorage.setItem('refreshed', 'true');
@@ -53,18 +56,15 @@ const ConfirmEmail = () => {
         reloadOnce();
 
     }, []);
-    const reloadOnce = () => {
-        if (!sessionStorage.getItem('refreshed')) {
-            sessionStorage.setItem('refreshed', 'true');
-            window.location.reload();
-        }
-    }
+
+
 
     return (
         <div className="container">
             <div className="text-light">
                 <h1>Confirm Email</h1>
                 <p>{message}</p>
+                {/*Display a retry button if email confirmation fails*/}
                 {message !== "Email confirmed successfully!" && (
                     <button onClick={() => window.location.reload()}>Retry</button>
                 )}

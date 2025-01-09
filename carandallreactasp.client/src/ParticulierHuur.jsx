@@ -29,7 +29,9 @@ const ParticulierHuur = () => {
 
             if (response.ok) {
                 const data = await response.json();
+                //add all the cars to the cars state
                 setCars(data);
+                //filter the cars based on the selected soort, start date, end date and sort option
                 setFilteredCars(data);
             } else {
                 setError('Error fetching cars.');
@@ -67,8 +69,11 @@ const ParticulierHuur = () => {
         if (selectedSoort) {
             filtered = filtered.filter(car => car.soort === selectedSoort);
         }
+
+        //only start filtering if both start and end date are selected
         if (start && end) {
             try {
+                //fetch all the cars that are available between the selected start and end date
                 const response = await fetch(`/api/Vehicles/GetAvailable?startDatum=${start}&eindDatum=${end}`, {
                     method: 'GET',
                     headers: {

@@ -20,14 +20,20 @@ namespace CarAndAllReactASP.Server.Data
             _context = context;
         }
 
-
-        // GET: api/Vehicles
+        /// <summary>
+        /// Gets the list of all vehicles.
+        /// </summary>
+        /// <returns>A list of vehicles.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
         {
             return await _context.Vehicles.ToListAsync();
         }
-        // GET: api/Vehicles/Beschikbaar
+
+        /// <summary>
+        /// Gets the list of available vehicles.
+        /// </summary>
+        /// <returns>A list of available vehicles.</returns>
         [HttpGet("Beschikbaar")]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetBeschikbareVehicles()
         {
@@ -36,8 +42,11 @@ namespace CarAndAllReactASP.Server.Data
                 .ToListAsync();
         }
 
-
-        // GET: api/Vehicles/5
+        /// <summary>
+        /// Gets a specific vehicle by ID.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle.</param>
+        /// <returns>The vehicle with the specified ID.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> GetVehicle(int id)
         {
@@ -50,10 +59,16 @@ namespace CarAndAllReactASP.Server.Data
 
             return vehicle;
         }
+
+        /// <summary>
+        /// Gets the list of available cars for a given period.
+        /// </summary>
+        /// <param name="startDatum">The start date of the period.</param>
+        /// <param name="eindDatum">The end date of the period.</param>
+        /// <returns>A list of available cars for the given period.</returns>
         [HttpGet("GetAvailable")]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetAvailableCars(DateTime startDatum, DateTime eindDatum)
         {
-            //get all the cars that are not rented out in the given period
             var rentedCars = await _context.ParticuliereVerhuur
                 .Where(p => p.StartDatum <= eindDatum && p.EindDatum >= startDatum)
                 .Select(p => p.VoertuigID)
@@ -64,6 +79,10 @@ namespace CarAndAllReactASP.Server.Data
             return availableCars;
         }
 
+        /// <summary>
+        /// Gets the list of vehicles available for inname.
+        /// </summary>
+        /// <returns>A list of vehicles available for inname.</returns>
         [HttpGet("VoorInname")]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesForInname()
         {
@@ -80,10 +99,12 @@ namespace CarAndAllReactASP.Server.Data
             return Ok(voertuigenVoorInname);
         }
 
-
-
-        // PUT: api/Vehicles/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates a specific vehicle.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle to update.</param>
+        /// <param name="vehicle">The updated vehicle data.</param>
+        /// <returns>No content if successful, or not found if the vehicle does not exist.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
         {
@@ -113,6 +134,12 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
 
+        /// <summary>
+        /// Registers the inname of a specific vehicle.
+        /// </summary>
+        /// <param name="vehicleId">The ID of the vehicle to register inname for.</param>
+        /// <param name="innameData">The inname data.</param>
+        /// <returns>A message indicating the result of the registration.</returns>
         [HttpPost("Inname/{vehicleId}")]
         public async Task<IActionResult> RegisterInname(int vehicleId, [FromBody] InnameDTO innameData)
         {
@@ -141,7 +168,12 @@ namespace CarAndAllReactASP.Server.Data
             return Ok(new { message = "Inname succesvol geregistreerd." });
         }
 
-
+        /// <summary>
+        /// Blocks a specific vehicle.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle to block.</param>
+        /// <param name="reden">The reason for blocking the vehicle.</param>
+        /// <returns>A message indicating the result of the blocking.</returns>
         [HttpPut("{id}/Blokkeer")]
         public async Task<IActionResult> BlokkeerVoertuig(int id, [FromBody] string reden)
         {
@@ -159,6 +191,11 @@ namespace CarAndAllReactASP.Server.Data
             return Ok(new { message = "Voertuig succesvol geblokkeerd." });
         }
 
+        /// <summary>
+        /// Unblocks a specific vehicle.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle to unblock.</param>
+        /// <returns>A message indicating the result of the unblocking.</returns>
         [HttpPut("{id}/Deblokkeer")]
         public async Task<IActionResult> DeblokkeerVoertuig(int id)
         {
@@ -169,19 +206,21 @@ namespace CarAndAllReactASP.Server.Data
             }
 
             vehicle.Status = "Beschikbaar";
-            vehicle.Opmerkingen = null; 
+            vehicle.Opmerkingen = null;
             _context.Entry(vehicle).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Voertuig succesvol gedeblokkeerd." });
         }
 
-        // POST: api/Vehicles
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a new vehicle.
+        /// </summary>
+        /// <param name="vehicle">The vehicle to add.</param>
+        /// <returns>The added vehicle.</returns>
         [HttpPost]
         public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
         {
-            //check if kenteken is already present in the database
             if (_context.Vehicles.Any(e => e.Kenteken == vehicle.Kenteken))
             {
                 return Conflict("Kenteken is already present in the database");
@@ -193,7 +232,11 @@ namespace CarAndAllReactASP.Server.Data
             return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
         }
 
-        // DELETE: api/Vehicles/5
+        /// <summary>
+        /// Deletes a specific vehicle.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle to delete.</param>
+        /// <returns>No content if successful, or not found if the vehicle does not exist.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
@@ -209,6 +252,11 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
 
+        /// <summary>
+        /// Checks if a vehicle exists.
+        /// </summary>
+        /// <param name="id">The ID of the vehicle to check.</param>
+        /// <returns>True if the vehicle exists, otherwise false.</returns>
         private bool VehicleExists(int id)
         {
             return _context.Vehicles.Any(e => e.Id == id);

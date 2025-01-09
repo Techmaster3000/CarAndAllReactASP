@@ -39,8 +39,11 @@ const LoginPage = () => {
 
                     if (userIdResponse.ok) {
                         const data = await userIdResponse.text();
+
+                        //add the user ID to the cookie to retrieve the correct info later
                         document.cookie = `userId=${data}; path=/`;
                         setError("Successful Login.");
+                        // Redirect to the home page
                         window.location.href = "/index";
                     } else {
                         setError("Error fetching user ID.");

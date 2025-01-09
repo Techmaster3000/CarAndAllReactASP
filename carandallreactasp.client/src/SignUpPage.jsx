@@ -17,6 +17,7 @@ const SignUpPage = () => {
     
     const sendConfirmationEmail = async () => {
         try {
+            //create the user with the submitted data and save it to the database using the API endpoint
             const response = await fetch(`/api/Users/SendConfirmationEmail?emailToFind=${email}`, {
                 method: "POST",
                 headers: {
@@ -34,12 +35,20 @@ const SignUpPage = () => {
     };
 
     const handleSubmit = async (e) => {
+        
+        //check if all the fields are entered correctly
+
         e.preventDefault();
+        //check if all fields are filled in
         if (!fullName || !email || !phoneNumber || !password || !confirmPassword) {
             setError("Please fill in all fields.");
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        }
+        //check if the email is in a valid format (contains a @ and a .)
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
-        } else if (password !== confirmPassword) {
+        }
+        //check if the password is entered correctly twice
+        else if (password !== confirmPassword) {
             setError("Passwords do not match.");
         } else {
             setError("");
@@ -63,10 +72,12 @@ const SignUpPage = () => {
 
                 if (response.ok) {
                     const newUser = await response.json();
+                    //send a confirmation email to the user after successfully registering.
                     await sendConfirmationEmail(newUser);
                     window.alert("User registered successfully. Please check your email for confirmation.");
                     navigate('/login');
                 } else {
+                    //give an error if there is a problem with the API response
                     const data = await response.json();
                     setError(data.message || "Error registering.");
                 }
@@ -75,14 +86,13 @@ const SignUpPage = () => {
                 setError("Error registering.");
             }
         }
-        <Button onClick={() => navigate('/business-signup')} variant="outline-secondary" size="lg" className="btn mt-3 w-100">Registreren als zakelijke klant</Button>
 
     };
 
     return (
         <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
-                <div className="text display-4 pt-2">Sign Up</div>                
+                <div className="text display-4 pt-2">Sign Up</div>   
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                 <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>

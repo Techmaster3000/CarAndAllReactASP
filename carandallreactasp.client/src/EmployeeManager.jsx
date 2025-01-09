@@ -9,13 +9,15 @@ const EmployeeManager = () => {
     const [notification, setNotification] = useState("");
     const [search, setSearch] = useState(""); // State for searching employees
 
+    // Fetch the list of employees and update in real-time
     useEffect(() => {
         // Fetch the list of employees on component mount
         axios.get("/api/employees")
             .then(response => setEmployees(response.data))
             .catch(error => console.error("Error fetching employees:", error));
     }, []);
-
+    
+    //function used to add a new employee
     const addEmployee = () => {
         if (!email.endsWith("@bedrijf.nl")) {
             setNotification("❌ Alleen bedrijfse-mailadressen zijn toegestaan.");
@@ -34,6 +36,7 @@ const EmployeeManager = () => {
             });
     };
 
+    //function used to remove an employee
     const removeEmployee = (id) => {
         axios.delete(`/api/employees/${id}`)
             .then(() => {

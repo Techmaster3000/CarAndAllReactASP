@@ -19,11 +19,16 @@ namespace CarAndAllReactASP.Server.Data
         private readonly CarAndAllReactASPDbContext _context;
         private readonly IEmailSender _emailSender;
 
-        public ParticuliereVerhuursController(CarAndAllReactASPDbContext context)
+        public ParticuliereVerhuursController(CarAndAllReactASPDbContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
-        // GET: api/ParticuliereVerhuurs
+
+        /// <summary>
+        /// Gets a list of verhuur DTOs.
+        /// </summary>
+        /// <returns>A list of verhuur DTOs.</returns>
         [HttpGet("dto")]
         public async Task<ActionResult<IEnumerable<VerhuurDTO>>> GetParticuliereVerhuurdto()
         {
@@ -56,16 +61,24 @@ namespace CarAndAllReactASP.Server.Data
 
             return Ok(huurverzoeken);
         }
-        // GET: api/ParticuliereVerhuurs
+
+        /// <summary>
+        /// Gets a list of all particuliere verhuur.
+        /// </summary>
+        /// <returns>A list of particuliere verhuur.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ParticuliereVerhuur>>> GetParticuliereVerhuur()
         {
             return await _context.ParticuliereVerhuur.ToListAsync();
         }
 
-            // GET: api/ParticuliereVerhuurs/5
-            [HttpGet("{id}")]
-            public async Task<ActionResult<ParticuliereVerhuur>> GetParticuliereVerhuur(int id)
+        /// <summary>
+        /// Gets a specific particuliere verhuur by ID.
+        /// </summary>
+        /// <param name="id">The ID of the particuliere verhuur.</param>
+        /// <returns>The particuliere verhuur with the specified ID.</returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ParticuliereVerhuur>> GetParticuliereVerhuur(int id)
         {
             var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
 
@@ -77,12 +90,18 @@ namespace CarAndAllReactASP.Server.Data
             return particuliereVerhuur;
         }
 
+        /// <summary>
+        /// Registers the uitgifte of a specific verhuur.
+        /// </summary>
+        /// <param name="id">The ID of the verhuur to register uitgifte for.</param>
+        /// <param name="uitgifteDto">The uitgifte data.</param>
+        /// <returns>The updated verhuur.</returns>
         [HttpPut("uitgifte/{id}")]
         public async Task<IActionResult> RegistreerUitgifte(int id, [FromBody] UitgifteDto uitgifteDto)
         {
             var verhuur = await _context.ParticuliereVerhuur
-                .Include(v => v.Vehicle) 
-                .Include(v => v.User)    
+                .Include(v => v.Vehicle)
+                .Include(v => v.User)
                 .FirstOrDefaultAsync(v => v.VerhuurID == id);
 
             if (verhuur == null)
@@ -110,15 +129,24 @@ namespace CarAndAllReactASP.Server.Data
 
             return Ok(verhuur);
         }
-        
 
+        /// <summary>
+        /// Gets a list of particuliere verhuur by user ID.
+        /// </summary>
+        /// <param name="id">The user ID.</param>
+        /// <returns>A list of particuliere verhuur for the specified user.</returns>
         [HttpGet("user/{id}")]
         public async Task<ActionResult<IEnumerable<ParticuliereVerhuur>>> GetParticuliereVerhuurByUser(string id)
         {
             return await _context.ParticuliereVerhuur.Where(p => p.UserID == id).ToListAsync();
         }
-        // PUT: api/ParticuliereVerhuurs/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        /// <summary>
+        /// Updates a specific particuliere verhuur.
+        /// </summary>
+        /// <param name="id">The ID of the particuliere verhuur to update.</param>
+        /// <param name="particuliereVerhuur">The updated particuliere verhuur data.</param>
+        /// <returns>No content if successful, or not found if the particuliere verhuur does not exist.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParticuliereVerhuur(int id, ParticuliereVerhuur particuliereVerhuur)
         {
@@ -148,8 +176,11 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
 
-        // POST: api/ParticuliereVerhuurs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a new particuliere verhuur.
+        /// </summary>
+        /// <param name="particuliereVerhuur">The particuliere verhuur to add.</param>
+        /// <returns>The added particuliere verhuur.</returns>
         [HttpPost]
         public async Task<ActionResult<ParticuliereVerhuur>> PostParticuliereVerhuur(ParticuliereVerhuur particuliereVerhuur)
         {
@@ -167,7 +198,11 @@ namespace CarAndAllReactASP.Server.Data
             return CreatedAtAction("GetParticuliereVerhuur", new { id = particuliereVerhuur.VerhuurID }, particuliereVerhuur);
         }
 
-        // DELETE: api/ParticuliereVerhuurs/5
+        /// <summary>
+        /// Deletes a specific particuliere verhuur.
+        /// </summary>
+        /// <param name="id">The ID of the particuliere verhuur to delete.</param>
+        /// <returns>No content if successful, or not found if the particuliere verhuur does not exist.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParticuliereVerhuur(int id)
         {
@@ -183,56 +218,69 @@ namespace CarAndAllReactASP.Server.Data
             return NoContent();
         }
 
+        /// <summary>
+        /// Approves a specific verhuur request.
+        /// </summary>
+        /// <param name="id">The ID of the verhuur request to approve.</param>
+        /// <returns>No content if successful, or not found if the verhuur request does not exist.</returns>
+        [HttpPut("Approve/{id}")]
+        public async Task<IActionResult> ApproveRequest(int id)
+        {
+            var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
+            if (particuliereVerhuur == null)
+            {
+                return NotFound();
+            }
+
+            particuliereVerhuur.Status = "Approved";
+            particuliereVerhuur.RedenAfwijzing = null;
+
+            _context.Entry(particuliereVerhuur).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            await _emailSender.SendEmailAsync(particuliereVerhuur.UserID,
+                "Huur aanvraag goedgekeurd",
+                "Je huur aanvraag is goedgekeurd.");
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Rejects a specific verhuur request.
+        /// </summary>
+        /// <param name="id">The ID of the verhuur request to reject.</param>
+        /// <param name="redenAfwijzing">The reason for rejection.</param>
+        /// <returns>No content if successful, or not found if the verhuur request does not exist.</returns>
+        [HttpPut("Reject/{id}")]
+        public async Task<IActionResult> RejectRequest(int id, [FromBody] string redenAfwijzing)
+        {
+            var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
+            if (particuliereVerhuur == null)
+            {
+                return NotFound();
+            }
+
+            particuliereVerhuur.Status = "Rejected";
+            particuliereVerhuur.RedenAfwijzing = redenAfwijzing;
+
+            _context.Entry(particuliereVerhuur).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            await _emailSender.SendEmailAsync(particuliereVerhuur.UserID,
+                "Huur aanvraag afgewezen",
+                $"Je huur aanvraag is afgewezen. Reden: {redenAfwijzing}");
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Checks if a particuliere verhuur exists.
+        /// </summary>
+        /// <param name="id">The ID of the particuliere verhuur to check.</param>
+        /// <returns>True if the particuliere verhuur exists, otherwise false.</returns>
         private bool ParticuliereVerhuurExists(int id)
         {
             return _context.ParticuliereVerhuur.Any(e => e.VerhuurID == id);
         }
-    [HttpPut("Approve/{id}")]
-    public async Task<IActionResult> ApproveRequest(int id)
-    {
-        var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
-        if (particuliereVerhuur == null)
-        {
-            return NotFound();
-        }
-
-        // Wijzig de status naar 'Approved'
-        particuliereVerhuur.Status = "Approved";
-        particuliereVerhuur.RedenAfwijzing = null; // Geen reden nodig voor goedkeuring
-
-        _context.Entry(particuliereVerhuur).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
-        // Stuur notificatie naar de gebruiker
-        await _emailSender.SendEmailAsync(particuliereVerhuur.UserID, 
-            "Huur aanvraag goedgekeurd", 
-            "Je huur aanvraag is goedgekeurd.");
-
-        return NoContent();
-    }
-
-    [HttpPut("Reject/{id}")]
-    public async Task<IActionResult> RejectRequest(int id, [FromBody] string redenAfwijzing)
-    {
-        var particuliereVerhuur = await _context.ParticuliereVerhuur.FindAsync(id);
-        if (particuliereVerhuur == null)
-        {
-            return NotFound();
-        }
-
-        // Wijzig de status naar 'Rejected' en sla de reden op
-        particuliereVerhuur.Status = "Rejected";
-        particuliereVerhuur.RedenAfwijzing = redenAfwijzing;
-
-        _context.Entry(particuliereVerhuur).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
-        // Stuur notificatie naar de gebruiker
-        await _emailSender.SendEmailAsync(particuliereVerhuur.UserID, 
-            "Huur aanvraag afgewezen", 
-            $"Je huur aanvraag is afgewezen. Reden: {redenAfwijzing}");
-
-        return NoContent();
-    }
     }
 }

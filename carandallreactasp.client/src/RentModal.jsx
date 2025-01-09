@@ -8,6 +8,7 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
     const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
+        // Calculate total price based on selected dates and car price per day
         if (startDate && endDate) {
             const timeDiff = Math.abs(new Date(endDate) - new Date(startDate));
             const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
@@ -20,6 +21,7 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
     const handleRent = async (e) => {
         e.preventDefault();
         const today = new Date();
+        //check if start date and end date are selected and valid
         if (!startDate || !endDate) {
             setError('Please select both start and end dates.');
         } else if (new Date(startDate) < today) {
@@ -28,6 +30,7 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
             setError('End date cannot be before start date.');
         } else {
             try {
+                //create a payload object with all rental information
                 const payload = {
                     voertuigID: car.id,
                     userID: getCookie('userId'),
@@ -37,7 +40,7 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
                     eindDatum: endDate,
                     totaalPrijs: totalPrice
                 };
-
+                //send a POST request to create a new rental with the payload
                 const response = await fetch('/api/ParticuliereVerhuurs', {
                     method: 'POST',
                     headers: {

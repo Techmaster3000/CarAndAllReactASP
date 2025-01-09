@@ -4,10 +4,23 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import imgData from './assets/imagedataCarAndAll';
 
+/**
+ * RentalDetailsModal component displays rental details in a modal and allows downloading an invoice as a PDF.
+ * @param {Object} props - The component props.
+ * @param {boolean} props.show - Whether the modal is shown.
+ * @param {function} props.onHide - Function to hide the modal.
+ * @param {Object} props.rental - The rental details.
+ * @param {Object} props.car - The car details.
+ * @returns {JSX.Element|null} The rendered component.
+ */
 const RentalDetailsModal = ({ show, onHide, rental, car }) => {
     if (!rental) return null;
     const [user, setUser] = useState(null);
 
+    /**
+     * Fetches user details from the server.
+     * @param {function} callback - The callback function to execute after fetching user details.
+     */
     const fetchUserDetails = async (callback) => {
         try {
             const response = await fetch(`/api/Users/${rental.userID}`, {
@@ -26,6 +39,10 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         }
     };
 
+    /**
+     * Generates a PDF invoice using jsPDF.
+     * @param {Object} user - The user details.
+     */
     const generatePDF = (user) => {
         const doc = new jsPDF();
 
@@ -39,6 +56,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         // Add user information
         doc.setFontSize(12);
         doc.setTextColor(0);
+        //list of user details
         doc.text(`Klantnaam: ${user.naam}`, 100, 70);
         doc.text(`Emailadres: ${user.email}`, 100, 80);
         doc.text(`Telefoonnummer: ${user.phoneNumber}`, 100, 90);
@@ -53,6 +71,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         doc.text(`Eind Datum: ${new Date(rental.eindDatum).toLocaleDateString()}`, 20, 110);
         doc.text(`Totaalprijs: ${rental.totaalPrijs} euro`, 20, 120);
 
+        //add the rental information to a table
         doc.autoTable({
             startY: 130,
             head: [['Omschrijving', 'Details']],
@@ -67,12 +86,16 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         });
 
         doc.setFontSize(10);
+        //add contact information to the bottom of the invoice
         doc.text('Bedankt voor uw vertrouwen in ons!', 20, doc.internal.pageSize.height - 30);
         doc.text('Contact: info@carandall.com | Telefoon: 123-456-7890', 20, doc.internal.pageSize.height - 20);
 
         doc.save('invoice.pdf');
     };
 
+    /**
+     * Handles the download of the invoice.
+     */
     const handleDownloadInvoice = async () => {
         await fetchUserDetails(generatePDF);
     };
