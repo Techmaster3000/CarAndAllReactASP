@@ -47,7 +47,7 @@ const EditCar = ({ car, onClose, onSave }) => {
                     aanschafjaar: aanschafjaar,
                     opmerkingen: opmerkingen,
                     prijsPerDag: prijsPerDag,
-                    status: status // Include status in the request body
+                    status: status
                 }),
             });
             if (response.ok) {

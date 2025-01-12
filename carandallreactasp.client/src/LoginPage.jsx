@@ -5,58 +5,61 @@ import { FaLock } from "react-icons/fa6";
 import { IoMail } from "react-icons/io5";
 import './custom.css';
 
+/**
+ * LoginPage component handles user login.
+ * It includes form fields for email and password and performs validation
+ * before submitting the data to the server.
+ */
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    /**
+     * Handles the form submission for login.
+     * @param {Event} e - The form submission event.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
             setError("Please fill in all fields.");
-        } else {
-            setError("");
-            try {
-                const loginResponse = await fetch("/login", {
-                    method: "POST",
+            return;
+        }
+
+        setError("");
+        try {
+            const loginResponse = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (loginResponse.ok) {
+                const userIdResponse = await fetch(`/api/Users/GetUserID?email=${email}`, {
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                    }),
                 });
 
-                if (loginResponse.ok) {
-                    // Fetch the user ID after successful login
-                    const userIdResponse = await fetch(`/api/Users/GetUserID?email=${email}`, {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-
-                    if (userIdResponse.ok) {
-                        const data = await userIdResponse.text();
-
-                        //add the user ID to the cookie to retrieve the correct info later
-                        document.cookie = `userId=${data}; path=/`;
-                        setError("Successful Login.");
-                        // Redirect to the home page
-                        window.location.href = "/index";
-                    } else {
-                        setError("Error fetching user ID.");
-                    }
-                } else if (loginResponse.status === 401) {
-                    setError("Unauthorized: Invalid email or password.");
+                if (userIdResponse.ok) {
+                    const userId = await userIdResponse.text();
+                    document.cookie = `userId=${userId}; path=/`;
+                    setError("Successful Login.");
+                    window.location.href = "/index";
                 } else {
-                    setError("Error Logging In.");
+                    setError("Error fetching user ID.");
                 }
-            } catch (error) {
-                console.error(error);
-                setError("Network Error Logging in.");
+            } else if (loginResponse.status === 401) {
+                setError("Unauthorized: Invalid email or password.");
+            } else {
+                setError("Error Logging In.");
             }
+        } catch (error) {
+            console.error(error);
+            setError("Network Error Logging in.");
         }
     };
 
@@ -71,7 +74,7 @@ const LoginPage = () => {
                         <IoMail size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
                         <input
                             type="email"
-                            value={email || ''}
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="E-mail"
                             className="mx-2 my-1 bg-transparent no-outline text-white"
@@ -81,7 +84,7 @@ const LoginPage = () => {
                         <FaLock size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
                         <input
                             type="password"
-                            value={password || ''}
+                            value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             className="mx-2 w-100 my-1 bg-transparent no-outline text-white"
