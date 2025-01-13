@@ -25,14 +25,13 @@ namespace CarAndAllReactASP.Tests
             _context = new CarAndAllReactASPDbContext(options);
             _controller = new VehiclesController(_context);
 
-            SeedData();
+            // Ensure the database is cleared before seeding data
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
 
         private void SeedData()
-
         {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
             // Voeg testdata toe aan de InMemory-database
             var voertuig1 = new Vehicle
             {
@@ -53,6 +52,19 @@ namespace CarAndAllReactASP.Tests
         public async Task GeenVoertuig()
         {
             // Arrange
+            var voertuig1 = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+
+            _context.Vehicles.Add(voertuig1);
+            _context.SaveChanges();
             var innameData = new InnameDTO
             {
                 HasDamage = false,
@@ -72,6 +84,19 @@ namespace CarAndAllReactASP.Tests
         public async Task GeenSchade()
         {
             // Arrange
+            var voertuig1 = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+
+            _context.Vehicles.Add(voertuig1);
+            _context.SaveChanges();
             var innameData = new InnameDTO
             {
                 HasDamage = false,
@@ -99,6 +124,18 @@ namespace CarAndAllReactASP.Tests
         public async Task MetSchade()
         {
             // Arrange
+            var voertuig1 = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+            _context.Vehicles.Add(voertuig1);
+            _context.SaveChanges();
             var innameData = new InnameDTO
             {
                 HasDamage = true,
@@ -115,13 +152,14 @@ namespace CarAndAllReactASP.Tests
 
             // Controleer dat de voertuigstatus is gewijzigd
             var voertuig = await _context.Vehicles.FindAsync(1);
+            Assert.NotNull(voertuig);
             Assert.Equal("Met schade", voertuig.Status);
 
             // Controleer dat de schade is toegevoegd
-            var schades = _context.Schades.Where(s => s.VehicleId == 1).ToList();
+            var schades = await _context.Schades.Where(s => s.VehicleId == 1).ToListAsync();
             Assert.Single(schades);
 
-            var schade = schades.First();
+            var schade = schades[0];
             Assert.Equal("Deuk in deur", schade.Opmerkingen);
             Assert.Equal("url/to/deuk-foto", schade.FotoUrl);
         }
