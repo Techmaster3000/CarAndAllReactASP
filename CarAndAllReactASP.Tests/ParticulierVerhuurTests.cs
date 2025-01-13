@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarAndAllReactASP.Tests
 {
-    internal class ParticulierVehuurtTests
+    internal class ParticulierVerhuurTests
     {
     }
 }

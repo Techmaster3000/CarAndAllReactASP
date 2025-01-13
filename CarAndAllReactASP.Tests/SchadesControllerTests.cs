@@ -27,7 +27,9 @@ namespace CarAndAllReactASP.Tests
             _context = new CarAndAllReactASPDbContext(options);
             _controller = new SchadesController(_context);
 
-            SeedData();
+            // Ensure the database is cleared before seeding data
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
         private void SeedData()
         {
@@ -55,6 +57,19 @@ namespace CarAndAllReactASP.Tests
         public async Task GeenVoertuig()
         {
             // Arrange
+            var voertuig = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+
+            _context.Vehicles.Add(voertuig);
+            _context.SaveChanges();
             var dto = new SchadesController.SchadeclaimDTO
             {
                 Kenteken = "YY-999-YY", // Kenteken dat niet bestaat
@@ -74,6 +89,19 @@ namespace CarAndAllReactASP.Tests
         public async Task WelVoertuig()
         {
             // Arrange
+            var voertuig = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+
+            _context.Vehicles.Add(voertuig);
+            _context.SaveChanges();
             var dto = new SchadesController.SchadeclaimDTO
             {
                 Kenteken = "XX-123-XX", // Bestaand kenteken
@@ -99,14 +127,27 @@ namespace CarAndAllReactASP.Tests
             Assert.Equal(1, schade.VehicleId);
 
             // Controleer of de voertuigstatus is bijgewerkt
-            var voertuig = await _context.Vehicles.FindAsync(1);
-            Assert.Equal("In reparatie", voertuig.Status);
+            var voertuigFind = await _context.Vehicles.FindAsync(1);
+            Assert.Equal("In reparatie", voertuigFind.Status);
         }
 
         [Fact]
         public async Task MeerdereSchades()
         {
             // Arrange
+            var voertuig = new Vehicle
+            {
+                Id = 1,
+                Merk = "Toyota",
+                Type = "Corolla",
+                Kenteken = "XX-123-XX",
+                Status = "Beschikbaar",
+                Kleur = "Blauw",
+                Soort = "Auto"
+            };
+            _context.Vehicles.Add(voertuig);
+            _context.SaveChanges();
+
             var dto1 = new SchadesController.SchadeclaimDTO
             {
                 Kenteken = "XX-123-XX", // Bestaand kenteken

@@ -7,7 +7,7 @@ import './custom.css';
 
 /**
  * LoginPage component handles user login.
- * It includes form fields for email and password and performs validation
+ * It includes form fields for email and password and performs input checks
  * before submitting the data to the server.
  */
 const LoginPage = () => {
@@ -15,10 +15,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    /**
-     * Handles the form submission for login.
-     * @param {Event} e - The form submission event.
-     */
+
+    //Handles the form submission for login
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -28,21 +26,23 @@ const LoginPage = () => {
 
         setError("");
         try {
-            const loginResponse = await fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (loginResponse.ok) {
-                const userIdResponse = await fetch(`/api/Users/GetUserID?email=${email}`, {
-                    method: "GET",
+            const loginResponse = await fetch("/login",
+                {
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    body: JSON.stringify({ email, password }),
                 });
+
+            if (loginResponse.ok) {
+                const userIdResponse = await fetch(`/api/Users/GetUserID?email=${email}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
 
                 if (userIdResponse.ok) {
                     const userId = await userIdResponse.text();
@@ -69,26 +69,25 @@ const LoginPage = () => {
                 <div className="text display-4 pt-2">Login</div>
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
+                <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={
+handleSubmit}>
                     <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
-                        <IoMail size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
+                        <IoMail size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent"/>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="E-mail"
-                            className="mx-2 my-1 bg-transparent no-outline text-white"
-                        />
+                            className="mx-2 my-1 bg-transparent no-outline text-white"/>
                     </div>
                     <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
-                        <FaLock size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent" />
+                        <FaLock size="2em" color="#ffffff" className="mx-2 my-1 bg-transparent"/>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
-                            className="mx-2 w-100 my-1 bg-transparent no-outline text-white"
-                        />
+                            className="mx-2 w-100 my-1 bg-transparent no-outline text-white"/>
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                     <div className="d-flex justify-content-center w-25">

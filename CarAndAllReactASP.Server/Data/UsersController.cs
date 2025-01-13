@@ -114,6 +114,12 @@ namespace CarAndAllReactASP.Server.Data
                 return BadRequest();
             }
 
+            var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
             _context.Entry(user).State = EntityState.Modified;
 
             try
