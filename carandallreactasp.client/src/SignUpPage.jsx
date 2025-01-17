@@ -92,49 +92,47 @@ const SignUpPage = () => {
     return (
         <div className="container w-100 h-75 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
             <div className="text-center">
-                <div className="text display-4 pt-2">Sign Up</div>   
+                <div className="text display-4 pt-2 michroma-regular">Sign Up</div>   
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                <form className="w-100 d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                <form className="w-100 d-flex flex-column justify-content-center align-items-center tomorrow-regular" onSubmit={handleSubmit}>
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-75 no-outline mb-2">
                         <input
-                            type="text"
                             placeholder="Full Name"
-                            className="mx-2 my-1 bg-transparent no-outline text-white"
+                            className="mx-2 my-1 w-100 bg-transparent no-outline text-white"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 no-outline rounded-1 w-75 mb-2">
                         <input
                             type="email"
                             placeholder="E-mail"
-                            className="mx-2 my-1 bg-transparent no-outline text-white"
+                            className="mx-2 my-1 w-100 bg-transparent no-outline text-white"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-75 mb-2">
                         <input
                             type="tel"
                             placeholder="Phone Number"
                             maxLength="12"
                             minLength="8"
-                            className="mx-2 my-1 bg-transparent no-outline text-white"
+                            className="mx-2 my-1 w-100 bg-transparent no-outline text-white"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-75 mb-2">
                         <input
-                            type="text"
                             placeholder="Address"
-                            className="mx-2 my-1 bg-transparent no-outline text-white"
+                            className="mx-2 my-1 w-100 bg-transparent no-outline text-white"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-75 mb-2">
                         <input
                             type="password"
                             placeholder="Password"
@@ -143,7 +141,7 @@ const SignUpPage = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-25 mb-2">
+                    <div className="d-flex align-items-center bg-secondary p-2 rounded-1 w-75 mb-2">
                         <input
                             type="password"
                             placeholder="Confirm Password"
@@ -152,14 +150,14 @@ const SignUpPage = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
-                    <div className="d-flex justify-content-center w-25">
-                        <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100">Sign Up</Button>
-                        <Button as={Link} to="/login" variant="outline-secondary" size="lg" className="btn mt-3 w-100">Login</Button>
+                    <div className="d-flex justify-content-center w-75">
+                        <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-100 rounded-1">Sign Up</Button>
+                        <Button as={Link} to="/login" variant="outline-secondary" size="lg" className="btn mt-3 w-50 rounded-1">Login</Button>
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </form>
-                <div className="d-flex justify-content-center w-25">
-                <Button href="/business-signup" variant="outline-secondary" size="lg" className="btn mt-3 w-100"> Business Sign Up</Button>
+                <div className="d-flex justify-content-center w-75">
+                <Button href="/business-signup" variant="outline-secondary" size="lg" className="btn mt-3 w-100 rounded-1 tomorrow-regular"> Business Sign Up</Button>
                 </div>
                 
             </div>
