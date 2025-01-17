@@ -42,7 +42,6 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/schades" element={<SchadePage />} />
                 <Route path="/schadeclaims" element={<SchadeclaimsPage />} />
                 <Route path="/vehiclebeheer" element={<VehicleBeheerPage />} />
-                } />
             </Routes>
         </Router>
     </StrictMode>,
