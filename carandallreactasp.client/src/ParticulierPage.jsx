@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import getCookie from './helpers/getCookie';
 import { PiListBold } from "react-icons/pi";
 import RentalDetailsModal from './HuurDetailsModal';
+import './custom.css';
 
 const ParticulierPage = () => {
     const [currentVerhuur, setCurrentVerhuur] = useState([]);
@@ -104,7 +105,7 @@ const ParticulierPage = () => {
             <div className="container-fluid mt-4 text-light">
                 {error && <div className="text-danger">{error}</div>}
                 <div className="row mb-4">
-                    <div className="col-md-6 text-light">
+                    <div className="col-md-6 text-light rounded-1">
                         <label htmlFor="filterSoort" className="form-label">Filter op Soort</label>
                         <select
                             id="filterSoort"
@@ -118,7 +119,7 @@ const ParticulierPage = () => {
                             <option value="Caravan">Caravan</option>
                         </select>
                     </div>
-                    <div className="col-md-6 text-light">
+                    <div className="col-md-6 text-light rounded-1">
                         <label htmlFor="filterDate" className="form-label">Filter op Datum</label>
                         <input
                             type="date"
@@ -131,7 +132,7 @@ const ParticulierPage = () => {
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <h2>Lopende Verhuur</h2>
+                        <h2 className="tomorrow-regular">Lopende Verhuur</h2>
                         <table className="table table-dark table-striped">
                             <thead>
                                 <tr>
@@ -162,7 +163,7 @@ const ParticulierPage = () => {
                         </table>
                     </div>
                     <div className="col-md-4">
-                        <h2>Verlopen Verhuur</h2>
+                        <h2 className="tomorrow-regular">Verlopen Verhuur</h2>
                         <table className="table table-dark table-striped">
                             <thead>
                                 <tr>
@@ -193,7 +194,7 @@ const ParticulierPage = () => {
                         </table>
                     </div>
                     <div className="col-md-4">
-                        <h2>Geplande Verhuur</h2>
+                        <h2 className="tomorrow-regular">Geplande Verhuur</h2>
                         <table className="table table-dark table-striped">
                             <thead>
                                 <tr>

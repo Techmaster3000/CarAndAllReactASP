@@ -66,13 +66,11 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
 
     return (
         <div className="modal fade show d-flex align-items-center">
-            <div className="modal-dialog modal-lg">
+            <div className="modal-dialog modal-xl">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Huur Auto</h5>
-                        <button type="button" className="close" onClick={onHide}>
-                            <span>&times;</span>
-                        </button>
+                        <button type="button" className="btn-close" aria-label="Close" onClick={onHide}></button>
                     </div>
                     <div className="modal-body">
                         <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleRent}>
@@ -90,9 +88,6 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
                             </div>
                             <div className="mt-3">
                                 <h5>Total Price: &euro;{totalPrice}</h5>
-                            </div>
-                            <div className="modal-footer">
-                                <Button variant="secondary" onClick={onHide}>Close</Button>
                             </div>
                             <div className="m-3">
                                 <Button variant="primary" type="submit">Verstuur Huuraanvraag</Button>

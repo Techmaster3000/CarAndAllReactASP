@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RentModal from './RentModal';
+import { IoArrowBackSharp } from "react-icons/io5";
+import "./custom.css";
 
 const ParticulierHuur = () => {
     const [cars, setCars] = useState([]);
@@ -13,6 +17,8 @@ const ParticulierHuur = () => {
     const [selectedCar, setSelectedCar] = useState(null);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCars();
@@ -127,8 +133,15 @@ const ParticulierHuur = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h1>Particulier Huur</h1>
+        <div className="container w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+            
+            <div className="position-absolute top-0 start-0 p-3">
+                <Button variant="secondary-outline" size="lg" onClick={() => navigate("/index")}><IoArrowBackSharp /></Button>
+            </div>
+            <div className="text-center">
+                <div className="text display-4 pt-2 michroma-regular">Particulier Huur</div>
+            </div>
+            
 
             <div className="row mb-3">
                 <div className="col-md-6 text-light">
@@ -230,3 +243,5 @@ const ParticulierHuur = () => {
 };
 
 export default ParticulierHuur;
+
+
