@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 import EditCar from './EditCar';
+import NavBar from './NavBar'
 
 /**
  * CarManage component handles the management of vehicles.
@@ -95,11 +96,12 @@ const CarManage = () => {
 
     return (
         <div>
+        <NavBar />
             <div className="container-fluid w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
-                <div className="text-center">
+                <div className="text-center michroma-regular pt-2 pb-4">
                     <h1>Manage Cars</h1>
                 </div>
-                <div className="text-center mb-3">
+                <div className="text-center mb-3 tomorrow-regular rounded-1">
                     <Button variant="primary" href="/createcar">Add Car</Button>
                 </div>
                 {error && <div className="text-danger text-center">{error}</div>}
@@ -131,7 +133,7 @@ const CarManage = () => {
                                     <td>{vehicle.aanschafjaar}</td>
                                     <td>{vehicle.prijsPerDag}</td>
                                     <td>{vehicle.status}</td> {/* Add status column */}
-                                    <td>
+                                    <td className="tomorrow-regular rounded-1">
                                         <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
                                         <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>
                                     </td>

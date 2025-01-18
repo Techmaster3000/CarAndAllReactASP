@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RentModal from './RentModal';
 import { IoArrowBackSharp } from "react-icons/io5";
+import NavBar from './NavBar';
 import "./custom.css";
 
 const ParticulierHuur = () => {
@@ -123,8 +124,13 @@ const ParticulierHuur = () => {
     };
 
     const openModal = (car) => {
-        setSelectedCar(car);
-        setShowModal(true);
+        if (startDate && endDate && new Date(startDate) <= new Date(endDate)) {
+            setSelectedCar(car);
+            setShowModal(true);
+            setError('')
+        } else {
+            setError('Please select valid start and end dates.');
+        }
     };
 
     const closeModal = () => {
@@ -133,115 +139,114 @@ const ParticulierHuur = () => {
     };
 
     return (
-        <div className="container w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
-            
-            <div className="position-absolute top-0 start-0 p-3">
-                <Button variant="secondary-outline" size="lg" onClick={() => navigate("/index")}><IoArrowBackSharp /></Button>
-            </div>
-            <div className="text-center">
-                <div className="text display-4 pt-2 michroma-regular">Particulier Huur</div>
-            </div>
-            
+        <div>
+            <NavBar />
+            <div className="container w-100 h-auto d-flex flex-column bg-white text-black position-absolute top-50 start-50 translate-middle rounded-1">
 
-            <div className="row mb-3">
-                <div className="col-md-6 text-light">
-                    <label htmlFor="startDate" className="form-label">Start Datum</label>
-                    <input
-                        type="date"
-                        id="startDate"
-                        className="form-control"
-                        value={startDate}
-                        onChange={handleDateChange}
-                    />
+                <div className="position-absolute top-0 start-0 p-3">
+                    <Button variant="secondary-outline" size="lg" onClick={() => navigate("/index")}><IoArrowBackSharp /></Button>
                 </div>
-                <div className="col-md-6 text-light">
-                    <label htmlFor="endDate" className="form-label">Eind Datum</label>
-                    <input
-                        type="date"
-                        id="endDate"
-                        className="form-control"
-                        value={endDate}
-                        onChange={handleDateChange}
-                    />
+                <div className="text-center">
+                    <div className="text display-4 pt-2 michroma-regular pb-5">Particulier Huur</div>
                 </div>
-            </div>
-            <div className="row mb-3">
-                <div className="col-md-6 text-light">
-                    <label htmlFor="filterSoort" className="form-label">Filter op Soort</label>
-                    <select
-                        id="filterSoort"
-                        className="form-select"
-                        value={soort}
-                        onChange={handleFilterChange}
-                    >
-                        <option value="">Alle Soorten</option>
-                        <option value="Auto">Auto</option>
-                        <option value="Camper">Camper</option>
-                        <option value="Caravan">Caravan</option>
-                    </select>
+
+
+                <div className="row mb-3">
+                    <div className="col-md-6 text-light chakra-petch-regular text-black">
+                        <label htmlFor="startDate" className="form-label">Start Datum</label>
+                        <input
+                            type="date"
+                            id="startDate"
+                            className="form-control"
+                            value={startDate}
+                            onChange={handleDateChange}
+                        />
+                    </div>
+                    <div className="col-md-6 text-light chakra-petch-regular text-black">
+                        <label htmlFor="endDate" className="form-label">Eind Datum</label>
+                        <input
+                            type="date"
+                            id="endDate"
+                            className="form-control"
+                            value={endDate}
+                            onChange={handleDateChange}
+                        />
+                    </div>
                 </div>
-                <div className="col-md-6 text-light">
-                    <label htmlFor="sortOption" className="form-label">Sorteer op</label>
-                    <select
-                        id="sortOption"
-                        className="form-select"
-                        value={sortOption}
-                        onChange={handleSortChange}
-                    >
-                        <option value="">Sorteeropties</option>
-                        <option value="prijs-asc">Prijs (Laag naar Hoog)</option>
-                        <option value="prijs-desc">Prijs (Hoog naar Laag)</option>
-                        <option value="merk-asc">Merk (A-Z)</option>
-                        <option value="merk-desc">Merk (Z-A)</option>
-                    </select>
+                <div className="row mb-3">
+                    <div className="col-md-6 text-light chakra-petch-regular">
+                        <label htmlFor="filterSoort" className="form-label text-black">Filter op Soort</label>
+                        <select
+                            id="filterSoort"
+                            className="form-select"
+                            value={soort}
+                            onChange={handleFilterChange}
+                        >
+                            <option value="">Alle Soorten</option>
+                            <option value="Auto">Auto</option>
+                            <option value="Camper">Camper</option>
+                            <option value="Caravan">Caravan</option>
+                        </select>
+                    </div>
+                    <div className="col-md-6 text-light chakra-petch-regular">
+                        <label htmlFor="sortOption" className="form-label text-black">Sorteer op</label>
+                        <select
+                            id="sortOption"
+                            className="form-select"
+                            value={sortOption}
+                            onChange={handleSortChange}
+                        >
+                            <option value="">Sorteeropties</option>
+                            <option value="prijs-asc">Prijs (Laag naar Hoog)</option>
+                            <option value="prijs-desc">Prijs (Hoog naar Laag)</option>
+                            <option value="merk-asc">Merk (A-Z)</option>
+                            <option value="merk-desc">Merk (Z-A)</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            {error && <div className="text-danger">{error}</div>}
-            {message && <div className="text-success">{message}</div>}
-            <div className="table-responsive rounded-2">
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Soort</th>
-                            <th>Merk</th>
-                            <th>Type</th>
-                            <th>Kleur</th>
-                            <th>Kenteken</th>
-                            <th>Aanschafjaar</th>
-                            <th>Prijs Per Dag</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredCars.map((car) => (
-                            <tr key={car.id}>
-                                <td>{car.soort}</td>
-                                <td>{car.merk}</td>
-                                <td>{car.type}</td>
-                                <td>{car.kleur}</td>
-                                <td>{car.kenteken}</td>
-                                <td>{car.aanschafjaar}</td>
-                                <td>{car.prijsPerDag}</td>
-                                <td>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => openModal(car)}
-                                    >
-                                        Huur
-                                    </button>
-                                </td>
+                {error && <div className="text-danger">{error}</div>}
+                {message && <div className="text-success">{message}</div>}
+                <div className="table-responsive rounded-2">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Soort</th>
+                                <th>Merk</th>
+                                <th>Type</th>
+                                <th>Kleur</th>
+                                <th>Kenteken</th>
+                                <th>Aanschafjaar</th>
+                                <th>Prijs Per Dag</th>
+                                <th></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredCars.map((car) => (
+                                <tr key={car.id}>
+                                    <td>{car.soort}</td>
+                                    <td>{car.merk}</td>
+                                    <td>{car.type}</td>
+                                    <td>{car.kleur}</td>
+                                    <td>{car.kenteken}</td>
+                                    <td>{car.aanschafjaar}</td>
+                                    <td>{car.prijsPerDag}</td>
+                                    <td>
+                                        <button className="btn btn-primary tomorrow-regular"onClick={() => openModal(car)}>Huur</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {selectedCar && (
+                    <RentModal car={selectedCar} onHide={closeModal} startDate={startDate} endDate={endDate} />
+                )}
             </div>
-            {selectedCar && (
-                <RentModal car={selectedCar} onHide={closeModal} startDate={startDate} endDate={endDate} />
-            )}
         </div>
     );
 };
 
 export default ParticulierHuur;
+
 
 

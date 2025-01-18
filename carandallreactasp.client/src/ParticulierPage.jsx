@@ -105,7 +105,7 @@ const ParticulierPage = () => {
             <div className="container-fluid mt-4 text-light">
                 {error && <div className="text-danger">{error}</div>}
                 <div className="row mb-4">
-                    <div className="col-md-6 text-light rounded-1">
+                    <div className="col-md-6 text-light rounded-1 chakra-petch-regular">
                         <label htmlFor="filterSoort" className="form-label">Filter op Soort</label>
                         <select
                             id="filterSoort"
@@ -119,7 +119,7 @@ const ParticulierPage = () => {
                             <option value="Caravan">Caravan</option>
                         </select>
                     </div>
-                    <div className="col-md-6 text-light rounded-1">
+                    <div className="col-md-6 text-light rounded-1 chakra-petch-regular">
                         <label htmlFor="filterDate" className="form-label">Filter op Datum</label>
                         <input
                             type="date"

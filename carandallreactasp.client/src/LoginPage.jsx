@@ -64,7 +64,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="container w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+        <div className="container w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-1">
             <div className="text-center">
                 <div className="text display-4 pt-2 michroma-regular">Login</div>
             </div>

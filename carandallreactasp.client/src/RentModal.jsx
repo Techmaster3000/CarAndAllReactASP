@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
+import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import getCookie from './helpers/getCookie';
 
@@ -65,40 +65,37 @@ const RentModal = ({ car, onHide, startDate, endDate }) => {
     };
 
     return (
-        <div className="modal fade show d-flex align-items-center">
-            <div className="modal-dialog modal-xl">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">Huur Auto</h5>
-                        <button type="button" className="btn-close" aria-label="Close" onClick={onHide}></button>
+        <Modal show onHide={onHide} centered size="sm">
+            <Modal.Header closeButton>
+                <Modal.Title className="tomorrow-regular">Huur Auto</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="chakra-petch-regular">
+                <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleRent}>
+                    <div className="m-1 d-flex align-items-center w-auto">
+                        <label htmlFor="Startdatum" className="form-label m-3">Startdatum</label>
+                        <div className="form-control bg-dark text-light rounded-1 text-center">
+                            {new Date(startDate).toLocaleDateString()}
+                        </div>
                     </div>
-                    <div className="modal-body">
-                        <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleRent}>
-                            <div className="m-1 d-flex align-items-center w-100">
-                                <label htmlFor="Startdatum" className="form-label m-3">Startdatum</label>
-                                <div className="form-control bg-dark text-light rounded">
-                                    {new Date(startDate).toLocaleDateString()}
-                                </div>
-                            </div>
-                            <div className="m-1 d-flex align-items-center w-100">
-                                <label htmlFor="Einddatum" className="form-label m-3">Einddatum</label>
-                                <div className="form-control bg-dark text-light rounded">
-                                    {new Date(endDate).toLocaleDateString()}
-                                </div>
-                            </div>
-                            <div className="mt-3">
-                                <h5>Total Price: &euro;{totalPrice}</h5>
-                            </div>
-                            <div className="m-3">
-                                <Button variant="primary" type="submit">Verstuur Huuraanvraag</Button>
-                            </div>
-                            {error && <div className="text-danger mt-2">{error}</div>}
-                        </form>
+                    <div className="m-1 d-flex align-items-center w-auto">
+                        <label htmlFor="Einddatum" className="form-label m-3">Einddatum</label>
+                        <div className="form-control bg-dark text-light rounded-1 text-center">
+                            {new Date(endDate).toLocaleDateString()}
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                    <div className="mt-3">
+                        <h5>Total Price: &euro;{totalPrice}</h5>
+                    </div>
+                    <div className="m-3 rounded-1">
+                        <Button variant="primary" type="submit">Verstuur Huuraanvraag</Button>
+                    </div>
+                    {error && <div className="text-danger mt-2">{error}</div>}
+                </form>
+            </Modal.Body>
+        </Modal>
     );
 };
 
 export default RentModal;
+
+
