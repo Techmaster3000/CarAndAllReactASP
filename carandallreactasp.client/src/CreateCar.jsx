@@ -88,16 +88,16 @@ const CreateCar = () => {
      * Handles closing the form and navigating back to the home page.
      */
     const handleClose = () => {
-        navigate('/');
+        navigate('/managecars');
     };
 
     return (
         <div className="container-fluid w-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2 p-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h1 className="text-center">Create Car</h1>
+                <h1 className="text-center michroma-regular">Create Car</h1>
                 <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
             </div>
-            <form className="d-flex flex-column justify-content-center align-items-center" onSubmit={handleSubmit}>
+            <form className="d-flex flex-column justify-content-center align-items-center tomorrow-regular" onSubmit={handleSubmit}>
                 <div className="m-1 d-flex align-items-center w-100">
                     <label htmlFor="carSoort" className="form-label m-3">Soort</label>
                     <select

@@ -103,9 +103,9 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Verhuur Details</Modal.Title>
+                <Modal.Title className="tomorrow-regular">Verhuur Details</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="chakra-petch-regular">
                 <p><strong>Voertuig Naam:</strong> {rental.voertuigNaam}</p>
                 {car ? (
                     <>
@@ -119,7 +119,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
                 <p><strong>Eind Datum:</strong> {new Date(rental.eindDatum).toLocaleDateString()}</p>
                 <p><strong>Totaalprijs:</strong> &euro;{rental.totaalPrijs}</p>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className="tomorrow-regular">
                 <Button variant="warning" onClick={handleDownloadInvoice}>Download Invoice</Button>
                 <Button variant="secondary" onClick={onHide}>Close</Button>
             </Modal.Footer>
