@@ -136,7 +136,7 @@ const EditAccount = () => {
     };
 
     return (
-        <div className="container w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+        <div className="container w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-1">
             <div className="position-absolute top-0 start-0 p-3">
                 <Button variant="secondary-outline" size="lg" onClick={() => navigate("/index")}><IoArrowBackSharp /></Button>
             </div>
@@ -229,8 +229,8 @@ const EditAccount = () => {
                     </div>
                     {error && <div className="text-danger mt-2">{error}</div>}
                     <div className="d-flex justify-content-center w-100">
-                        <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-50 rounded-1">Save Information</Button>
-                        <Button variant="outline-danger" type="button" className="btn mt-3 w-50 rounded-1" onClick={deleteAccount}>Delete Account</Button>
+                        <Button variant="primary" type="submit" size="lg" className="btn mt-3 me-2 w-75 rounded-1">Save Information</Button>
+                        <Button variant="outline-danger" type="button" className="btn mt-3 w-25 rounded-1" onClick={deleteAccount}>Delete Account</Button>
                     </div>
                 </form>
             </div>
