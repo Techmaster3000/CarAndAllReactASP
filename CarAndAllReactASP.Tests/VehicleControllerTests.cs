@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 using CarAndAllReactASP.Server.Data;
 using CarAndAllReactASP.Server;
-
+//Test voor inname voertuigen
 namespace CarAndAllReactASP.Tests
 {
     public class VoertuigenControllerTests
@@ -19,7 +19,7 @@ namespace CarAndAllReactASP.Tests
         {
             // InMemory database setup
             var options = new DbContextOptionsBuilder<CarAndAllReactASPDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase2")
                 .Options;
 
             _context = new CarAndAllReactASPDbContext(options);

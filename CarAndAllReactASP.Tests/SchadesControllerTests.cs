@@ -21,7 +21,7 @@ namespace CarAndAllReactASP.Tests
         {
             // InMemory database setup
             var options = new DbContextOptionsBuilder<CarAndAllReactASPDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase1")
                 .Options;
 
             _context = new CarAndAllReactASPDbContext(options);

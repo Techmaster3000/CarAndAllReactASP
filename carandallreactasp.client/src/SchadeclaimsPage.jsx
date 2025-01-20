@@ -56,6 +56,7 @@ const SchadeclaimsPage = () => {
             setStatusMessage(response.message || "Schadeclaim succesvol toegevoegd en Voertuigstatus op in reparatie gezet");
             setNewClaim({ Kenteken: "", Beschrijving: "", FotoUrl: "" });
             setIsFormOpen(false);
+            setTimeout(() => setNewClaim({ Kenteken: "", Beschrijving: "", FotoUrl: "" }), 0);
             loadSchades();
         } catch (err) {
             setStatusMessage("Fout bij het toevoegen van de schadeclaim.");
@@ -121,23 +122,27 @@ const SchadeclaimsPage = () => {
                     <label>Kenteken:</label>
                     <input
                         type="text"
+                        placeholder="Bijvoorbeeld: AB-123-CD"
                         value={newClaim.Kenteken}
                         onChange={(e) => setNewClaim({ ...newClaim, Kenteken: e.target.value })}
                     />
                     <label>Beschrijving:</label>
                     <textarea
+                        placeholder="Beschrijf de schade"
                         value={newClaim.Beschrijving}
                         onChange={(e) => setNewClaim({ ...newClaim, Beschrijving: e.target.value })}
                     />
                     <label>Foto URL (optioneel):</label>
                     <input
                         type="text"
+                        placeholder="Bijvoorbeeld: https://via.placeholder.com/150"
                         value={newClaim.FotoUrl}
                         onChange={(e) => setNewClaim({ ...newClaim, FotoUrl: e.target.value })}
                     />
                     <button onClick={handleAddClaim}>Voeg claim toe</button>
                 </div>
             )}
+
 
             <div className="filter-container">
                 <label htmlFor="filter">Filter op claims:</label>
