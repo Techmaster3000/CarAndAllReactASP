@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@react-navigation/material-top-tabs": "^7.0.7",
+    "@react-navigation/material-top-tabs": "^7.1.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
