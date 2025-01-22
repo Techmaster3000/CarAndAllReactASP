@@ -68,10 +68,12 @@ const CreateCar = () => {
                     aanschafjaar: aanschafjaar,
                     prijsPerDag: prijsPerDag,
                     opmerkingen: opmerking,
+                    status: "Beschikbaar",
                 }),
             });
             if (response.ok) {
                 setError('Car created successfully.');
+                navigate('/managecars');
             } else if (response.status === 409) {
                 setError('Kenteken al aanwezig in database.');
             } else {

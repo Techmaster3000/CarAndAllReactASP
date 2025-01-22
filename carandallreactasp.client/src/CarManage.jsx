@@ -97,7 +97,7 @@ const CarManage = () => {
     return (
         <div>
         <NavBar />
-            <div className="container-fluid w-100 h-50 d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+            <div className="container-fluid w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
                 <div className="text-center michroma-regular pt-2 pb-4">
                     <h1>Manage Cars</h1>
                 </div>
