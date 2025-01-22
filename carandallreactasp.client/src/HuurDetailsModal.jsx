@@ -65,7 +65,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         doc.text(`Voertuig Naam: ${rental.voertuigNaam}`, 20, 70);
         if (car) {
             doc.text(`Soort Voertuig: ${car.soort}`, 20, 80);
-            doc.text(`Prijs Per Dag: ${car.prijsPerDag} euro`, 20, 90);
+            doc.text(`Prijs Per Dag: ${calculatePrijsPerDag()} euro`, 20, 90);
         }
         doc.text(`Start Datum: ${new Date(rental.startDatum).toLocaleDateString()}`, 20, 100);
         doc.text(`Eind Datum: ${new Date(rental.eindDatum).toLocaleDateString()}`, 20, 110);
@@ -78,7 +78,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
             body: [
                 ['Voertuignaam', rental.voertuigNaam],
                 ['Soort Voertuig', car ? car.soort : 'Loading...'],
-                ['Prijs Per Dag', car ? `${car.prijsPerDag} euro` : 'Loading...'],
+                ['Prijs Per Dag', `${calculatePrijsPerDag()} euro`],
                 ['Start Datum', new Date(rental.startDatum).toLocaleDateString()],
                 ['Eind Datum', new Date(rental.eindDatum).toLocaleDateString()],
                 ['Totaalprijs', `${rental.totaalPrijs} euro`],
@@ -91,6 +91,16 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
         doc.text('Contact: info@carandall.com | Telefoon: 123-456-7890', 20, doc.internal.pageSize.height - 20);
 
         doc.save('invoice.pdf');
+    };
+
+    /**
+     * Calculates the price per day based on the total price and rental duration.
+     * @returns {number} The calculated price per day.
+     */
+    const calculatePrijsPerDag = () => {
+        const timeDiff = Math.abs(new Date(rental.eindDatum) - new Date(rental.startDatum));
+        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+        return (rental.totaalPrijs / diffDays).toFixed(2);
     };
 
     /**
@@ -110,7 +120,7 @@ const RentalDetailsModal = ({ show, onHide, rental, car }) => {
                 {car ? (
                     <>
                         <p><strong>Soort Voertuig:</strong> {car.soort}</p>
-                        <p><strong>Prijs Per Dag:</strong> &euro;{car.prijsPerDag}</p>
+                        <p><strong>Prijs Per Dag:</strong> &euro;{calculatePrijsPerDag()}</p>
                     </>
                 ) : (
                     <p>Loading car details...</p>
