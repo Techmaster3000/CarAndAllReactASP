@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css';
 import EditCar from './EditCar';
-import NavBar from './NavBar'
+import NavBar from './NavBar';
 
 /**
  * CarManage component handles the management of vehicles.
@@ -33,13 +33,44 @@ const CarManage = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                setVehicles(data);
+                const vehiclesWithRentalCount = await Promise.all(data.map(async (vehicle) => {
+                    const rentalCount = await fetchRentalCount(vehicle.id);
+                    return { ...vehicle, rentalCount };
+                }));
+                setVehicles(vehiclesWithRentalCount);
             } else {
                 setError('Error fetching vehicles.');
             }
         } catch (error) {
             console.error(error);
             setError('Error fetching vehicles.');
+        }
+    };
+
+    /**
+     * Fetches the rental count for a specific vehicle.
+     * @param {number} vehicleId - The ID of the vehicle.
+     * @returns {number} The rental count.
+     */
+    const fetchRentalCount = async (vehicleId) => {
+        try {
+            const response = await fetch(`/api/ParticuliereVerhuurs/count/${vehicleId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const count = await response.json();
+                return count;
+            } else {
+                console.error('Error fetching rental count.');
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error fetching rental count.', error);
+            return 0;
         }
     };
 
@@ -96,8 +127,8 @@ const CarManage = () => {
 
     return (
         <div>
-        <NavBar />
-            <div className="container-fluid w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-2">
+            <NavBar />
+            <div className="container-fluid w-100 h-auto d-flex flex-column bg-white position-absolute top-50 start-50 translate-middle rounded-1">
                 <div className="text-center michroma-regular pt-2 pb-4">
                     <h1>Manage Cars</h1>
                 </div>
@@ -117,7 +148,8 @@ const CarManage = () => {
                                 <th>Kenteken</th>
                                 <th>Aanschafjaar</th>
                                 <th>Prijs Per Dag</th>
-                                <th>Status</th> {/* Add header for status */}
+                                <th>Status</th>
+                                <th>Rental Count</th> {/* Add header for rental count */}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -131,8 +163,9 @@ const CarManage = () => {
                                     <td>{vehicle.kleur}</td>
                                     <td>{vehicle.kenteken}</td>
                                     <td>{vehicle.aanschafjaar}</td>
-                                    <td>{vehicle.prijsPerDag}</td>
-                                    <td>{vehicle.status}</td> {/* Add status column */}
+                                    <td>&euro;{vehicle.prijsPerDag}</td>
+                                    <td>{vehicle.status}</td>
+                                    <td>{vehicle.rentalCount}</td>
                                     <td className="tomorrow-regular rounded-1">
                                         <Button variant="secondary" className="me-2" onClick={() => handleEdit(vehicle)}>Edit</Button>
                                         <Button variant="danger" onClick={() => handleDelete(vehicle.id)}>Delete</Button>
@@ -151,3 +184,5 @@ const CarManage = () => {
 };
 
 export default CarManage;
+
+

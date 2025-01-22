@@ -77,6 +77,13 @@ namespace CarAndAllReactASP.Server.Data
         /// </summary>
         /// <param name="id">The ID of the particuliere verhuur.</param>
         /// <returns>The particuliere verhuur with the specified ID.</returns>
+        [HttpGet("count/{id}")]
+        public async Task<ActionResult<int>> GetCarCount(int id)
+        {
+            var count = await _context.ParticuliereVerhuur.CountAsync(v => v.VoertuigID == id);
+            return Ok(count);
+
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<ParticuliereVerhuur>> GetParticuliereVerhuur(int id)
         {
