@@ -5,7 +5,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cypress": "^13.16.1",
-    "jspdf": "^2.5.2",
+    "jspdf": "^3.0.0",
     "jspdf-autotable": "^3.8.4",
     "react-bootstrap": "^2.10.7",
     "react-datepicker": "^8.2.0",
